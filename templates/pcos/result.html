@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Plan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #f7f9fb;
+            color: #222;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .main-header {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.5rem 0 1rem 0;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .main-header h1 {
+            font-weight: 600;
+            font-size: 2rem;
+            color: #2563eb;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            margin: 0 auto 2rem auto;
+        }
+        .card {
+            border-radius: 1rem;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            background: #2563eb;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        .footer {
+            margin-top: auto;
+            background: #ffffff;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            padding: 1.5rem 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        table {
+            background: #fff;
+        }
+        th, td {
+            color: #222;
+        }
+    </style>
+    <script>
+        function refreshAndRedirect() {
+            window.location.href = '/';
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-primary" href="/">Female Meal Plan</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                <a class="nav-link" href="/">Meal Plan</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/image">Image Scan</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/fertility">Fertility</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div class="info-card">
+            <h4><i class="fas fa-user me-2"></i>Profile</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Name</strong></td>
+                            <td>{{ name }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Type of PCOS</strong></td>
+                            <td>{{ prediction }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Height</strong></td>
+                            <td>{{ height }} cm</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Weight</strong></td>
+                            <td>{{ weight }} kg</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BMI</strong></td>
+                            <td>
+                                {% if height and weight %}
+                                    {% set bmi = (weight|float / ((height|float/100) * (height|float/100)))|round(2) %}
+                                    {{ bmi }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Healthy weight range</strong></td>
+                            <td>
+                                {% if height %}
+                                    {% set min_weight = ((height|float/100) * (height|float/100) * 18.5)|round(1) %}
+                                    {% set max_weight = ((height|float/100) * (height|float/100) * 24.9)|round(1) %}
+                                    {{ min_weight }} - {{ max_weight }} kg
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="prediction-result">
+            <i class="fas fa-chart-pie me-2"></i>Results
+        </div>
+
+        <div class="info-card">
+            <div class="table-responsive">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><strong>Outcome</strong></td>
+                            <td>{{ prediction }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Outcome Distribution</strong></td>
+                            <td>
+                                <div class="row">
+                                    <ul>
+                                        {% for type, prob in type_probabilities.items() %}
+                                        <li>
+                                            <strong>
+                                                {% if type == "0"%}
+                                                    PCOS Adrenal
+                                                {% elif type == "1" %}
+                                                    PCOS Keradangan/Inflammation
+                                                {% elif type == "2" %}
+                                                    PCOS Keradangan/Infllammation
+                                                {% elif type == "3" %}
+                                                    PCOS Pil Perancang/Post Birth Control
+                                                {% elif type == "4" %}
+                                                    PCOS Pos Pil P"erancang/Post Birth Control
+                                                {% elif type == "5" %}
+                                                    PCOS Rintangan Insulin/Insulin Resistance
+                                                {% else %}
+                                                    Type {{ type }}
+                                                {% endif %}
+                                            </strong>: {{ (prob | float )| round(2)}}%
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Score</strong></td>
+                            <td>6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="water-intake  mt-4 mb-4">
+            <i class="fas fa-tint me-2"></i>Jumlah Air yang perlu diminum sepanjang hari:  <strong>{{(weight|float /30) | round(2)}} Litres</strong>
+        </div>
+
+        <div class="treatment-section">
+            <h4 class="treatment-title"><i class="fas fa-clipboard-list me-2"></i>{{prediction}}</h4>
+            <div class="treatment-list">
+                <p><i class="fas fa-utensils me-2"></i>Rawatan 1# Sarapan Bebas PCOS</p>
+                <p><i class="fas fa-apple-alt me-2"></i>Rawatan 2# Diet Bebas PCOS</p>
+                <p><i class="fas fa-ban me-2"></i>Rawatan 3# Mengurangkan pengambilan Fructose</p>
+                <p><i class="fas fa-clock me-2"></i>Rawatan 4# Pilih Masa Makan anda</p>
+                <p><i class="fas fa-pills me-2"></i>Rawatan 5# Supplement</p>
+                <p class="ps-4"><i class="fas fa-arrow-right me-2"></i>-Ayur lin & Feminira</p>
+                <p><i class="fas fa-running me-2"></i>Rawatan 6# Senaman</p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <div class="treatment-section">
+                <h5 class="treatment-title">Sarapan Pagi Bebas PCOS</h5>
+                <div class="treatment-content">
+                    <p>WAJIB ambil sarapan satu jam selepas bangun tidur, dan TIDAK mengambil sebarang bahan yang mengandungi gula (Cthnya: Madu, Stevia, gula etc).</p>
+                    <p>Objektif utama sarapan PCOS adalah mengambil 30-40g clean protein pada waktu pagi untuk menstabilkan gula dalam darah</p>
+                    
+                    <div class="breakfast-options">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)</td>
+                                    <td>150g dada ayam (Bakar)- Boleh marinate dengan garam dan lada hitam atau sebarang rempah</td>
+                                </tr>
+                                <tr>
+                                    <td>150g Ayam Brand Tuna Chunk in water (Perah satu biji limau dan makan)</td>
+                                    <td>200g Tempe (Goreng dengan sedikit minyak/airfryer)</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li>
+                                            Boleh buat waktu malam dan makan untuk sarapan. Jika tiada berries tiada masalah, tapi JANGAN gantikan dengan buahan lain:
+                                            <ul>
+                                                <li>150ml almond milk/coconut milk</li>
+                                                <li>¼ cup chia seeds</li>
+                                                <li>1 scoop protein (Tiada gula)</li>
+                                                <li>½ cup of fresh or frozen berries</li>
+                                            </ul>
+                                        </li>
+                                    </td>
+                                    <td>
+                                        <li>
+                                            Berries smoothies:
+                                            <ul>
+                                                <li>½ cup frozen raspberries</li>
+                                                <li>1 scoop protein- (Tiada gula)</li>
+                                                <li>150ml coconut/almond milk</li>
+                                            </ul>
+                                        </li>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h5 class="treatment-title">Diet Mediterranean (Makan tengah hari & Makan malam)</h5>
+                
+                <div class="treatment-content">
+                    <ul>
+                        <li>Protein - sasarkan jumlah sebesar tapak tangan (saiz dan ketebalan badan anda tapak tangan)</li>
+                        <li>Karbohidrat- ambil lebih kurang ½ cawan selepas masak</li>
+                        <li>Sayur-sayuran yang tidak berkanji ambil sebanyak yang boleh</li>
+                    </ul>
+
+                    <h6 class="mt-5">Menu yang anda boleh ambil seperti dibawah untuk makan tengah hari dan makan malam:</h6>
+                    <ul>
+                        <li>120g ayam/ikan/daging
+                        <li>120g nasi/kentang (Jika boleh cuba tukar kepada brown rice/basmati (low GI)/wholemeal bread)</li>
+                        <li>240g sayur-sayuran tidak berkanji</li>
+                        <li>20g Kacang (Almond/Walnut)/10g Dark Chocolate 80% keatas/30g Chia Seed</li>
+                        <li>1 biji buah epal/oren (Jika rasa nak ambil makanan manis)</li>
+                    </ul>
+                    <h6>Cara masakkan kurang minyak dan tidak menggunakan gula. Elakkan mengambil makanan fast-food dan sebarang gula untuk tempoh empat minggu pertama.</h6>
+                    <h6>p/s: Jika makan diluar, sila minta makanan kurang minyak dan tiada ajinamoto.
+                        4 minggu pertama elakkan mengambil fast food.</h6>
+
+                    <h6 class="mt-5">Menu Makan Tengah Hari & Makan Malam</h6>
+
+
+                    <div class="breakfast-options">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)</td>
+                                    <td>150g dada ayam (Bakar)- Boleh marinate dengan garam dan lada hitam atau sebarang rempah</td>
+                                </tr>
+                                <tr>
+                                    <td>150g Ayam Brand Tuna Chunk in water (Perah satu biji limau dan makan)</td>
+                                    <td>200g Tempe (Goreng dengan sedikit minyak/airfryer)</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <li>
+                                            Chia Pudding (Boleh buat waktu malam dan makan untuk sarapan):
+                                            <ul>
+                                                <li>150ml almond milk/coconut milk</li>
+                                                <li>¼ cup chia seeds</li>
+                                                <li>1 scoop protein (Tiada gula)</li>
+                                                <li>½ cup of fresh or frozen berries</li>
+                                            </ul>
+                                        </li>
+                                    </td>
+                                    <td>
+                                        <li>
+                                            Berries smoothies:
+                                            <ul>
+                                                <li>½ cup frozen raspberries</li>
+                                                <li>1 scoop protein- (Tiada gula)</li>
+                                                <li>150ml coconut/almond milk</li>
+                                            </ul>
+                                        </li>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <h5 class="treatment-title">Makanan yang baik diambil (Makanan Anti-radang)</h5>
+                    <ul>
+                        <li>Ikan berlemak (salmon, sardin, makarel)</li>
+                        <li>Biji chia dan biji rami tanah</li>
+                        <li>Minyak zaitun</li>
+                        <li>Beri merah gelap</li>
+                        <li>Sayur-sayuran berdaun gelap</li>
+                        <li>Kacang dan biji-bijian</li>
+                        <li>Sayuran cruciferous</li>
+                        <li>Herba dan rempah ratus</li>
+                    </ul>
+                </div>
+
+                <h5 class="treatment-title">Makanan yang perlu dielakkan untuk rawatan keradangan</h5>
+                <div class="treatment-content">
+                    <ul>
+                        <li>Sarapan pagi - 1 jam selepas bangun tidur</li>
+                        <li>Makan tengah hari - 12 tgh hari atau 1 petang</li>
+                        <li>Makan malam 7mlm-8mlm</li>
+                    </ul>
+                </div>
+
+                <h5 class="treatment-title">Masa makan</h5>
+                <h6>Target untuk puasa selama 12 jam dimana jarak dari makan malam ke sarapan pagi</h6>
+                <div class="treatment-content">
+                    <ul>
+                        <li>Sarapan pagi - 1 jam selepas bangun tidur</li>
+                        <li>Makan tengah hari - 12 tgh hari atau 1 petang</li>
+                        <li>Makan malam 7mlm-8mlm</li>
+                    </ul>
+                </div>
+
+                <h6>Ukur Lilitan Pinggang sebelum mula diet plan: __________inchi</h6>
+
+                <div class="breakfast-options">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>Minggu Pertama </td>
+                                <td>inchi</td>
+                            </tr>
+                            <tr>
+                                <td>Minggu Kedua</td>
+                                <td>inchi</td>
+                            </tr>
+                            <tr>
+                                <td>Minggu Kedua</td>
+                                <td>inchi</td>
+                            </tr>
+                            <tr>
+                                <td>Minggu Keempat</td>
+                                <td>inchi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h5 class="treatment-title">Plan Senaman:</h5>
+
+                <ul>
+                    <li>Lakukan brisk walk 2-3 kali seminggu dengan melengkapkan 10,000 steps</li>
+                    <li>Untuk aktiviti harian cuba banyakkan berjalan dengan parking lebih jauh dan capai lebih daripada 5000 step sehari</li>
+                    <li>ATAU</li>
+                    <li>Lakukan 20 minute senaman HIIT di rumah 2-3 Minggu sekali</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <div class="text-center m-4">
+        <button onclick="refreshAndRedirect()" class="back-button">
+            <i class="fas fa-home me-2"></i>Back to Home
+        </button>
+    </div>
+    <div class="footer">
+        &copy; 2024 Data Science Project
+    </div>
+</body>
+</html> 
