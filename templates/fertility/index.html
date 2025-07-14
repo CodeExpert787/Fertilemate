@@ -613,7 +613,7 @@
                         const formData1 = new FormData();
                         formData1.append('name', name1);
                         formData1.append('bbtFile_data', file1);
-                        fetch('http://127.0.0.1:5000/receive_data', {
+                        fetch('/receive_data', {
                             method: 'POST',
                             body: formData1,
                         })
@@ -755,7 +755,7 @@
                 }
 
                 // Send data to Python backend at /predict
-                fetch('http://127.0.0.1:5000/predict', {
+                fetch('/fertility_predict', {
                     method: 'POST',
                     body: formData, // No Content-Type header needed; browser sets it for FormData
                 })
@@ -788,6 +788,7 @@
             });
 
             function displayResults(data) {
+                console.log(data);
                 generateCalendar(data);
                 cycleRegularityElement.textContent = data.cycleRegularity;
 
