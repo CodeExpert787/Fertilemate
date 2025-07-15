@@ -580,6 +580,33 @@
 
     <script>
         
+                    // Function to clear all form fields except name input
+        function clearFormFields() {
+            const fieldsToClear = [
+                'lmpDate1', 'lmpDate2', 'lmpDate3',
+                'cycleLength1', 'cycleLength2', 'cycleLength3',
+                'periodDuration1', 'periodDuration2', 'periodDuration3',
+                'pcos', 'bbtData'
+            ];
+            
+            fieldsToClear.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.value = '';
+                    field.disabled = false; // Re-enable fields
+                }
+            });
+            // Hide results
+            const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+            const resultsContent = document.getElementById('resultsContent');
+            if (resultsPlaceholder && resultsContent) {
+                resultsPlaceholder.style.display = 'block';
+                resultsContent.style.display = 'none';
+            }
+            
+            // console.log('Form fields cleared (name input preserved)');
+        }
+
         // Local storage functions for file persistence
         function saveFileToLocalStorage(file, fileName) {
             const reader = new FileReader();
@@ -661,6 +688,7 @@
 
             // Function to process file and name data
             function processFileAndName() {
+                // console.log('processFileAndName function called');
                 const file1 = bbtFileInput_data.files[0];
                 const name1 = nameInput.value;
                 
@@ -669,10 +697,13 @@
                     saveFileToLocalStorage(file1, file1.name);
                 }
                 
-                if (file1 && name1) {
+                // Always process when name changes, even without file
+                if (name1) {
                     const formData1 = new FormData();
                     formData1.append('name', name1);
-                    formData1.append('bbtFile_data', file1);
+                    if (file1) {
+                        formData1.append('bbtFile_data', file1);
+                    }
                     fetch('/receive_data', {
                         method: 'POST',
                         body: formData1,
@@ -738,6 +769,11 @@
                                 }
                             }
                         }
+                        else {
+                            // User not found in Excel data - clear form fields
+                            // console.log("hello")
+                            clearFormFields();
+                        }
                         // Removed notification modal - no longer showing when no data in learning dataset
                     })
                     .catch(error => {
@@ -758,6 +794,7 @@
             // Add event listener for name input changes
             if (nameInput) {
                 nameInput.addEventListener('input', function() {
+                    // console.log('Name input changed:', this.value);
                     processFileAndName();
                 });
             }
