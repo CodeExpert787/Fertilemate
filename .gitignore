@@ -38,6 +38,8 @@ env/
 data/raw/*
 data/processed/*
 logs/*
+upload/*
+uploads/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !models/.gitkeep
