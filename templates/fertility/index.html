@@ -580,6 +580,63 @@
 
     <script>
         
+        // Local storage functions for file persistence
+        function saveFileToLocalStorage(file, fileName) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileData = {
+                    name: fileName,
+                    type: file.type,
+                    size: file.size,
+                    data: e.target.result
+                };
+                localStorage.setItem('savedBBTFile', JSON.stringify(fileData));
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadFileFromLocalStorage() {
+            const savedFileData = localStorage.getItem('savedBBTFile');
+            if (savedFileData) {
+                try {
+                    const fileData = JSON.parse(savedFileData);
+                    const byteString = atob(fileData.data.split(',')[1]);
+                    const mimeString = fileData.data.split(',')[0].split(':')[1].split(';')[0];
+                    const ab = new ArrayBuffer(byteString.length);
+                    const ia = new Uint8Array(ab);
+                    for (let i = 0; i < byteString.length; i++) {
+                        ia[i] = byteString.charCodeAt(i);
+                    }
+                    const file = new File([ab], fileData.name, { type: mimeString });
+                    
+                    // Create a new FileList-like object
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    
+                    return dataTransfer.files;
+                } catch (error) {
+                    console.error('Error loading file from localStorage:', error);
+                    localStorage.removeItem('savedBBTFile');
+                }
+            }
+            return null;
+        }
+
+        function restoreFileFromLocalStorage() {
+            const savedFiles = loadFileFromLocalStorage();
+            if (savedFiles && savedFiles.length > 0) {
+                const bbtFileInput_data = document.getElementById('bbtFile_data');
+                if (bbtFileInput_data) {
+                    bbtFileInput_data.files = savedFiles;
+                    const bbtFileName_data = document.getElementById('bbtFileName_data');
+                    if (bbtFileName_data) {
+                        bbtFileName_data.textContent = savedFiles[0].name;
+                    }
+                    console.log('File restored from localStorage:', savedFiles[0].name);
+                }
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
             const fertilityForm = document.getElementById('fertilityForm');
             const resultsPlaceholder = document.getElementById('resultsPlaceholder');
@@ -600,120 +657,108 @@
             const bbtFileInput_data = document.getElementById('bbtFile_data');
             const bbtFileButton_data = document.getElementById('bbtFileButton_data');
             const bbtFileName_data = document.getElementById('bbtFileName_data');
+            const nameInput = document.getElementById('Name');
+
+            // Function to process file and name data
+            function processFileAndName() {
+                const file1 = bbtFileInput_data.files[0];
+                const name1 = nameInput.value;
+                
+                if (file1) {
+                    bbtFileName_data.textContent = file1.name;
+                    saveFileToLocalStorage(file1, file1.name);
+                }
+                
+                if (file1 && name1) {
+                    const formData1 = new FormData();
+                    formData1.append('name', name1);
+                    formData1.append('bbtFile_data', file1);
+                    fetch('/receive_data', {
+                        method: 'POST',
+                        body: formData1,
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Only display results if prediction data is present
+                        if (data.fertileWindow) {
+                            displayResults(data);
+                            updateInsights(data);
+                        }
+
+                        // Autofill and disable fields only if response is successful
+                        if (data.success) {
+                            const responseToInputId = {
+                                LMP_Cycle_1: 'lmpDate1',
+                                LMP_Cycle_2: 'lmpDate2',
+                                LMP_Cycle_3: 'lmpDate3',
+                                Cycle_Length_1: 'cycleLength1',
+                                Cycle_Length_2: 'cycleLength2',
+                                Cycle_Length_3: 'cycleLength3',
+                                Period_Duration_1: 'periodDuration1',
+                                Period_Duration_2: 'periodDuration2',
+                                Period_Duration_3: 'periodDuration3',
+                                is_pcos: 'pcos'
+                            };
+
+                            for (const [key, inputId] of Object.entries(responseToInputId)) {
+                                if (data[key] !== undefined && data[key] !== null) {
+                                    const input = document.getElementById(inputId);
+                                    if (input) {
+                                        // LMP fields (date)
+                                        if (input.type === 'date') {
+                                            let dateValue = data[key];
+                                            if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+                                                const parsed = new Date(dateValue);
+                                                if (!isNaN(parsed)) {
+                                                    const yyyy = parsed.getFullYear();
+                                                    const mm = String(parsed.getMonth() + 1).padStart(2, '0');
+                                                    const dd = String(parsed.getDate()).padStart(2, '0');
+                                                    dateValue = `${yyyy}-${mm}-${dd}`;
+                                                }
+                                            }
+                                            input.value = dateValue;
+                                        }
+                                        // Cycle and Period fields (number)
+                                        else if (input.type === 'number') {
+                                            input.value = Number(data[key]);
+                                        }
+                                        // is_pcos (select or checkbox)
+                                        else if (inputId === 'pcos') {
+                                            input.value = (data[key].toString().toLowerCase() === 'true') ? 'true' : 'false';
+                                            // Trigger the change event so the UI updates
+                                            input.dispatchEvent(new Event('change'));
+                                        }
+                                        // Fallback for other types
+                                        else {
+                                            input.value = data[key];
+                                        }
+                                        // Disable the input so it cannot be edited
+                                        input.disabled = true;
+                                    }
+                                }
+                            }
+                        }
+                        // Removed notification modal - no longer showing when no data in learning dataset
+                    })
+                    .catch(error => {
+                        console.error('File upload error:', error);
+                    });
+                }
+            }
 
             if (bbtFileButton_data && bbtFileInput_data) {
                 bbtFileButton_data.addEventListener('click', function() {
                     bbtFileInput_data.click();
                 });
                 bbtFileInput_data.addEventListener('change', function() {
-                    bbtFileName_data.textContent = bbtFileInput_data.files.length > 0 ? bbtFileInput_data.files[0].name : 'No file chosen';
-                    // When a file is chosen, send only name and file to /receive_data
-                    const file1 = bbtFileInput_data.files[0];
-                    const name1 = document.getElementById('Name').value;
-                    if (file1 && name1) {
-                        const formData1 = new FormData();
-                        formData1.append('name', name1);
-                        formData1.append('bbtFile_data', file1);
-                        fetch('/receive_data', {
-                            method: 'POST',
-                            body: formData1,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Only display results if prediction data is present
-                            if (data.fertileWindow) {
-                                displayResults(data);
-                                updateInsights(data);
-                            }
+                    processFileAndName();
+                });
+            }
 
-                            // Autofill and disable fields only if response is successful
-                            if (data.success) {
-                                const responseToInputId = {
-                                    LMP_Cycle_1: 'lmpDate1',
-                                    LMP_Cycle_2: 'lmpDate2',
-                                    LMP_Cycle_3: 'lmpDate3',
-                                    Cycle_Length_1: 'cycleLength1',
-                                    Cycle_Length_2: 'cycleLength2',
-                                    Cycle_Length_3: 'cycleLength3',
-                                    Period_Duration_1: 'periodDuration1',
-                                    Period_Duration_2: 'periodDuration2',
-                                    Period_Duration_3: 'periodDuration3',
-                                    is_pcos: 'pcos'
-                                };
-
-                                for (const [key, inputId] of Object.entries(responseToInputId)) {
-                                    if (data[key] !== undefined && data[key] !== null) {
-                                        const input = document.getElementById(inputId);
-                                        if (input) {
-                                            // LMP fields (date)
-                                            if (input.type === 'date') {
-                                                let dateValue = data[key];
-                                                if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
-                                                    const parsed = new Date(dateValue);
-                                                    if (!isNaN(parsed)) {
-                                                        const yyyy = parsed.getFullYear();
-                                                        const mm = String(parsed.getMonth() + 1).padStart(2, '0');
-                                                        const dd = String(parsed.getDate()).padStart(2, '0');
-                                                        dateValue = `${yyyy}-${mm}-${dd}`;
-                                                    }
-                                                }
-                                                input.value = dateValue;
-                                            }
-                                            // Cycle and Period fields (number)
-                                            else if (input.type === 'number') {
-                                                input.value = Number(data[key]);
-                                            }
-                                            // is_pcos (select or checkbox)
-                                            else if (inputId === 'pcos') {
-                                                input.value = (data[key].toString().toLowerCase() === 'true') ? 'true' : 'false';
-                                                // Trigger the change event so the UI updates
-                                                input.dispatchEvent(new Event('change'));
-                                            }
-                                            // Fallback for other types
-                                            else {
-                                                input.value = data[key];
-                                            }
-                                            // Disable the input so it cannot be edited
-                                            input.disabled = true;
-                                        }
-                                    }
-                                }
-                            }
-                            else{
-                                // Display a modal dialog to inform the user
-                                let modal = document.getElementById('customModal');
-                                if (!modal) {
-                                    modal = document.createElement('div');
-                                    modal.id = 'customModal';
-                                    modal.innerHTML = `
-                                        <div id="customModalOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); z-index: 2000; display: flex; align-items: center; justify-content: center;">
-                                            <div style="background: #fff; padding: 2rem 2.5rem; border-radius: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); max-width: 90vw; max-height: 80vh; text-align: center; position: relative;">
-                                                <span id="closeCustomModal" style="position: absolute; top: 10px; right: 18px; font-size: 1.5rem; color: #ff6b6b; cursor: pointer;">&times;</span>
-                                                <h2 style="margin-bottom: 1rem; color: #ff6b6b;">Notification</h2>
-                                                <p style="font-size: 1.1rem; color: #333;">There is currently no data in the learning dataset. Please enter the data manually.</p>
-                                            </div>
-                                        </div>
-                                    `;
-                                    document.body.appendChild(modal);
-                                    // Close modal on click
-                                    document.getElementById('closeCustomModal').onclick = function() {
-                                        modal.style.display = 'none';
-                                    };
-                                    // Also close modal if overlay is clicked (but not the modal content)
-                                    document.getElementById('customModalOverlay').onclick = function(e) {
-                                        if (e.target === this) {
-                                            modal.style.display = 'none';
-                                        }
-                                    };
-                                } else {
-                                    modal.style.display = 'block';
-                                }
-                            }
-                        })
-                        .catch(error => {
-                            console.error('File upload error:', error);
-                        });
-                    }
+            // Add event listener for name input changes
+            if (nameInput) {
+                nameInput.addEventListener('input', function() {
+                    processFileAndName();
                 });
             }
         
@@ -918,9 +963,9 @@
                 });
             }
 
-            document.getElementById('reloadButton').addEventListener('click', function() {
-                window.location.reload();
-            });
+            // Restore file from localStorage on page load
+            restoreFileFromLocalStorage();
+
         }); 
     </script>
 </body>
