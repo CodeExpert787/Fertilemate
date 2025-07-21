@@ -3,6 +3,12 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+import pickle
+from datetime import datetime, timedelta
+
+# Constants
+ALLOWED_EXTENSIONS = {'xlsx', 'xls'}
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'bmp'}
 
 # Columns to exclude from model training
 EXCLUDED_COLUMNS = [
@@ -134,4 +140,56 @@ def predict_pcos_type(input_data, model, scaler):
         print(f"Type {type_value}: {probability:.2f}% {prediction_marker}")
     
     return predicted_type, type_probabilities
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def load_pickle(filename):
+    with open(filename, 'rb') as f:
+        return pickle.load(f)
+
+
+def allowed_image_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
+# Define PCOS types mapping based on actual data
+
+def calculate_ovulation_day(lmp_date, cycle_length, has_pcos):
+    days_to_ovulation = cycle_length - 14
+    if has_pcos:
+        days_to_ovulation = int(cycle_length * 0.6)
+    
+    ovulation_date = lmp_date + timedelta(days=days_to_ovulation)
+    return ovulation_date
+
+def calculate_fertile_window(ovulation_day):
+    fertile_start = ovulation_day - timedelta(days=5)
+    fertile_end = ovulation_day + timedelta(days=1)
+    return {'start': fertile_start, 'end': fertile_end}
+
+def analyze_cycle_regularity(cycle_lengths, has_pcos):
+    if has_pcos:
+        return "Irregular - PCOS may cause irregular cycles"
+    if max(cycle_lengths) - min(cycle_lengths) > 8:
+        return "Irregular"
+    return "Regular"
+
+def calculate_conception_probability(fertile_window):
+    probabilities = [
+        {'day_offset': -5, 'prob': 'Low (~4%)'},
+        {'day_offset': -4, 'prob': 'Low (~10%)'},
+        {'day_offset': -3, 'prob': 'Medium (~15%)'},
+        {'day_offset': -2, 'prob': 'High (~27%)'},
+        {'day_offset': -1, 'prob': 'High (~30%)'},
+        {'day_offset': 0, 'prob': 'Peak (~33%)'},
+        {'day_offset': 1, 'prob': 'Very Low'}
+    ]
+    
+    probability_list = []
+    for i in range(7):
+        day = fertile_window['start'] + timedelta(days=i)
+        probability_list.append({
+            'date': day.strftime('%B %d'),
+            'probability': probabilities[i]['prob']
+        })
+    return probability_list
 

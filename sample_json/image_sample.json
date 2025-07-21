@@ -1,0 +1,24 @@
+{
+    "left_truths": {
+        "Follicle Appearance(L)": "Multiple small follicles visible",
+        "Follicle Count(L)": 12,
+        "Ovarian Volume(L)": 31.506,
+        "Ovary Height (L)": 3.25,
+        "Ovary Length (L)": 5.23,
+        "Ovary Width (L)": 3.54,
+        "Peripheral Follicle Pattern(L)": "Present"
+    },
+    "right_truths": {
+        "Follicle Appearance(R)": "Multiple small follicles visible",
+        "Follicle Count(R)": 12,
+        "Ovarian Volume(R)": 30.559,
+        "Ovary Height (R)": 3.13,
+        "Ovary Length (R)": 4.65,
+        "Ovary Width (R)": 4.01,
+        "Peripheral Follicle Pattern(R)": "Present"
+    },
+    "Menstrual_Cycle_Data": "24 days",
+    "Biochemical_signs": "Low",
+    "Clinical_signs": "Acne",
+    "PCOS": "PCOS Inflammation"
+}

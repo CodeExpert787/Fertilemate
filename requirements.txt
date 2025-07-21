@@ -1,0 +1,10 @@
+flask
+pillow
+pandas
+numpy
+torch
+torchvision
+werkzeug
+openpyxl
+scikit-learn
+faiss-cpu
