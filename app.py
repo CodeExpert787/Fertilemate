@@ -13,7 +13,7 @@ import numpy as np
 import faiss
 import json
 from werkzeug.utils import secure_filename
-from sample import load_and_train_model, predict_pcos_type, allowed_file, load_pickle, allowed_image_file, calculate_ovulation_day, calculate_fertile_window, analyze_cycle_regularity, calculate_conception_probability
+from utils import load_and_train_model, predict_pcos_type, allowed_file, load_pickle, allowed_image_file, calculate_ovulation_day, calculate_fertile_window, analyze_cycle_regularity, calculate_conception_probability
 import pickle 
 from datetime import datetime, timedelta
 import io
