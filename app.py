@@ -1,7 +1,7 @@
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory, session, flash
 import pandas as pd
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -49,6 +49,7 @@ app.config['IMAGE_FOLDER'] = 'uploaded_images'
 ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'bmp'}
 
 os.makedirs(app.config['IMAGE_FOLDER'], exist_ok=True)
+app.secret_key = 'Fertilemate2025%%'  # Change this to a random secret key
 
 # Load the model when the application starts
 # print("Loading model...")
@@ -407,8 +408,27 @@ def preprocess_male_data(input_data):
     return processed_data
 
 
-@app.route('/', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == 'admin' and password == 'fertilemate2025%%':
+            session['logged_in'] = True
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid username or password', 'danger')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('login'))
+
+@app.route('/')
 def index():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
     return render_template('index.html')
 
 @app.route('/', methods=['POST'])
