@@ -42,6 +42,10 @@ logs/*
 !data/processed/.gitkeep
 !models/.gitkeep
 !logs/.gitkeep
+uploads/*
+uploaded_images/*
+train_data/*
+sample_json/*
 
 # OS specific
 .DS_Store
