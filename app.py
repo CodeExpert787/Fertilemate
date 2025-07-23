@@ -288,122 +288,122 @@ def preprocess_male_data(input_data):
     processed_data['weight'] = input_data.get('weight', '')
     
     # Convert 'How many Liters of water your drink per day?'
-    water = input_data.get('How many Liters of water your drink per day?/  Berapa banyak liter air yang anda minum setiap hari?', '')
+    water = input_data.get('How many Liters of water your drink per day?', '')
     water_mapping = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8}
-    processed_data['How many Liters of water your drink per day?/  Berapa banyak liter air yang anda minum setiap hari?'] = water_mapping.get(str(water), 0)
+    processed_data['How many Liters of water your drink per day?'] = water_mapping.get(str(water), 0)
     
     # Convert 'Lifestyle'
-    lifestyle = input_data.get('Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):', '')
+    lifestyle = input_data.get('Lifestyle', '')
     if 'sedentary' in lifestyle.lower():
-        processed_data['Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):'] = 0
+        processed_data['Lifestyle'] = 0
     elif 'lightly active' in lifestyle.lower():
-        processed_data['Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):'] = 1
+        processed_data['Lifestyle'] = 1
     elif 'moderately active' in lifestyle.lower():
-        processed_data['Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):'] = 2
+        processed_data['Lifestyle'] = 2
     elif 'very active' in lifestyle.lower():
-        processed_data['Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):'] = 3
+        processed_data['Lifestyle'] = 3
     elif 'extremely active' in lifestyle.lower():
-        processed_data['Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):'] = 4
+        processed_data['Lifestyle'] = 4
     else:
-        processed_data['Lifestyle (choose all that apply)/Gaya hidup (pilih semua yang berkenaan):'] = lifestyle
+        processed_data['Lifestyle'] = lifestyle
     
     # Convert 'Have you completed a sperm concentration Test Kit?'
-    sperm_test = input_data.get('Have you completed a sperm concentration Test Kit?/Adakah anda telah menyelesaikan Kit Ujian Konsentrasi Sperma?', '')
-    if sperm_test.lower() == 'no':
-        processed_data['Have you completed a sperm concentration Test Kit?/Adakah anda telah menyelesaikan Kit Ujian Konsentrasi Sperma?'] = 0
+    sperm_test = input_data.get('Have you completed a sperm concentration Test Kit?', '')
+    if sperm_test.lower() == 'No':
+        processed_data['Have you completed a sperm concentration Test Kit?'] = 0
     elif sperm_test.lower() == 'yes':
-        processed_data['Have you completed a sperm concentration Test Kit?/Adakah anda telah menyelesaikan Kit Ujian Konsentrasi Sperma?'] = 1
+        processed_data['Have you completed a sperm concentration Test Kit?'] = 1
     else:
-        processed_data['Have you completed a sperm concentration Test Kit?/Adakah anda telah menyelesaikan Kit Ujian Konsentrasi Sperma?'] = sperm_test
+        processed_data['Have you completed a sperm concentration Test Kit?'] = sperm_test
     
     # Convert 'Do you have any specific dietary preferences or restrictions?'
-    diet = input_data.get('Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?', '')
+    diet = input_data.get('Do you have any specific dietary preferences or restrictions?', '')
     if diet.lower() == 'no restrictions':
-        processed_data['Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?'] = 0
+        processed_data['Do you have any specific dietary preferences or restrictions?'] = 0
     elif diet.lower() == 'vegetarian':
-        processed_data['Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?'] = 1
+        processed_data['Do you have any specific dietary preferences or restrictions?'] = 1
     elif diet.lower() == 'vegan':
-        processed_data['Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?'] = 2
+        processed_data['Do you have any specific dietary preferences or restrictions?'] = 2
     elif diet.lower() == 'keto':
-        processed_data['Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?'] = 3
+        processed_data['Do you have any specific dietary preferences or restrictions?'] = 3
     elif diet.lower() == 'paleo':
-        processed_data['Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?'] = 4
+        processed_data['Do you have any specific dietary preferences or restrictions?'] = 4
     else:
-        processed_data['Do you have any specific dietary preferences or restrictions?/Adakah anda mempunyai sebarang pilihan atau sekatan diet tertentu?'] = diet
+        processed_data['Do you have any specific dietary preferences or restrictions?'] = diet
     
     # Convert 'What time do you typically have breakfast?'
-    breakfast_time = input_data.get('What time do you typically have breakfast?/  Pukul berapa anda biasanya sarapan?', '')
+    breakfast_time = input_data.get('What time do you typically have breakfast?', '')
     # Extract hour from time format (e.g., "12:00" -> "12")
     if ':' in breakfast_time:
         breakfast_time = breakfast_time.split(':')[0]
     breakfast_time_mapping = {
         '06': 0, '07': 1, '08': 2, '09': 3, '10': 4, '11': 5, '12': 6, '13': 7, '14': 8
     }
-    processed_data['What time do you typically have breakfast?/  Pukul berapa anda biasanya sarapan?'] = breakfast_time_mapping.get(breakfast_time, 9)  # 9 for nan
+    processed_data['What time do you typically have breakfast?'] = breakfast_time_mapping.get(breakfast_time, 9)  # 9 for nan
     
     # Convert 'What time do you typically have dinner?'
-    dinner_time = input_data.get('What time do you typically have dinner?/  Pukul berapa anda biasanya makan malam?', '')
+    dinner_time = input_data.get('What time do you typically have dinner?', '')
     # Extract hour from time format (e.g., "19:00" -> "19")
     if ':' in dinner_time:
         dinner_time = dinner_time.split(':')[0]
     dinner_time_mapping = {
         '17': 0, '18': 1, '19': 2, '20': 3, '21': 4, '22': 5, '23': 6
     }
-    processed_data['What time do you typically have dinner?/  Pukul berapa anda biasanya makan malam?'] = dinner_time_mapping.get(dinner_time, 7)  # 7 for nan
+    processed_data['What time do you typically have dinner?'] = dinner_time_mapping.get(dinner_time, 7)  # 7 for nan
     
     # Convert 'How many meals do you typically eat per day?'
-    meals = input_data.get('How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?', '')
+    meals = input_data.get('How many meals do you typically eat per day?', '')
     if '1 meal' in meals.lower():
-        processed_data['How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?'] = 0
+        processed_data['How many meals do you typically eat per day?'] = 0
     elif '2 meals' in meals.lower():
-        processed_data['How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?'] = 1
+        processed_data['How many meals do you typically eat per day?'] = 1
     elif '3 meals' in meals.lower():
-        processed_data['How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?'] = 2
+        processed_data['How many meals do you typically eat per day?'] = 2
     elif '4 meals' in meals.lower():
-        processed_data['How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?'] = 3
+        processed_data['How many meals do you typically eat per day?'] = 3
     elif '5 meals' in meals.lower():
-        processed_data['How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?'] = 4
+        processed_data['How many meals do you typically eat per day?'] = 4
     else:
-        processed_data['How many meals do you typically eat per day?/  Berapa banyak hidangan yang biasanya anda makan dalam sehari?'] = meals
+        processed_data['How many meals do you typically eat per day?'] = meals
     
     # Convert 'How often do you consume alcohol?'
-    alcohol = input_data.get('How often do you consume alcohol?/  Seberapa kerap anda meminum alkohol?', '')
+    alcohol = input_data.get('How often do you consume alcohol?', '')
     if alcohol.lower() == 'never':
-        processed_data['How often do you consume alcohol?/  Seberapa kerap anda meminum alkohol?'] = 0
+        processed_data['How often do you consume alcohol?'] = 0
     elif alcohol.lower() == 'monthly':
-        processed_data['How often do you consume alcohol?/  Seberapa kerap anda meminum alkohol?'] = 1
+        processed_data['How often do you consume alcohol?'] = 1
     elif alcohol.lower() == 'weekly':
-        processed_data['How often do you consume alcohol?/  Seberapa kerap anda meminum alkohol?'] = 2
+        processed_data['How often do you consume alcohol?'] = 2
     elif alcohol.lower() == 'daily':
-        processed_data['How often do you consume alcohol?/  Seberapa kerap anda meminum alkohol?'] = 3
+        processed_data['How often do you consume alcohol?'] = 3
     else:
-        processed_data['How often do you consume alcohol?/  Seberapa kerap anda meminum alkohol?'] = alcohol
+        processed_data['How often do you consume alcohol?'] = alcohol
     
     # Convert 'How many hours of sleep do you typically get per night?'
-    sleep_hours = input_data.get('How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?', '')
+    sleep_hours = input_data.get('How many hours of sleep do you typically get per night?', '')
     if '5 - 6 hours' in sleep_hours.lower():
-        processed_data['How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?'] = 0
+        processed_data['How many hours of sleep do you typically get per night?'] = 0
     elif '6 - 7 hours' in sleep_hours.lower():
-        processed_data['How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?'] = 1
+        processed_data['How many hours of sleep do you typically get per night?'] = 1
     elif '7 - 8 hours' in sleep_hours.lower():
-        processed_data['How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?'] = 2
+        processed_data['How many hours of sleep do you typically get per night?'] = 2
     elif '8 - 9 hours' in sleep_hours.lower():
-        processed_data['How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?'] = 3
+        processed_data['How many hours of sleep do you typically get per night?'] = 3
     elif '9+ hours' in sleep_hours.lower():
-        processed_data['How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?'] = 4
+        processed_data['How many hours of sleep do you typically get per night?'] = 4
     else:
-        processed_data['How many hours of sleep do you typically get per night?/  Berapakah jam tidur yang biasanya anda dapatkan setiap malam?'] = sleep_hours
+        processed_data['How many hours of sleep do you typically get per night?'] = sleep_hours
     
     # Convert 'Do you have any difficulty falling asleep or staying asleep?'
-    sleep_difficulty = input_data.get('Do you have any difficulty falling asleep or staying asleep?/  Adakah anda mengalami kesukaran untuk tidur atau terus tidur?', '')
+    sleep_difficulty = input_data.get('Do you have any difficulty falling asleep or staying asleep?', '')
     if sleep_difficulty.lower() == 'no':
-        processed_data['Do you have any difficulty falling asleep or staying asleep?/  Adakah anda mengalami kesukaran untuk tidur atau terus tidur?'] = 0
+        processed_data['Do you have any difficulty falling asleep or staying asleep?'] = 0
     elif sleep_difficulty.lower() == 'sometimes':
-        processed_data['Do you have any difficulty falling asleep or staying asleep?/  Adakah anda mengalami kesukaran untuk tidur atau terus tidur?'] = 1
+        processed_data['Do you have any difficulty falling asleep or staying asleep?'] = 1
     elif sleep_difficulty.lower() == 'yes':
-        processed_data['Do you have any difficulty falling asleep or staying asleep?/  Adakah anda mengalami kesukaran untuk tidur atau terus tidur?'] = 2
+        processed_data['Do you have any difficulty falling asleep or staying asleep?'] = 2
     else:
-        processed_data['Do you have any difficulty falling asleep or staying asleep?/  Adakah anda mengalami kesukaran untuk tidur atau terus tidur?'] = sleep_difficulty
+        processed_data['Do you have any difficulty falling asleep or staying asleep?'] = sleep_difficulty
     
     return processed_data
 
@@ -511,19 +511,11 @@ def predict():
         
         # Preprocess the data to convert text values to numeric values
         processed_data = preprocess_female_data(input_data)
-        
-        #print(f"Original input_data: {input_data}")
-        #print(f"Processed data: {processed_data}")
-        
+
         # Convert to DataFrame and select only the features needed by the model
         input_df = pd.DataFrame([processed_data])
         input_df = input_df[female_features] 
 
-        #For Model
-        # input_data = request.get_json() 
-        # print(f"input_data: {input_data}")
-        # input_df = pd.DataFrame([input_data])
-        # input_df = input_df[features] 
         # Make prediction
         prediction, type_probabilities = predict_pcos_type(input_df, female_model, female_scaler)
                 
@@ -555,25 +547,16 @@ def meal_predict():
         male_model = load_pickle('uploads/male_model.pkl')
         male_features = load_pickle('uploads/male_feature_names.pkl')
         male_scaler = load_pickle('uploads/male_scaler.pkl')
-        
+        print(f"male_features: {male_features}")
         # Get JSON data from request
         input_data = request.get_json() 
         
         # Preprocess the data to convert text values to numeric values
         processed_data = preprocess_male_data(input_data)
-        
-        #print(f"Original input_data: {input_data}")
-        #print(f"Processed data: {processed_data}")
-        
-        # Convert to DataFrame and select only the features needed by the model
         input_df = pd.DataFrame([processed_data])
+
         input_df = input_df[male_features] 
-        #For Model
-        # input_data = request.get_json() 
-        # print(f"input_data: {input_data}")
-        # input_df = pd.DataFrame([input_data])
-        # input_df = input_df[features] 
-        # Make prediction
+
         prediction, type_probabilities = predict_pcos_type(input_df, male_model, male_scaler)
         
         # Get the PCOS type name

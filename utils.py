@@ -14,8 +14,9 @@ ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'bmp'}
 EXCLUDED_COLUMNS = [
     'timestamp', 'name', 'age','occupation', 'height', 'weight', 
     'please','jika','email','LINK', 'phone',
-    'What kind of exercise do you do',
-    'How many time you exercise per week and how many hour'
+    'What kind of exercise do you do','If yes, what was the result of your sperm concentration test?',
+    'How many time you exercise per week and how many hour','What do you usually eat for breakfast?','What time do you typically have lunch?',
+    'What do you usually eat for lunch?', 'How often do you consume sugary drinks?','What do you usually eat for dinner?'
 ]
 
 def preprocess_data(df):
