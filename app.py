@@ -1008,7 +1008,7 @@ def fertility_predict():
 def receive_data():
     try:
         data = request.form
-        name = data.get('name')
+        name = data.get('name_id')
         print(f"Received name: {name}")
         bbt_file = request.files.get('bbtFile_data')
         result = {'success': False, 'message': ''}
