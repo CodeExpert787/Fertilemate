@@ -606,7 +606,7 @@ def image_upload_file1():
             print("File saved successfully")
             
             # Reload the model with the new data
-            # global excel_df
+            global excel_df
             excel_df = pd.read_excel(filepath)
             with open('uploads/image_excel_df.pkl', 'wb') as f:
                 pickle.dump(excel_df, f)
