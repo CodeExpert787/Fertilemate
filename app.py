@@ -980,7 +980,7 @@ def fertility_predict():
     avg_cycle_length = int(avg_cycle_length)
     
     # Predict the start of the next cycle
-    next_lmp_date = lmp_date + timedelta(days=avg_cycle_length)
+    next_lmp_date = lmp_date + timedelta(days=int(data['Cycle_Length_3'])) + timedelta(days=int(data['Period_Duration_3']))
     
     ovulation_day = calculate_ovulation_day(next_lmp_date, avg_cycle_length, has_pcos)
     fertile_window = calculate_fertile_window(ovulation_day)
@@ -989,6 +989,7 @@ def fertility_predict():
     
     # --- Format Response ---
     response = {
+        'start_cycle_date': next_lmp_date.strftime('%A, %B %d, %Y'),
         'fertileWindow': {
             'start': fertile_window['start'].strftime('%A, %B %d, %Y'),
             'end': fertile_window['end'].strftime('%A, %B %d, %Y')
@@ -997,8 +998,8 @@ def fertility_predict():
         'cycleRegularity': cycle_regularity,
         'conceptionProbability': conception_probability,
         'insights': {
-            'averageCycleLength': avg_cycle_length,
-            'averagePeriodDuration': avg_period_duration,
+            'CycleLength': avg_cycle_length,
+            'PeriodDuration': avg_period_duration,
         }
     }
     
