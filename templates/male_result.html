@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Male Prediction Result - Fertilemate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            margin-bottom: 2rem;
+        }
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .navbar nav a {
+            color: #4a5568;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .navbar nav a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+        .container {
+            max-width: 900px;
+            margin: 8rem auto 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .result-section {
+            margin-top: 2rem;
+        }
+        .result-section h2 {
+            margin-bottom: 0.5rem;
+            color: #667eea;
+        }
+        .result-section ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        .meal-plan {
+            margin-bottom: 2rem;
+        }
+        .meal-plan h4 {
+            margin-top: 1rem;
+            color: #764ba2;
+        }
+        .meal-plan ul {
+            margin-bottom: 0.5rem;
+        }
+        .meal-plan li {
+            margin-bottom: 0.2rem;
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 1.5rem; }
+            .container { margin: 6rem 1rem 2rem; padding: 2rem 1.5rem; }
+            .page-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Fertilemate</div>
+        <nav>
+            <a href="/">← Back to Dashboard</a>
+        </nav>
+    </div>
+    <div class="container">
+        <h1 class="page-title">👨 Male Health Prediction Result</h1>
+        <div id="result" class="result-section"></div>
+    </div>
+    <script>
+        const result = JSON.parse(sessionStorage.getItem('malePredictionResult'));
+        function renderResult(result) {
+            if (!result) {
+                return '<div style="color: #e53e3e;">No result data found.</div>';
+            }
+            let html = `<h2>Name: ${result.name}</h2>`;
+            html += `<p><strong>Age:</strong> ${result.age} &nbsp; <strong>Height:</strong> ${result.height} cm &nbsp; <strong>Weight:</strong> ${result.weight} kg</p>`;
+            html += `<h3>PCOS Type: <span style="color:#764ba2;">${result.pcos_type}</span></h3>`;
+            html += `<h3>Type Probabilities:</h3><ul>`;
+            for (const [type, prob] of Object.entries(result.type_probabilities)) {
+                html += `<li>Type ${type}: ${prob}%</li>`;
+            }
+            html += `</ul>`;
+            html += `<h3>Meal Plan Options:</h3>`;
+            for (const [option, meals] of Object.entries(result.meal_plan)) {
+                html += `<div class="meal-plan"><h4>${option}</h4><ul>`;
+                for (const meal of ['Breakfast', 'Lunch', 'Afternoon tea', 'Dinner', 'Snack']) {
+                    if (meals[meal]) {
+                        html += `<li><strong>${meal}:</strong><ul>`;
+                        for (const food of meals[meal]) {
+                            html += `<li>${food.food} - ${food.calorie_kcal} kcal, ${food.protein_g}g protein, ${food.fat_g}g fat, ${food.carbohydrate_g}g carbs</li>`;
+                        }
+                        html += `</ul></li>`;
+                    }
+                }
+                if (meals.Total) {
+                    html += `<li><strong>Total:</strong> ${meals.Total.calorie_kcal} kcal, ${meals.Total.protein_g}g protein, ${meals.Total.fat_g}g fat, ${meals.Total.carbohydrate_g}g carbs</li>`;
+                }
+                html += `</ul></div>`;
+            }
+            return html;
+        }
+        document.getElementById('result').innerHTML = renderResult(result);
+    </script>
+</body>
+</html>

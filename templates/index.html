@@ -5,78 +5,281 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fertilemate Website</title>
     <style>
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
             margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f7fafc;
-            color: #222;
+            padding: 0;
+            box-sizing: border-box;
         }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
         .navbar {
-            background: #4e9caf;
-            color: #fff;
-            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
+        
         .navbar .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            letter-spacing: 1px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
         }
+        
         .navbar nav a {
-            color: #fff;
+            color: #4a5568;
             text-decoration: none;
             margin-left: 2rem;
-            font-size: 1rem;
-            transition: color 0.2s;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
         }
+        
         .navbar nav a:hover {
-            color: #d1f0f6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
         }
+        
         .hero {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 60vh;
-            background: linear-gradient(120deg, #e0f7fa 0%, #f7fafc 100%);
+            min-height: 40vh;
+            background: transparent;
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 4rem 1rem 2rem;
+            position: relative;
         }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #357a8c;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            letter-spacing: -1px;
         }
+        
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            color: #555;
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            font-weight: 400;
         }
+        
         .hero .cta-btn {
-            background: #4e9caf;
-            color: #fff;
-            border: none;
-            padding: 0.8rem 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 1rem 2.5rem;
             font-size: 1.1rem;
-            border-radius: 25px;
+            font-weight: 600;
+            border-radius: 50px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+        
         .hero .cta-btn:hover {
-            background: #357a8c;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
-        @media (max-width: 600px) {
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card-row {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            border-radius: 24px;
+            padding: 3rem 2.5rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            min-width: 280px;
+            flex: 1;
+            max-width: 350px;
+            min-height: 200px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+        
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .card-title {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #2d3748;
+            margin: 0;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .dashboard {
+            position: relative;
+            z-index: 1;
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .navbar {
+                padding: 1rem 1.5rem;
+            }
+            .navbar .logo {
+                font-size: 1.6rem;
+            }
+            .navbar nav a {
+                margin-left: 1rem;
+                font-size: 0.9rem;
+            }
+            .dashboard {
+                margin: 1rem;
+                padding: 2rem 1.5rem;
+            }
+            .card-row {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .card {
+                max-width: 100%;
+                width: 100%;
+                min-width: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
             .hero h1 {
                 font-size: 2rem;
+            }
+            .hero {
+                padding: 2rem 1rem 1rem;
             }
             .navbar {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 1rem;
             }
             .navbar nav {
-                margin-top: 0.5rem;
+                display: flex;
+                gap: 0.5rem;
+            }
+            .navbar nav a {
+                margin-left: 0;
+            }
+            .dashboard {
+                padding: 1.5rem 1rem;
             }
         }
     </style>
@@ -89,47 +292,109 @@
             <a href="/logout">Logout</a>
         </nav>
     </div>
-    <section class="hero" id="home">
-        <h1>Welcome to Fertilemate</h1>
-        <p>Your companion for fertility and wellness. Explore personalized meal plans, fertility tracking, and more—all in one place.</p>
-        <button class="cta-btn">Get Started</button>
+    
+    <div class="hero">
+        <h1 id="page-title">Welcome to Fertilemate</h1>
+        <div id="breadcrumb" style="display: none; margin-top: 1rem;">
+            <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; backdrop-filter: blur(10px);">← Back</button>
+        </div>
+    </div>
+
+    <section class="dashboard" style="max-width: 1200px; margin: 2rem auto; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37); padding: 4rem; border: 1px solid rgba(255, 255, 255, 0.18);">
+        
+        <!-- Main Dashboard -->
+        <div id="main-dashboard" class="card-container">
+            <div class="card-row">
+                <div onclick="showMealPrediction()" class="card" style="cursor: pointer;">
+                    <div class="card-icon">🍽️</div>
+                    <div class="card-title">Meal Prediction</div>
+                </div>
+                <div onclick="showImagePrediction()" class="card" style="cursor: pointer;">
+                    <div class="card-icon">🖼️</div>
+                    <div class="card-title">Image Prediction</div>
+                </div>
+                <a href="/fertility_predict_form" class="card">
+                    <div class="card-icon">🌱</div>
+                    <div class="card-title">Fertility Prediction</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Meal Prediction Submenu -->
+        <div id="meal-submenu" class="card-container" style="display: none;">
+            <div class="card-row">
+                {% if role == 'admin' %}
+                <a href="/upload_model" class="card">
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">Upload Model (Excel)</div>
+                </a>
+                {% endif %}
+                <a href="/female_predict_form" class="card">
+                    <div class="card-icon">👩</div>
+                    <div class="card-title">Female Prediction</div>
+                </a>
+                <a href="/male_predict_form" class="card">
+                    <div class="card-icon">👨</div>
+                    <div class="card-title">Male Prediction</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Image Prediction Submenu -->
+        <div id="image-submenu" class="card-container" style="display: none;">
+            <div class="card-row">
+                {% if role == 'admin' %}
+                <a href="/image_upload" class="card">
+                    <div class="card-icon">📤</div>
+                    <div class="card-title">Upload Model</div>
+                </a>
+                {% endif %}
+                <a href="/image_predict_form" class="card">
+                    <div class="card-icon">🔮</div>
+                    <div class="card-title">Image Prediction</div>
+                </a>
+            </div>
+        </div>
+        
     </section>
-    <section id="routes" style="max-width: 800px; margin: 2rem auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 2rem;">
-        <h2 style="color: #357a8c; margin-top: 0;">API Routes Explanation</h2>
-        <ul style="list-style: none; padding: 0;">
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/</strong> <em>(POST)</em><br/>
-                <span>Handles Excel file uploads for model training (requires a <code>gender</code> field).</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/female_predict</strong> <em>(POST)</em><br/>
-                <span>Predicts PCOS type for female users and returns a meal plan. Expects JSON user data.</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/male_predict</strong> <em>(POST)</em><br/>
-                <span>Predicts health/meal type for male users and returns a meal plan. Expects JSON user data.</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/image</strong> <em>(POST)</em><br/>
-                <span>Handles image-related Excel file uploads for image-based predictions.</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/image_predict</strong> <em>(POST)</em><br/>
-                <span>Predicts PCOS or fertility assessment based on image and clinical data. Expects JSON data.</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/send</strong> <em>(GET, POST)</em><br/>
-                <span>Uploads left and right ovary images, finds the most similar images in the dataset, and returns their features.</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/fertility_predict</strong> <em>(POST)</em><br/>
-                <span>Predicts fertile window, ovulation day, and provides cycle insights. Expects cycle info as JSON or form data.</span>
-            </li>
-            <li style="margin-bottom: 1.5rem;">
-                <strong>/receive_data</strong> <em>(POST)</em><br/>
-                <span>Receives and processes BBT or cycle data files. Expects a name and a file in the form data.</span>
-            </li>
-        </ul>
-    </section>
+
+    <script>
+        let currentView = 'main';
+
+        function showMealPrediction() {
+            document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('meal-submenu').style.display = 'block';
+            document.getElementById('image-submenu').style.display = 'none';
+            document.getElementById('page-title').textContent = 'Meal Prediction';
+            document.getElementById('breadcrumb').style.display = 'block';
+            currentView = 'meal';
+        }
+
+        function showImagePrediction() {
+            document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('meal-submenu').style.display = 'none';
+            document.getElementById('image-submenu').style.display = 'block';
+            document.getElementById('page-title').textContent = 'Image Prediction';
+            document.getElementById('breadcrumb').style.display = 'block';
+            currentView = 'image';
+        }
+
+        function goBack() {
+            document.getElementById('main-dashboard').style.display = 'block';
+            document.getElementById('meal-submenu').style.display = 'none';
+            document.getElementById('image-submenu').style.display = 'none';
+            document.getElementById('page-title').textContent = 'Welcome to Fertilemate';
+            document.getElementById('breadcrumb').style.display = 'none';
+            currentView = 'main';
+        }
+
+        // Add smooth transitions
+        document.addEventListener('DOMContentLoaded', function() {
+            const containers = document.querySelectorAll('.card-container');
+            containers.forEach(container => {
+                container.style.transition = 'opacity 0.3s ease-in-out';
+            });
+        });
+    </script>
 </body>
 </html> 

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Prediction Result - Fertilemate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar nav a {
+            color: #4a5568;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar nav a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 8rem auto 2rem;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .result-section {
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .assessment-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .assessment-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .assessment-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .assessment-status {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .assessment-status.status-positive {
+            color: #48bb78;
+        }
+        
+        .assessment-status.status-negative {
+            color: #f56565;
+        }
+        
+        .assessment-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .morphology-card {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            border-radius: 18px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .morphology-status {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-positive {
+            color: #dc2626;
+        }
+        
+                 .status-negative {
+             color: #059669;
+         }
+         
+         #finalMorphologyAssessment {
+             font-weight: 700;
+             font-size: 1.5rem;
+             text-align: center;
+             padding: 1rem;
+             background: rgba(255, 255, 255, 0.8);
+             border-radius: 12px;
+             margin-top: 1rem;
+         }
+        
+        .ovary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .ovary-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .ovary-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .ovary-data {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .data-label {
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .data-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        
+        .probability-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 18px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1);
+        }
+        
+        .probability-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 1.5rem;
+        }
+        
+        .probability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .probability-item {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .probability-label {
+            font-weight: 500;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .probability-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #92400e;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: #4a5568;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 6rem 1rem 2rem;
+                padding: 2rem 1.5rem;
+            }
+            .ovary-grid {
+                grid-template-columns: 1fr;
+            }
+            .probability-grid {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Fertilemate</div>
+        <nav>
+            <a href="/">← Back to Dashboard</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">🔮 Image Prediction Results</h1>
+        
+        <div class="result-section">
+            <h2 class="section-title">📊 PCOS Assessment</h2>
+            <div class="assessment-grid">
+                <div class="assessment-card">
+                    <h3 class="assessment-title">Menstrual Cycle</h3>
+                    <div class="assessment-value" id="menstrualCycleData"></div>
+                </div>
+                <div class="assessment-card">
+                    <h3 class="assessment-title">Clinical Hyperandrogenism</h3>
+                    <div class="assessment-value" id="clinicalSigns"></div>
+                </div><div class="assessment-card">
+                    <h3 class="assessment-title">Biochemical Hyperandrogenism</h3>
+                    <div class="assessment-value" id="biochemicalSigns"></div>
+                </div>
+                <div class="assessment-card">
+                    <h3 class="assessment-title">Rotterdam Diagnosis</h3>
+                    <div class="assessment-status" id="morphologyStatus"></div>
+                </div>
+                <div class="assessment-card">
+                    <h3 class="assessment-title">PCOS Subtype</h3>
+                    <div class="assessment-status" id="pcosAssessmentStatus"></div>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        <div class="result-section">
+            <h2 class="section-title">🔍 Ovary Analysis</h2>
+            <div class="ovary-grid">
+                <div class="ovary-card">
+                    <h3 class="ovary-title">Left Ovary</h3>
+                    <div class="ovary-data" id="leftOvaryData">
+                        <!-- Data will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="ovary-card">
+                    <h3 class="ovary-title">Right Ovary</h3>
+                    <div class="ovary-data" id="rightOvaryData">
+                        <!-- Data will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="result-section">
+            <h2 class="section-title">📈 Rotterdam Morphology Interpretation:</h2>
+            <div class="ovary-grid">
+                <div class="ovary-card">
+                    <h3 class="ovary-title">Rotterdam Criteria</h3>
+                    <div class="ovary-data" id="Criteria">
+                        <!-- Data will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="ovary-card">
+                    <h3 class="ovary-title">Status</h3>
+                    <div class="ovary-data" id="Status">
+                        <!-- Data will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="result-section">
+            <div class="assessment-value" id="finalMorphologyAssessment"> </div>
+        </div>
+        
+                 <div class="action-buttons">
+             <a href="/image_predict_form" class="btn btn-secondary">New Prediction</a>
+             <a href="/" class="btn btn-primary">Back to Dashboard</a>
+         </div>
+    </div>
+
+    <script>
+        // Get data from URL parameters or localStorage
+        function getResultData() {
+            // Try to get from URL parameters first
+            const urlParams = new URLSearchParams(window.location.search);
+            const resultData = urlParams.get('data');
+            
+            if (resultData) {
+                return JSON.parse(decodeURIComponent(resultData));
+            }
+            
+            // Fallback to localStorage
+            const storedData = localStorage.getItem('imagePredictionResult');
+            if (storedData) {
+                return JSON.parse(storedData);
+            }
+            
+            // Default data for demonstration
+            return null;
+        }
+        
+        function displayResults(data) {
+            // Display Morphology Assessment
+            const morphologyStatus = document.getElementById('morphologyStatus');
+            const status = data["Morphology Assessment"];
+            morphologyStatus.textContent = status;
+            morphologyStatus.className = `assessment-status ${status === 'Positive' ? 'status-positive' : 'status-negative'}`;
+            
+            // Display PCOS Assessment Result
+            const pcosAssessmentStatus = document.getElementById('pcosAssessmentStatus');
+            const pcosResult = data["PCOS Assessment Result"];
+            pcosAssessmentStatus.textContent = pcosResult;
+            pcosAssessmentStatus.className = `assessment-status ${pcosResult.includes('PCOS') ? 'status-positive' : 'status-negative'}`;
+            
+            // Display Menstrual Cycle Data
+            const menstrualCycleData = document.getElementById('menstrualCycleData');
+            const cycleData = data["Menstrual Cycle Data"];
+            menstrualCycleData.textContent = cycleData;
+            
+            // Display Clinical Signs
+            const clinicalSigns = document.getElementById('clinicalSigns');
+            const clinicalData = data["Clinical signs"];
+            clinicalSigns.textContent = clinicalData;
+            
+            // Display Biochemical Signs
+            const biochemicalSigns = document.getElementById('biochemicalSigns');
+            const biochemicalData = data["Biochemical signs"];
+            biochemicalSigns.textContent = biochemicalData;
+            
+                         // Display Left Ovary Data
+             const leftOvaryData = document.getElementById('leftOvaryData');
+             if (leftOvaryData && data.left) {
+                 leftOvaryData.innerHTML = '';
+                 Object.entries(data.left).forEach(([key, value]) => {
+                     const dataItem = document.createElement('div');
+                     dataItem.className = 'data-item';
+                     dataItem.innerHTML = `
+                         <span class="data-label">${key}</span>
+                         <span class="data-value">${value}</span>
+                     `;
+                     leftOvaryData.appendChild(dataItem);
+                 });
+             }
+            
+                         // Display Right Ovary Data
+             const rightOvaryData = document.getElementById('rightOvaryData');
+             if (rightOvaryData && data.right) {
+                 rightOvaryData.innerHTML = '';
+                 Object.entries(data.right).forEach(([key, value]) => {
+                     const dataItem = document.createElement('div');
+                     dataItem.className = 'data-item';
+                     dataItem.innerHTML = `
+                         <span class="data-label">${key}</span>
+                         <span class="data-value">${value}</span>
+                     `;
+                     rightOvaryData.appendChild(dataItem);
+                 });
+             }
+            
+                         // Display Rotterdam Criteria Data
+             const criteriaData = document.getElementById('Criteria');
+             if (criteriaData) {
+                 criteriaData.innerHTML = '';
+                 const rotterdamCriteria = [
+                     'Ovarian Volume >10 ml',
+                     'Follicle Count >12',
+                     'Peripheral Pattern'
+                 ];
+                 rotterdamCriteria.forEach(criteria => {
+                     const dataItem = document.createElement('div');
+                     dataItem.className = 'data-item';
+                     dataItem.innerHTML = `
+                         <span class="data-label">${criteria}</span>
+                     `;
+                     criteriaData.appendChild(dataItem);
+                 });
+             }
+             
+             // Display Rotterdam Status Data
+             const statusData = document.getElementById('Status');
+             if (statusData && data.left && data.right) {
+                 statusData.innerHTML = '';
+                 
+                 // Determine status based on ovary data
+                 const leftVolume = data.left['Ovarian Volume(L)'];
+                 const rightVolume = data.right['Ovarian Volume(R)'];
+                 const leftFollicleCount = data.left['Follicle Count(L)'];
+                 const rightFollicleCount = data.right['Follicle Count(R)'];
+                 const leftPattern = data.left['Peripheral Follicle Pattern(L)'];
+                 const rightPattern = data.right['Peripheral Follicle Pattern(R)'];
+                 
+                 const volumeStatus = (leftVolume > 10 || rightVolume > 10) ? 'Yes' : 'No (both sides <10 ml)';
+                 const follicleStatus = (leftFollicleCount > 12 || rightFollicleCount > 12) ? 'Yes' : 'No';
+                 const patternStatus = (leftPattern === 'Present' || rightPattern === 'Present') ? 'Yes' : 'No';
+                 
+                 const statuses = [volumeStatus, follicleStatus, patternStatus];
+                 statuses.forEach(status => {
+                     const dataItem = document.createElement('div');
+                     dataItem.className = 'data-item';
+                     dataItem.innerHTML = `
+                         <span class="data-value">${status}</span>
+                     `;
+                     statusData.appendChild(dataItem);
+                 });
+             }
+             
+             // Display Probability Data
+             const probabilityData = document.getElementById('probabilityData');
+             if (probabilityData && data.type_probabilities) {
+                 probabilityData.innerHTML = '';
+                 Object.entries(data.type_probabilities).forEach(([key, value]) => {
+                     const probabilityItem = document.createElement('div');
+                     probabilityItem.className = 'probability-item';
+                     probabilityItem.innerHTML = `
+                         <div class="probability-label">Type ${key}</div>
+                         <div class="probability-value">${value}%</div>
+                     `;
+                     probabilityData.appendChild(probabilityItem);
+                 });
+             }
+                          // Display Morphology Assessment
+             const finalMorphologyAssessment = document.getElementById('finalMorphologyAssessment');
+             const finalMorphologyStatus = data["Morphology Assessment"];
+             if (finalMorphologyAssessment) {
+                 finalMorphologyAssessment.textContent ="✅ Morphology Assessment: " + finalMorphologyStatus + " for PCOS Morphology." || 'No Data';
+             }
+            
+        }
+        
+                 // Initialize the page
+         document.addEventListener('DOMContentLoaded', function() {
+             const data = getResultData();
+             if (data) {
+                 displayResults(data);
+             } else {
+                 // Show default message if no data
+                 const finalMorphologyAssessment = document.getElementById('finalMorphologyAssessment');
+                 if (finalMorphologyAssessment) {
+                     finalMorphologyAssessment.textContent = 'No Data Available';
+                     finalMorphologyAssessment.className = 'assessment-status status-negative';
+                 }
+             }
+         });
+    </script>
+</body>
+</html> 

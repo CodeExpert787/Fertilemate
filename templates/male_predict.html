@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Male Prediction - Fertilemate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            margin-bottom: 2rem;
+        }
+        
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar nav a {
+            color: #4a5568;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar nav a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 8rem auto 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.5rem;
+            }
+            .container {
+                margin: 6rem 1rem 2rem;
+                padding: 2rem 1.5rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Fertilemate</div>
+        <nav>
+            <a href="/">← Back to Dashboard</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">👨 Male Health Prediction</h1>
+        
+        <form id="maleForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input name="name" type="text" placeholder="Enter your name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Age</label>
+                    <input name="age" type="number" placeholder="Enter your age" min="18" max="70" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Height (cm)</label>
+                    <input name="height" type="number" placeholder="Enter height in cm" min="150" max="220" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Weight (kg)</label>
+                    <input name="weight" type="number" placeholder="Enter weight in kg" min="40" max="200" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>How many liters of water do you drink per day?</label>
+                    <input name="How many Liters of water your drink per day?" type="number" placeholder="Liters" min="0" max="8" step="0.1">
+                </div>
+                
+                <div class="form-group">
+                    <label>Lifestyle</label>
+                    <select name="Lifestyle" required>
+                        <option value="">Select lifestyle</option>
+                        <option value="Sedentary">Sedentary</option>
+                        <option value="Lightly active">Lightly active</option>
+                        <option value="Moderately active">Moderately active</option>
+                        <option value="Very active">Very active</option>
+                        <option value="Extremely active">Extremely active</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Have you completed a sperm concentration test?</label>
+                    <select name="Have you completed a sperm concentration Test Kit?" required>
+                        <option value="">Select an option</option>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Dietary preferences or restrictions</label>
+                    <select name="Do you have any specific dietary preferences or restrictions?" required>
+                        <option value="">Select preference</option>
+                        <option value="No restrictions">No restrictions</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Vegan">Vegan</option>
+                        <option value="Keto">Keto</option>
+                        <option value="Paleo">Paleo</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>What time do you typically have breakfast?</label>
+                    <input name="What time do you typically have breakfast?" type="time">
+                </div>
+                
+                <div class="form-group">
+                    <label>What time do you typically have dinner?</label>
+                    <input name="What time do you typically have dinner?" type="time">
+                </div>
+                
+                <div class="form-group">
+                    <label>How many meals do you typically eat per day?</label>
+                    <select name="How many meals do you typically eat per day?" required>
+                        <option value="">Select number of meals</option>
+                        <option value="1 meal">1 meal</option>
+                        <option value="2 meals">2 meals</option>
+                        <option value="3 meals">3 meals</option>
+                        <option value="4 meals">4 meals</option>
+                        <option value="5 meals">5 meals</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>How often do you consume alcohol?</label>
+                    <select name="How often do you consume alcohol?" required>
+                        <option value="">Select frequency</option>
+                        <option value="Never">Never</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Daily">Daily</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>How many hours of sleep do you get per night?</label>
+                    <select name="How many hours of sleep do you typically get per night?" required>
+                        <option value="">Select sleep duration</option>
+                        <option value="5 - 6 hours">5 - 6 hours</option>
+                        <option value="6 - 7 hours">6 - 7 hours</option>
+                        <option value="7 - 8 hours">7 - 8 hours</option>
+                        <option value="8 - 9 hours">8 - 9 hours</option>
+                        <option value="9+ hours">9+ hours</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Do you have difficulty falling asleep or staying asleep?</label>
+                    <select name="Do you have any difficulty falling asleep or staying asleep?" required>
+                        <option value="">Select an option</option>
+                        <option value="No">No</option>
+                        <option value="Sometimes">Sometimes</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Get Prediction</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('maleForm').onsubmit = async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            const form = e.target;
+            const data = {};
+            for (const el of form.elements) {
+                if (el.name && el.value) {
+                    data[el.name] = el.value;
+                }
+            }
+            
+            try {
+                const res = await fetch('/male_predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const out = await res.json();
+
+                // Store result in sessionStorage and redirect
+                sessionStorage.setItem('malePredictionResult', JSON.stringify(out));
+                window.location.href = '/male_result';
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<div style="color: #e53e3e; text-align: center;">Error: Unable to get prediction. Please try again.</div>';
+                document.getElementById('result').classList.add('show');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

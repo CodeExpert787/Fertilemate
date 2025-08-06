@@ -309,7 +309,7 @@ def preprocess_male_data(input_data):
     
     # Convert 'Have you completed a sperm concentration Test Kit?'
     sperm_test = input_data.get('Have you completed a sperm concentration Test Kit?', '')
-    if sperm_test.lower() == 'No':
+    if sperm_test.lower() == 'no':
         processed_data['Have you completed a sperm concentration Test Kit?'] = 0
     elif sperm_test.lower() == 'yes':
         processed_data['Have you completed a sperm concentration Test Kit?'] = 1
@@ -415,6 +415,11 @@ def login():
         password = request.form.get('password')
         if username == 'admin' and password == 'fertilemate2025%%':
             session['logged_in'] = True
+            session['role'] = 'admin'
+            return redirect(url_for('index'))
+        elif username == 'user' and password == 'fertilemate':
+            session['logged_in'] = True
+            session['role'] = 'user'
             return redirect(url_for('index'))
         else:
             flash('Invalid username or password', 'danger')
@@ -423,13 +428,15 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
+    session.pop('role', None)
     return redirect(url_for('login'))
 
 @app.route('/')
 def index():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
-    return render_template('index.html')
+    role = session.get('role', 'user')
+    return render_template('index.html', role=role)
 
 @app.route('/', methods=['POST'])
 def upload_file():
@@ -790,6 +797,10 @@ def image_predict():
             'left': truths,
             'right': right_truths,
             'Morphology Assessment': str(pcos_type),
+            'Menstrual Cycle Data': MCD,
+            'Clinical signs': Cli_sign,
+            'Biochemical signs': Bio_signs,
+            'PCOS Assessment Result': pcos,
             'type_probabilities': type_probabilities,
         })
     except Exception as e:
@@ -877,6 +888,7 @@ def send_images():
         truths = None
         right_truths = None
         uploaded_img = None
+        print("request.files:")
         if request.method == 'POST':
             
             file = request.files['left_image']
@@ -1054,6 +1066,74 @@ def receive_data():
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': f'Error processing data: {str(e)}'}), 500
+
+@app.route('/upload_model')
+def upload_model_page():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('upload_model.html', role=role)
+
+@app.route('/female_predict_form')
+def female_predict_form():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('female_predict.html', role=role)
+
+@app.route('/male_predict_form')
+def male_predict_form():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('male_predict.html', role=role)
+
+@app.route('/image_upload')
+def image_upload_page():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('image_upload.html', role=role)
+
+@app.route('/image_predict_form')
+def image_predict_form():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('image_predict.html', role=role)
+
+@app.route('/fertility_predict_form')
+def fertility_predict_form():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('fertility_predict.html', role=role)
+
+@app.route('/fertility_result')
+def fertility_result_page():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    role = session.get('role', 'user')
+    return render_template('fertility_result.html')
+
+@app.route('/female_result', methods=['POST'])
+def female_result():
+    result_json = request.form.get('result')
+    result = None
+    if result_json:
+        try:
+            result = json.loads(result_json)
+        except Exception:
+            result = None
+    return render_template('female_result.html', result=result)
+
+@app.route('/male_result')
+def male_result():
+    return render_template('male_result.html')
+
+@app.route('/image_result')
+def image_result():
+    return render_template('image_result.html')
 
 
 if __name__ == "__main__":

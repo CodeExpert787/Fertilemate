@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Prediction - Fertilemate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            margin-bottom: 2rem;
+        }
+        
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar nav a {
+            color: #4a5568;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar nav a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 8rem auto 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Inter', monospace;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .json-help {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.5rem;
+            }
+            .container {
+                margin: 6rem 1rem 2rem;
+                padding: 2rem 1.5rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Fertilemate</div>
+        <nav>
+            <a href="/">← Back to Dashboard</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">🔮 Image-based PCOS Prediction</h1>
+        
+        <form id="imagePredictForm">
+            <div class="form-section">
+                <h3 class="section-title">Clinical Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Menstrual Cycle Data</label>
+                        <select name="Menstrual_Cycle_Data" required>
+                            <option value="">Select cycle length</option>
+                            <option value="29 days">29 days</option>
+                            <option value="32 days">32 days</option>
+                            <option value="35 days">35 days</option>
+                            <option value="50 days">50 days</option>
+                            <option value="60 days">60 days</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Clinical Signs</label>
+                        <select name="Clinical_signs" required>
+                            <option value="">Select clinical signs</option>
+                            <option value="No">No symptoms</option>
+                            <option value="Acne">Acne</option>
+                            <option value="Acne & Hirsutism">Acne & Hirsutism</option>
+                            <option value="Hair Loss">Hair Loss</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Biochemical Signs</label>
+                        <select name="Biochemical_signs" required>
+                            <option value="">Select biochemical level</option>
+                            <option value="Low">Low</option>
+                            <option value="High">High</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>PCOS Status</label>
+                        <select name="PCOS" required>
+                            <option value="">Select PCOS status</option>
+                            <option value="Non PCOS">Non PCOS</option>
+                            <option value="PCOS Inflammation">PCOS Inflammation</option>
+                            <option value="PCOS Rintangan Insulin">PCOS Insulin Resistance</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Ovary Images Upload</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="leftOvaryImage">Left Ovary Image</label>
+                        <input type="file" id="leftOvaryImage" name="leftOvaryImage" accept="image/*" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="rightOvaryImage">Right Ovary Image</label>
+                        <input type="file" id="rightOvaryImage" name="rightOvaryImage" accept="image/*" required />
+                    </div>
+                </div>
+                <div id="image-upload-status" style="margin-top: 0.5rem; color: #667eea; display: none;">Uploading images...</div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Ultrasound Analysis Data</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Left Ovary Analysis (JSON Format)</label>
+                        <textarea name="left_truths" placeholder='Enter JSON data for left ovary analysis' readonly></textarea>
+                        
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Right Ovary Analysis (JSON Format)</label>
+                        <textarea name="right_truths" placeholder='Enter JSON data for right ovary analysis' readonly></textarea>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Get Prediction</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('imagePredictForm').onsubmit = async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            const form = e.target;
+            const data = {};
+            
+            for (const el of form.elements) {
+                if (el.name && el.type !== 'submit') {
+                    if (el.name === 'left_truths' || el.name === 'right_truths') {
+                        try {
+                            data[el.name] = el.value ? JSON.parse(el.value) : {};
+                        } catch (error) {
+                            alert(`Invalid JSON format in ${el.name}. Please check your input.`);
+                            submitBtn.textContent = originalText;
+                            submitBtn.disabled = false;
+                            return;
+                        }
+                    } else {
+                        data[el.name] = el.value;
+                    }
+                }
+            }
+            
+            try {
+                const res = await fetch('/image_predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const out = await res.json();
+                
+                // Store the result data and redirect to the result page
+                localStorage.setItem('imagePredictionResult', JSON.stringify(out));
+                window.location.href = '/image_result';
+                
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<div style="color: #e53e3e; text-align: center;">Error: Unable to get prediction. Please try again.</div>';
+                document.getElementById('result').classList.add('show');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        };
+
+        // Image auto-upload logic
+        const leftInput = document.getElementById('leftOvaryImage');
+        const rightInput = document.getElementById('rightOvaryImage');
+        const statusDiv = document.getElementById('image-upload-status');
+        let uploading = false;
+
+        function tryAutoUpload() {
+            if (uploading) return;
+            if (leftInput.files.length && rightInput.files.length) {
+                uploading = true;
+                statusDiv.style.display = 'block';
+                const formData = new FormData();
+                formData.append('left_image', leftInput.files[0]);
+                formData.append('right_image', rightInput.files[0]);
+                fetch('/send', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    statusDiv.textContent = 'Images uploaded successfully!';
+                    // Set left_truths and right_truths textarea values
+                    const leftTruthsTextarea = document.querySelector('textarea[name="left_truths"]');
+                    const rightTruthsTextarea = document.querySelector('textarea[name="right_truths"]');
+                    if (leftTruthsTextarea && data.left_truths !== undefined) {
+                        leftTruthsTextarea.value = typeof data.left_truths === 'object' ? JSON.stringify(data.left_truths) : data.left_truths;
+                    }
+                    if (rightTruthsTextarea && data.right_truths !== undefined) {
+                        rightTruthsTextarea.value = typeof data.right_truths === 'object' ? JSON.stringify(data.right_truths) : data.right_truths;
+                    }
+                    console.log(data);
+                    setTimeout(() => { statusDiv.style.display = 'none'; statusDiv.textContent = 'Uploading images...'; }, 2000);
+                })
+                .catch(err => {
+                    statusDiv.textContent = 'Image upload failed!';
+                    setTimeout(() => { statusDiv.style.display = 'none'; statusDiv.textContent = 'Uploading images...'; }, 2000);
+                })
+                .finally(() => {
+                    uploading = false;
+                });
+            }
+        }
+        if (leftInput && rightInput) {
+            leftInput.addEventListener('change', tryAutoUpload);
+            rightInput.addEventListener('change', tryAutoUpload);
+        }
+    </script>
+</body>
+</html>

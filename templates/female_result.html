@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Female Prediction Result - Fertilemate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 8rem auto 2rem;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem 2rem;
+        }
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .summary-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
+            border-radius: 18px;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.10);
+            padding: 2rem 2rem 2rem 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .summary-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        .summary-info {
+            flex: 1;
+        }
+        .summary-info h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .summary-info .info-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 1.05rem;
+        }
+        .summary-info .info-list span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 0.3rem 0.8rem;
+        }
+        .pcos-type {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #764ba2;
+            margin-top: 0.7rem;
+            background: #ede9fe;
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            margin-top: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .probabilities {
+            margin-bottom: 2rem;
+        }
+        .prob-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+        .prob-label {
+            width: 220px;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+        .prob-outer {
+            flex: 1;
+            background: #e9d8fd;
+            border-radius: 8px;
+            height: 18px;
+            margin: 0 0.7rem;
+            overflow: hidden;
+        }
+        .prob-inner {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            transition: width 0.7s;
+        }
+        .prob-value {
+            min-width: 40px;
+            text-align: right;
+            font-weight: 600;
+            color: #764ba2;
+        }
+        .meal-section {
+            background: #f7fafc;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.07);
+            padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .meal-section h3 {
+            margin-top: 0;
+            color: #667eea;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .meal-section ul, .meal-section ol {
+            margin: 0.5rem 0 0 1.2rem;
+        }
+        .meal-section li {
+            margin-bottom: 0.3rem;
+        }
+        .meal-section .remark {
+            margin-top: 0.7rem;
+            color: #764ba2;
+            font-size: 0.98rem;
+            font-style: italic;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.7rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.5rem;
+            }
+            .container {
+                margin: 6rem 1rem 2rem;
+                padding: 2rem 1rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .summary-card {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.2rem 1rem;
+            }
+            .summary-avatar {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Fertilemate</div>
+        <nav>
+            <a href="/">← Back to Dashboard</a>
+        </nav>
+    </div>
+    <div class="container">
+        <h1>👩 Female PCOS Prediction Result</h1>
+        {% if result %}
+        <!-- Summary Card -->
+        <div class="summary-card">
+            <div class="summary-avatar">👩</div>
+            <div class="summary-info">
+                <h2>{{ result.name }}</h2>
+                <div class="info-list">
+                    <span title="Age">🎂 {{ result.age }} yrs</span>
+                    <span title="Height">📏 {{ result.height }} cm</span>
+                    <span title="Weight">⚖️ {{ result.weight }} kg</span>
+                </div>
+                <div class="pcos-type">PCOS Type: {{ result.pcos_type }}</div>
+            </div>
+        </div>
+        <!-- Probabilities Section -->
+        <div class="section-title">PCOS Type Probabilities</div>
+        <div class="probabilities">
+            {% set type_labels = [
+                'PCOS Adrenal',
+                'PCOS Keradangan/Inflammation',
+                'PCOS Keradangan/Infllammation',
+                'PCOS Pil Perancang/Post Birth Control',
+                'PCOS Pos Pil Perancang/Post Birth Control',
+                'PCOS Rintangan Insulin/Insulin Resistance'] %}
+            {% for i in range(6) %}
+            <div class="prob-bar">
+                <div class="prob-label">{{ type_labels[i] }}</div>
+                <!-- <div class="prob-outer">
+                    <div class="prob-inner" style="width: {{ result.type_probabilities[i|string]|float(0) }}%"></div>
+                </div> -->
+                <div class="prob-value">{{ result.type_probabilities[i|string]|round(1) }}%</div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Meal Plan Section -->
+        <div class="section-title">Personalized Meal & Lifestyle Plan</div>
+        {% set meal = result.meal_plan %}
+        {% if meal %}
+            {% if meal.DietMediterranean %}
+            <div class="meal-section">
+                <h3>Mediterranean Diet Tips</h3>
+                <ul>
+                    <li><b>Tips:</b> {{ meal.DietMediterranean.MasakanTips }}</li>
+                </ul>
+                <h3>Recommended Menu</h3>
+                <ul>
+                    {% for item in meal.DietMediterranean.MenuCadangan %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+                <h3>PCOS Plate</h3>
+                <ul>
+                    <li>Gentle Starch: {{ meal.DietMediterranean.PCOSPlate.GentleStarch }}</li>
+                    <li>Healthy Fat: {{ meal.DietMediterranean.PCOSPlate.HealthyFat }}</li>
+                    <li>Non-Starchy Veg: {{ meal.DietMediterranean.PCOSPlate.NonStarchyVeg }}</li>
+                    <li>Protein: {{ meal.DietMediterranean.PCOSPlate.Protein }}</li>
+                </ul>
+                <div class="remark">{{ meal.DietMediterranean.Remark }}</div>
+            </div>
+            {% endif %}
+            {% if meal.MasaMakan %}
+            <div class="meal-section">
+                <h3>Meal Times</h3>
+                <ul>
+                    <li><b>Breakfast:</b> {{ meal.MasaMakan.Sarapan }}</li>
+                    <li><b>Lunch:</b> {{ meal.MasaMakan.TengahHari }}</li>
+                    <li><b>Dinner:</b> {{ meal.MasaMakan.MakanMalam }}</li>
+                </ul>
+            </div>
+            {% endif %}
+            {% if meal.PemantauanUkuranPinggang %}
+            <div class="meal-section">
+                <h3>Waist Measurement Monitoring</h3>
+                <ul>
+                    <li>Before Start: {{ meal.PemantauanUkuranPinggang.SebelumMula }}</li>
+                    <li>Week 1: {{ meal.PemantauanUkuranPinggang.MingguPertama }}</li>
+                    <li>Week 2: {{ meal.PemantauanUkuranPinggang.MingguKedua }}</li>
+                    <li>Week 3: {{ meal.PemantauanUkuranPinggang.MingguKetiga }}</li>
+                    <li>Week 4: {{ meal.PemantauanUkuranPinggang.MingguKeempat }}</li>
+                </ul>
+            </div>
+            {% endif %}
+            {% if meal.PlanSenaman %}
+            <div class="meal-section">
+                <h3>Exercise Plan</h3>
+                <ul>
+                    <li>{{ meal.PlanSenaman['Pilihan 1'] }}</li>
+                    <li>{{ meal.PlanSenaman['Pilihan 2'] }}</li>
+                    <li>{{ meal.PlanSenaman['Pilihan 3'] }}</li>
+                </ul>
+            </div>
+            {% endif %}
+            {% if meal.SarapanPagiBebasGula %}
+            <div class="meal-section">
+                <h3>Sugar-Free Breakfast Guidelines</h3>
+                <ul>
+                    <li><b>Avoid:</b> {{ meal.SarapanPagiBebasGula.Guidelines.Avoid|join(', ') }}</li>
+                    <li><b>Goal:</b> {{ meal.SarapanPagiBebasGula.Guidelines.Goal }}</li>
+                    <li><b>Timing:</b> {{ meal.SarapanPagiBebasGula.Guidelines.Timing }}</li>
+                </ul>
+                <h3>Breakfast Options</h3>
+                <ul>
+                    {% for key, val in meal.SarapanPagiBebasGula.Pilihan.items() %}
+                        <li>
+                        <b>{{ key }}:</b>
+                        {% if val is string %}
+                            {{ val }}
+                        {% elif val.Ingredients is defined %}
+                            <ul>
+                                {% for ing in val.Ingredients %}
+                                <li>{{ ing }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% if val.Instructions is defined %}<div><i>{{ val.Instructions }}</i></div>{% endif %}
+                        {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="remark">{{ meal.SarapanPagiBebasGula.Remark }}</div>
+            </div>
+            {% endif %}
+        {% endif %}
+        {% else %}
+        <div style="color: #e53e3e; text-align: center;">No result data found.</div>
+        {% endif %}
+        <a href="/female_predict_form" class="back-btn">← Try Again</a>
+    </div>
+</body>
+</html>

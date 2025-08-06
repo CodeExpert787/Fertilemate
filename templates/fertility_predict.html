@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fertility Prediction - Fertilemate</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #2d3748;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            margin-bottom: 2rem;
+        }
+        
+        .navbar .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar nav a {
+            color: #4a5568;
+            text-decoration: none;
+            margin-left: 2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar nav a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 8rem auto 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 2rem auto 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+
+        
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 1.5rem;
+            }
+            .container {
+                margin: 6rem 1rem 2rem;
+                padding: 2rem 1.5rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Fertilemate</div>
+        <nav>
+            <a href="/">← Back to Dashboard</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title">🌱 Fertility Prediction</h1>
+        
+        <form id="fertilityForm">
+            <div class="form-group">
+                <label>Name</label>
+                <input name="name" type="text" placeholder="Enter your name" required>
+            </div>
+            
+            <div class="form-group">
+                <label>📄 Import Data File (Optional)</label>
+                <input id="excelFile" type="file" accept=".xlsx,.xls,.csv" style="margin-bottom: 0.5rem;">
+                <small style="color: #666; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Supported formats: CSV, Excel (.xlsx, .xls)</small>
+                <div id="importStatus" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">📅 First Month Cycle Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Menstrual Period Start Date</label>
+                        <input name="LMP_Cycle_1" type="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cycle Length (days)</label>
+                        <input name="Cycle_Length_1" type="number" placeholder="Days" min="20" max="45" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Period Duration (days)</label>
+                        <input name="Period_Duration_1" type="number" placeholder="Days" min="2" max="10" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">📅 Second Month Cycle Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Menstrual Period Start Date</label>
+                        <input name="LMP_Cycle_2" type="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cycle Length (days)</label>
+                        <input name="Cycle_Length_2" type="number" placeholder="Days" min="20" max="45" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Period Duration (days)</label>
+                        <input name="Period_Duration_2" type="number" placeholder="Days" min="2" max="10" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">📅 Third Month Cycle Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Menstrual Period Start Date</label>
+                        <input name="LMP_Cycle_3" type="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Cycle Length (days)</label>
+                        <input name="Cycle_Length_3" type="number" placeholder="Days" min="20" max="45" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Period Duration (days)</label>
+                        <input name="Period_Duration_3" type="number" placeholder="Days" min="2" max="10" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Additional Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Do you have PCOS?</label>
+                        <select name="is_pcos" required>
+                            <option value="">Select an option</option>
+                            <option value="False">False</option>
+                            <option value="True">True</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Get Prediction</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // Function to save file to local storage
+        async function saveFileToStorage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        lastModified: file.lastModified,
+                        content: e.target.result
+                    };
+                    localStorage.setItem('uploadedFile', JSON.stringify(fileData));
+                    resolve(fileData);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // Function to load file from local storage
+        function loadFileFromStorage() {
+            const storedFile = localStorage.getItem('uploadedFile');
+            if (storedFile) {
+                return JSON.parse(storedFile);
+            }
+            return null;
+        }
+        
+        // Function to create File object from stored data
+        function createFileFromStorage(fileData) {
+            // Convert base64 back to blob
+            const byteCharacters = atob(fileData.content.split(',')[1]);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], { type: fileData.type });
+            
+            // Create File object
+            const file = new File([blob], fileData.name, {
+                type: fileData.type,
+                lastModified: fileData.lastModified
+            });
+            
+            return file;
+        }
+        
+        // Auto-import function
+        async function autoImportData() {
+            const file = document.getElementById('excelFile').files[0];
+            const name = document.querySelector('input[name="name"]').value.trim();
+            const statusDiv = document.getElementById('importStatus');
+            
+            if (!file || !name) {
+                return;
+            }
+            
+            // Show loading state
+            // statusDiv.innerHTML = '<span style="color: #667eea;">🔄 Importing data automatically...</span>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('name_id', name);
+                formData.append('bbtFile_data', file);
+                
+                const response = await fetch('/receive_data', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Save file to storage on successful import (only if it's a new upload)
+                    const storedFileData = loadFileFromStorage();
+                    const currentFile = document.getElementById('excelFile').files[0];
+                    
+                    // Save to storage if it's a new file or no file was previously stored
+                    if (currentFile && (!storedFileData || 
+                        storedFileData.name !== currentFile.name || 
+                        storedFileData.lastModified !== currentFile.lastModified)) {
+                        await saveFileToStorage(currentFile);
+                        // statusDiv.innerHTML = '<span style="color: #48bb78;">✓ Data imported successfully! File saved for future use.</span>';
+                    } else {
+                        // statusDiv.innerHTML = '<span style="color: #48bb78;">✓ Data imported successfully!</span>';
+                    }
+                    
+                    // Auto-fill the form with received data
+                    fillFormWithData(result);
+                } else {
+                    // statusDiv.innerHTML = '<span style="color: #e53e3e;">Failed to import data. Please enter manually.</span>';
+                }
+                
+            } catch (error) {
+                console.error('Import error:', error);
+                // statusDiv.innerHTML = '<span style="color: #e53e3e;">Error importing data. Please enter manually.</span>';
+            }
+        }
+        
+        // Handle file selection (CSV or Excel) - auto import
+        document.getElementById('excelFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const nameInput = document.querySelector('input[name="name"]');
+            
+            if (file && nameInput.value.trim()) {
+                autoImportData();
+            }
+        });
+        
+        // Handle name input change - auto import whenever name changes (if file is present)
+        document.querySelector('input[name="name"]').addEventListener('input', function(e) {
+            const file = document.getElementById('excelFile').files[0];
+            const storedFile = loadFileFromStorage();
+            
+            // Send request whenever name changes (check both current file and stored file)
+            if ((file || storedFile) && e.target.value.trim()) {
+                autoImportData();
+            }
+        });
+        
+        // Initialize page - check for stored file and populate file input
+        document.addEventListener('DOMContentLoaded', function() {
+            const storedFileData = loadFileFromStorage();
+            const statusDiv = document.getElementById('importStatus');
+            const fileInput = document.getElementById('excelFile');
+            
+            if (storedFileData) {
+                // Create file object from stored data
+                const file = createFileFromStorage(storedFileData);
+                
+                // Create a new FileList-like object to set the file input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+                
+                // statusDiv.innerHTML = '<span style="color: #48bb78;">📁 File loaded from storage: ' + storedFileData.name + '</span>';
+                
+                // If name is already entered, trigger auto-import
+                const nameInput = document.querySelector('input[name="name"]');
+                if (nameInput.value.trim()) {
+                    autoImportData();
+                }
+            }
+        });
+        
+        // Function to fill form with imported data
+        function fillFormWithData(data) {
+            // Fill cycle lengths
+            if (data.Cycle_Length_1) document.querySelector('input[name="Cycle_Length_1"]').value = data.Cycle_Length_1;
+            if (data.Cycle_Length_2) document.querySelector('input[name="Cycle_Length_2"]').value = data.Cycle_Length_2;
+            if (data.Cycle_Length_3) document.querySelector('input[name="Cycle_Length_3"]').value = data.Cycle_Length_3;
+            
+            // Fill period durations
+            if (data.Period_Duration_1) document.querySelector('input[name="Period_Duration_1"]').value = data.Period_Duration_1;
+            if (data.Period_Duration_2) document.querySelector('input[name="Period_Duration_2"]').value = data.Period_Duration_2;
+            if (data.Period_Duration_3) document.querySelector('input[name="Period_Duration_3"]').value = data.Period_Duration_3;
+            
+            // Fill LMP dates
+            if (data.LMP_Cycle_1) document.querySelector('input[name="LMP_Cycle_1"]').value = data.LMP_Cycle_1;
+            if (data.LMP_Cycle_2) document.querySelector('input[name="LMP_Cycle_2"]').value = data.LMP_Cycle_2;
+            if (data.LMP_Cycle_3) document.querySelector('input[name="LMP_Cycle_3"]').value = data.LMP_Cycle_3;
+            
+            // Fill PCOS status
+            if (data.is_pcos !== undefined) document.querySelector('select[name="is_pcos"]').value = data.is_pcos;
+        }
+        
+        // Handle form submission
+        document.getElementById('fertilityForm').onsubmit = async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            
+            const form = e.target;
+            const data = {};
+            for (const el of form.elements) {
+                if (el.name && el.value) {
+                    data[el.name] = el.value;
+                }
+            }
+            
+            try {
+                const res = await fetch('/fertility_predict', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const out = await res.json();
+                
+                // Store the prediction result in sessionStorage
+                sessionStorage.setItem('fertilityPredictionResult', JSON.stringify(out));
+                sessionStorage.setItem('fertilityInputData', JSON.stringify(data));
+                
+                // Redirect to results page
+                window.location.href = '/fertility_result';
+                
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<div style="color: #e53e3e; text-align: center;">Error: Unable to get prediction. Please try again.</div>';
+                document.getElementById('result').classList.add('show');
+                
+                // Reset button state on error
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>
