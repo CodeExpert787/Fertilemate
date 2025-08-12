@@ -355,6 +355,44 @@
         <div style="color: #e53e3e; text-align: center;">No result data found.</div>
         {% endif %}
         <a href="/female_predict_form" class="back-btn">← Try Again</a>
+        <div class="action-buttons" style="display:flex;gap:1rem;justify-content:center;margin-top:2rem;">
+            <button id="downloadPdfBtn" class="back-btn" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">Download PDF</button>
+        </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadResultsAsPDF() {
+            const source = document.querySelector('.container');
+            if (!source) return;
+            const clone = source.cloneNode(true);
+            // remove action buttons and back link from clone
+            clone.querySelectorAll('.action-buttons, .back-btn').forEach(el => el.remove());
+
+            const tempWrapper = document.createElement('div');
+            tempWrapper.style.position = 'fixed';
+            tempWrapper.style.left = '-10000px';
+            tempWrapper.style.top = '0';
+            tempWrapper.style.width = source.offsetWidth + 'px';
+            tempWrapper.appendChild(clone);
+            document.body.appendChild(tempWrapper);
+
+            const w = Math.ceil(clone.scrollWidth);
+            const h = Math.ceil(clone.scrollHeight);
+            const orientation = w > h ? 'landscape' : 'portrait';
+            const options = {
+                margin: 0,
+                filename: `Female_Result_${new Date().toISOString().slice(0,10)}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: null },
+                jsPDF: { unit: 'px', format: [w, h], orientation },
+                pagebreak: { mode: 'avoid-all' }
+            };
+            html2pdf().set(options).from(clone).save().finally(() => {
+                document.body.removeChild(tempWrapper);
+            });
+        }
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        if (downloadBtn) downloadBtn.addEventListener('click', downloadResultsAsPDF);
+    </script>
 </body>
 </html>

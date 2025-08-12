@@ -289,6 +289,9 @@
         <div class="logo">Fertilemate</div>
         <nav>
             <a href="#">Home</a>
+            {% if role == 'admin' %}
+            <a href="/admin/users">Manage Users</a>
+            {% endif %}
             <a href="/logout">Logout</a>
         </nav>
     </div>
@@ -313,10 +316,10 @@
                     <div class="card-icon">🖼️</div>
                     <div class="card-title">Image Prediction</div>
                 </div>
-                <a href="/fertility_predict_form" class="card">
+                <div onclick="showFertilityPrediction()" class="card" style="cursor: pointer;">
                     <div class="card-icon">🌱</div>
                     <div class="card-title">Fertility Prediction</div>
-                </a>
+                </div>
             </div>
         </div>
 
@@ -326,7 +329,7 @@
                 {% if role == 'admin' %}
                 <a href="/upload_model" class="card">
                     <div class="card-icon">📊</div>
-                    <div class="card-title">Upload Model (Excel)</div>
+                    <div class="card-title">Update Model</div>
                 </a>
                 {% endif %}
                 <a href="/female_predict_form" class="card">
@@ -337,25 +340,51 @@
                     <div class="card-icon">👨</div>
                     <div class="card-title">Male Prediction</div>
                 </a>
+                <a href="/female_data" class="card">
+                    <div class="card-icon">📒</div>
+                    <div class="card-title">Female Data</div>
+                </a>
+                <a href="/male_data" class="card">
+                    <div class="card-icon">📘</div>
+                    <div class="card-title">Male Data</div>
+                </a>
             </div>
         </div>
 
+        <!-- Fertility Prediction Submenu -->
+        {% if role == 'admin' %}
+        <div id="fertility-submenu" class="card-container" style="display: none;">
+            <div class="card-row">
+                <a href="/fertility_predict_form" class="card">
+                    <div class="card-icon">🌱</div>
+                    <div class="card-title">Fertility Prediction</div>
+                </a>
+                <a href="/fertility_data" class="card">
+                    <div class="card-icon">🗓️</div>
+                    <div class="card-title">Fertility Data</div>
+                </a>
+            </div>
+        </div>
+        {% endif %}
         <!-- Image Prediction Submenu -->
         <div id="image-submenu" class="card-container" style="display: none;">
             <div class="card-row">
                 {% if role == 'admin' %}
                 <a href="/image_upload" class="card">
                     <div class="card-icon">📤</div>
-                    <div class="card-title">Upload Model</div>
+                    <div class="card-title">Update Model</div>
                 </a>
                 {% endif %}
                 <a href="/image_predict_form" class="card">
                     <div class="card-icon">🔮</div>
                     <div class="card-title">Image Prediction</div>
                 </a>
+                <a href="/image_data" class="card">
+                    <div class="card-icon">🗂️</div>
+                    <div class="card-title">Image Data</div>
+                </a>
             </div>
         </div>
-        
     </section>
 
     <script>
@@ -365,6 +394,7 @@
             document.getElementById('main-dashboard').style.display = 'none';
             document.getElementById('meal-submenu').style.display = 'block';
             document.getElementById('image-submenu').style.display = 'none';
+            document.getElementById('fertility-submenu').style.display = 'none';
             document.getElementById('page-title').textContent = 'Meal Prediction';
             document.getElementById('breadcrumb').style.display = 'block';
             currentView = 'meal';
@@ -374,15 +404,27 @@
             document.getElementById('main-dashboard').style.display = 'none';
             document.getElementById('meal-submenu').style.display = 'none';
             document.getElementById('image-submenu').style.display = 'block';
+            document.getElementById('fertility-submenu').style.display = 'none';
             document.getElementById('page-title').textContent = 'Image Prediction';
             document.getElementById('breadcrumb').style.display = 'block';
             currentView = 'image';
+        }
+
+        function showFertilityPrediction() {
+            document.getElementById('main-dashboard').style.display = 'none';
+            document.getElementById('meal-submenu').style.display = 'none';
+            document.getElementById('image-submenu').style.display = 'none';
+            document.getElementById('fertility-submenu').style.display = 'block';
+            document.getElementById('page-title').textContent = 'Fertility Prediction';
+            document.getElementById('breadcrumb').style.display = 'block';
+            currentView = 'fertility';
         }
 
         function goBack() {
             document.getElementById('main-dashboard').style.display = 'block';
             document.getElementById('meal-submenu').style.display = 'none';
             document.getElementById('image-submenu').style.display = 'none';
+            document.getElementById('fertility-submenu').style.display = 'none';
             document.getElementById('page-title').textContent = 'Welcome to Fertilemate';
             document.getElementById('breadcrumb').style.display = 'none';
             currentView = 'main';

@@ -2,6 +2,10 @@ import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory, session, flash
+from functools import wraps
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 import pandas as pd
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -50,6 +54,198 @@ ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'bmp'}
 
 os.makedirs(app.config['IMAGE_FOLDER'], exist_ok=True)
 app.secret_key = 'Fertilemate2025%%'  # Change this to a random secret key
+
+# Database configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fertilemate.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+
+# Models
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+    role = db.Column(db.String(20), default='user', nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def set_password(self, password: str) -> None:
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password_hash, password)
+
+
+# History models for submissions
+class FemaleEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    patient_name = db.Column(db.String(120))
+    patient_phone = db.Column(db.String(64))
+    input_json = db.Column(db.Text)
+    result_json = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class MaleEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    patient_name = db.Column(db.String(120))
+    patient_phone = db.Column(db.String(64))
+    input_json = db.Column(db.Text)
+    result_json = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+def get_serializer() -> URLSafeTimedSerializer:
+    return URLSafeTimedSerializer(app.secret_key)
+
+
+# Structured storage for female entries
+class FemaleEntryFlat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    entry_id = db.Column(db.Integer, db.ForeignKey('female_entry.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    name = db.Column(db.String(120))
+    phone = db.Column(db.String(64))
+    age = db.Column(db.String(16))
+    height = db.Column(db.String(16))
+    weight = db.Column(db.String(16))
+    sleep_hours = db.Column(db.String(16))
+    quiz_taken = db.Column(db.String(16))
+    marital_status = db.Column(db.String(32))
+    plan_pregnant = db.Column(db.String(16))
+    birth_control = db.Column(db.String(64))
+    breakfast_daily = db.Column(db.String(16))
+    breakfast_time = db.Column(db.String(16))
+    lunch_daily = db.Column(db.String(16))
+    lunch_time = db.Column(db.String(16))
+    dinner_daily = db.Column(db.String(16))
+    dinner_time = db.Column(db.String(16))
+    water_per_day = db.Column(db.String(16))
+    exercise = db.Column(db.String(16))
+    travel_to_work = db.Column(db.String(32))
+    sleep_time = db.Column(db.String(16))
+    sleep_issue = db.Column(db.String(16))
+    exercise_3_times = db.Column(db.String(16))
+    irregular_menstruation = db.Column(db.String(64))
+    supplements = db.Column(db.String(64))
+    predicted_pcos_type = db.Column(db.String(128))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+# Structured storage for male entries
+class MaleEntryFlat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    entry_id = db.Column(db.Integer, db.ForeignKey('male_entry.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    name = db.Column(db.String(120))
+    phone = db.Column(db.String(64))
+    age = db.Column(db.String(16))
+    height = db.Column(db.String(16))
+    weight = db.Column(db.String(16))
+    water_per_day = db.Column(db.String(16))
+    lifestyle = db.Column(db.String(64))
+    sperm_test = db.Column(db.String(16))
+    diet = db.Column(db.String(64))
+    breakfast_time = db.Column(db.String(16))
+    dinner_time = db.Column(db.String(16))
+    num_meals = db.Column(db.String(16))
+    alcohol = db.Column(db.String(16))
+    sleep_hours = db.Column(db.String(32))
+    sleep_difficulty = db.Column(db.String(16))
+    predicted_goal_type = db.Column(db.String(128))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+# Aggregated storage for image predictions
+class ImageEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    patient_name = db.Column(db.String(120))
+    patient_phone = db.Column(db.String(64))
+    input_json = db.Column(db.Text)
+    result_json = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+# Structured storage for image predictions
+class ImageEntryFlat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    entry_id = db.Column(db.Integer, db.ForeignKey('image_entry.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    name = db.Column(db.String(120))
+    phone = db.Column(db.String(64))
+    menstrual_cycle_data = db.Column(db.String(32))
+    clinical_signs = db.Column(db.String(64))
+    biochemical_signs = db.Column(db.String(32))
+    pcos_assessment = db.Column(db.String(64))
+    morphology_assessment = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+# Aggregated storage for fertility predictions
+class FertilityEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    patient_name = db.Column(db.String(120))
+    patient_phone = db.Column(db.String(64))
+    input_json = db.Column(db.Text)
+    result_json = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+# Structured storage for fertility predictions
+class FertilityEntryFlat(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    entry_id = db.Column(db.Integer, db.ForeignKey('fertility_entry.id'), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    name = db.Column(db.String(120))
+    phone = db.Column(db.String(64))
+    lmp_cycle_1 = db.Column(db.String(32))
+    lmp_cycle_2 = db.Column(db.String(32))
+    lmp_cycle_3 = db.Column(db.String(32))
+    cycle_length_1 = db.Column(db.String(8))
+    cycle_length_2 = db.Column(db.String(8))
+    cycle_length_3 = db.Column(db.String(8))
+    period_duration_1 = db.Column(db.String(8))
+    period_duration_2 = db.Column(db.String(8))
+    period_duration_3 = db.Column(db.String(8))
+    is_pcos = db.Column(db.String(8))
+    start_cycle_date = db.Column(db.String(64))
+    fertile_window_start = db.Column(db.String(64))
+    fertile_window_end = db.Column(db.String(64))
+    ovulation_day = db.Column(db.String(64))
+    cycle_regularity = db.Column(db.String(64))
+    conception_probability = db.Column(db.String(64))
+    avg_cycle_length = db.Column(db.String(8))
+    avg_period_duration = db.Column(db.String(8))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+
+# --- Auth Decorators ---
+def login_required(view_function):
+    @wraps(view_function)
+    def wrapper(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        return view_function(*args, **kwargs)
+    return wrapper
+
+
+def admin_required(view_function):
+    @wraps(view_function)
+    def wrapper(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        if session.get('role') != 'admin':
+            flash('Admin access required.', 'danger')
+            return redirect(url_for('index'))
+        return view_function(*args, **kwargs)
+    return wrapper
+
 
 # Load the model when the application starts
 # print("Loading model...")
@@ -408,27 +604,103 @@ def preprocess_male_data(input_data):
     return processed_data
 
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        email = request.form.get('email', '').strip().lower()
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
+
+        if not username or not email or not password:
+            flash('All fields are required.', 'danger')
+            return render_template('signup.html')
+        if password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return render_template('signup.html')
+        if User.query.filter((User.username == username) | (User.email == email)).first():
+            flash('Username or email already exists.', 'danger')
+            return render_template('signup.html')
+
+        new_user = User(username=username, email=email, role='user')
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+        flash('Account created. Please sign in.', 'success')
+        return redirect(url_for('login'))
+    return render_template('signup.html')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
+        username_or_email = request.form.get('username')
         password = request.form.get('password')
-        if username == 'admin' and password == 'fertilemate2025%%':
+        # Allow login by username or email
+        user = User.query.filter((User.username == username_or_email) | (User.email == username_or_email)).first()
+        if user and user.check_password(password):
             session['logged_in'] = True
-            session['role'] = 'admin'
+            session['role'] = user.role
+            session['user_id'] = user.id
+            session['username'] = user.username
             return redirect(url_for('index'))
-        elif username == 'user' and password == 'fertilemate':
-            session['logged_in'] = True
-            session['role'] = 'user'
-            return redirect(url_for('index'))
-        else:
-            flash('Invalid username or password', 'danger')
+        flash('Invalid credentials', 'danger')
     return render_template('login.html')
+
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    reset_url = None
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip().lower()
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash('If the email exists, a reset link will be provided below.', 'info')
+        else:
+            serializer = get_serializer()
+            token = serializer.dumps({'email': user.email})
+            reset_url = url_for('reset_password', token=token, _external=True)
+            flash('Password reset link generated. Please use the link below to reset your password.', 'success')
+    return render_template('forgot_password.html', reset_url=reset_url)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token: str):
+    serializer = get_serializer()
+    email = None
+    try:
+        data = serializer.loads(token, max_age=3600)
+        email = data.get('email')
+    except SignatureExpired:
+        flash('The reset link has expired. Please request a new one.', 'danger')
+        return redirect(url_for('forgot_password'))
+    except BadSignature:
+        flash('Invalid reset token.', 'danger')
+        return redirect(url_for('forgot_password'))
+
+    if request.method == 'POST':
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
+        if password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return render_template('reset_password.html', token=token)
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash('User not found.', 'danger')
+            return redirect(url_for('forgot_password'))
+        user.set_password(password)
+        db.session.commit()
+        flash('Password has been reset. Please sign in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('reset_password.html', token=token)
 
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     session.pop('role', None)
+    session.pop('user_id', None)
+    session.pop('username', None)
     return redirect(url_for('login'))
 
 @app.route('/')
@@ -542,6 +814,52 @@ def predict():
             # Get meal plan data for the predicted goal
             meal_plan = get_female_meal_plan(pcos_type)
             response_data['meal_plan'] = meal_plan
+        # Persist entry
+        try:
+            entry = FemaleEntry(
+                user_id=session.get('user_id'),
+                patient_name=processed_data.get('name'),
+                patient_phone=str(input_data.get('phone', '')),
+                input_json=json.dumps(input_data),
+                result_json=json.dumps(response_data),
+            )
+            db.session.add(entry)
+            db.session.commit()
+
+            # Save structured copy
+            flat = FemaleEntryFlat(
+                entry_id=entry.id,
+                user_id=session.get('user_id'),
+                name=str(input_data.get('name', '')),
+                phone=str(input_data.get('phone', '')),
+                age=str(input_data.get('age', '')),
+                height=str(input_data.get('height', '')),
+                weight=str(input_data.get('weight', '')),
+                sleep_hours=str(input_data.get('How many hour you sleep per day?', '')),
+                quiz_taken=str(input_data.get('Have you take the Quiz of PCOS Type?', '')),
+                marital_status=str(input_data.get('Status', '')),
+                plan_pregnant=str(input_data.get('Are you currently planning to get pregnant?', '')),
+                birth_control=str(input_data.get('Do you use birth control pills?', '')),
+                breakfast_daily=str(input_data.get('Do you take breakfast daily?', '')),
+                breakfast_time=str(input_data.get('What time do you take you breakfast?', '')),
+                lunch_daily=str(input_data.get('Do you take lunch daily?', '')),
+                lunch_time=str(input_data.get('What time do you take your lunch?', '')),
+                dinner_daily=str(input_data.get('Do you take dinner daily?', '')),
+                dinner_time=str(input_data.get('What time do you take your dinner?', '')),
+                water_per_day=str(input_data.get('How many  of water you drink per day?', '')),
+                exercise=str(input_data.get('Are you exercise?', '')),
+                travel_to_work=str(input_data.get('How do you travel to work?', '')),
+                sleep_time=str(input_data.get('What time you are sleeping?', '')),
+                sleep_issue=str(input_data.get('Do you have an issue to fall asleep?', '')),
+                exercise_3_times=str(input_data.get('Can you make time to exercise 3 times a week?', '')),
+                irregular_menstruation=str(input_data.get('Do you have problems with irregular menstruation?', '')),
+                supplements=str(input_data.get('Do you take any supplement or doctor medication at this moment?', '')),
+                predicted_pcos_type=str(response_data.get('pcos_type', '')),
+            )
+            db.session.add(flat)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
         return jsonify(response_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -586,6 +904,43 @@ def meal_predict():
             meal_plan = get_meal_plan(pcos_type)
             response_data['meal_plan'] = meal_plan
         
+        # Persist entry
+        try:
+            entry = MaleEntry(
+                user_id=session.get('user_id'),
+                patient_name=processed_data.get('name'),
+                patient_phone=str(input_data.get('phone', '')),
+                input_json=json.dumps(processed_data),
+                result_json=json.dumps(response_data),
+            )
+            db.session.add(entry)
+            db.session.commit()
+
+            # Save structured copy
+            flat = MaleEntryFlat(
+                entry_id=entry.id,
+                user_id=session.get('user_id'),
+                name=str(input_data.get('name', '')),
+                phone=str(input_data.get('phone', '')),
+                age=str(input_data.get('age', '')),
+                height=str(input_data.get('height', '')),
+                weight=str(input_data.get('weight', '')),
+                water_per_day=str(input_data.get('How many Liters of water your drink per day?', '')),
+                lifestyle=str(input_data.get('Lifestyle', '')),
+                sperm_test=str(input_data.get('Have you completed a sperm concentration Test Kit?', '')),
+                diet=str(input_data.get('Do you have any specific dietary preferences or restrictions?', '')),
+                breakfast_time=str(input_data.get('What time do you typically have breakfast?', '')),
+                dinner_time=str(input_data.get('What time do you typically have dinner?', '')),
+                num_meals=str(input_data.get('How many meals do you typically eat per day?', '')),
+                alcohol=str(input_data.get('How often do you consume alcohol?', '')),
+                sleep_hours=str(input_data.get('How many hours of sleep do you typically get per night?', '')),
+                sleep_difficulty=str(input_data.get('Do you have any difficulty falling asleep or staying asleep?', '')),
+                predicted_goal_type=str(pcos_type),
+            )
+            db.session.add(flat)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
         return jsonify(response_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
@@ -676,7 +1031,9 @@ def image_predict():
         # print(f"Truths from form: {truths}")
         # print(f"Right truths from form: {right_truths}")
 
-        if MCD == '29 days':
+        if MCD == '24 days':
+            input_data['Menstrual Cycle Data'] = 4
+        elif MCD == '29 days':
             input_data['Menstrual Cycle Data'] = 0
         elif MCD == '32 days':
             input_data['Menstrual Cycle Data'] = 1
@@ -688,7 +1045,7 @@ def image_predict():
         elif MCD == '35 days':
             input_data['Menstrual Cycle Data'] = 5
         else:
-            input_data['Menstrual Cycle Data'] = 4
+            input_data['Menstrual Cycle Data'] = 6
 
 
         if Cli_sign == 'Acne':
@@ -793,7 +1150,8 @@ def image_predict():
         # Get the PCOS type name
         pcos_type = PCOS_TYPES_FERTILITY.get(prediction, 'Unknown Type')
         print(f"prediction: {pcos_type}, type_probabilities:{type_probabilities }")
-        return jsonify({
+
+        response = {
             'left': truths,
             'right': right_truths,
             'Morphology Assessment': str(pcos_type),
@@ -802,7 +1160,47 @@ def image_predict():
             'Biochemical signs': Bio_signs,
             'PCOS Assessment Result': pcos,
             'type_probabilities': type_probabilities,
-        })
+        }
+
+        # Persist image prediction entry
+        try:
+            input_payload = {
+                'name': input_data.get('name'),
+                'phone': input_data.get('phone'),
+                'Menstrual Cycle Data': MCD,
+                'Clinical signs': Cli_sign,
+                'Biochemical signs': Bio_signs,
+                'PCOS Assessment Result': pcos,
+                'left_truths': truths,
+                'right_truths': right_truths,
+            }
+            entry = ImageEntry(
+                user_id=session.get('user_id'),
+                patient_name=str(input_data.get('name', '')),
+                patient_phone=str(input_data.get('phone', '')),
+                input_json=json.dumps(input_payload),
+                result_json=json.dumps(response),
+            )
+            db.session.add(entry)
+            db.session.commit()
+
+            flat = ImageEntryFlat(
+                entry_id=entry.id,
+                user_id=session.get('user_id'),
+                name=str(input_data.get('name', '')),
+                phone=str(input_data.get('phone', '')),
+                menstrual_cycle_data=str(MCD),
+                clinical_signs=str(Cli_sign),
+                biochemical_signs=str(Bio_signs),
+                pcos_assessment=str(pcos),
+                morphology_assessment=str(pcos_type),
+            )
+            db.session.add(flat)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+
+        return jsonify(response)
     except Exception as e:
         print(f"Error in predict route: {str(e)}")
         import traceback
@@ -1015,6 +1413,62 @@ def fertility_predict():
         }
     }
     
+    # Persist fertility prediction
+    try:
+        input_payload = {
+            'name': name,
+            'phone': data.get('phone', ''),
+            'LMP_Cycle_1': data.get('LMP_Cycle_1'),
+            'LMP_Cycle_2': data.get('LMP_Cycle_2'),
+            'LMP_Cycle_3': data.get('LMP_Cycle_3'),
+            'Cycle_Length_1': data.get('Cycle_Length_1'),
+            'Cycle_Length_2': data.get('Cycle_Length_2'),
+            'Cycle_Length_3': data.get('Cycle_Length_3'),
+            'Period_Duration_1': data.get('Period_Duration_1'),
+            'Period_Duration_2': data.get('Period_Duration_2'),
+            'Period_Duration_3': data.get('Period_Duration_3'),
+            'is_pcos': data.get('is_pcos'),
+        }
+        f_entry = FertilityEntry(
+            user_id=session.get('user_id'),
+            patient_name=str(name or ''),
+            patient_phone=str(data.get('phone', '')),
+            input_json=json.dumps(input_payload),
+            result_json=json.dumps(response),
+        )
+        db.session.add(f_entry)
+        db.session.commit()
+
+        insights = response.get('insights', {})
+        f_flat = FertilityEntryFlat(
+            entry_id=f_entry.id,
+            user_id=session.get('user_id'),
+            name=str(name or ''),
+            phone=str(data.get('phone', '')),
+            lmp_cycle_1=str(data.get('LMP_Cycle_1', '')),
+            lmp_cycle_2=str(data.get('LMP_Cycle_2', '')),
+            lmp_cycle_3=str(data.get('LMP_Cycle_3', '')),
+            cycle_length_1=str(data.get('Cycle_Length_1', '')),
+            cycle_length_2=str(data.get('Cycle_Length_2', '')),
+            cycle_length_3=str(data.get('Cycle_Length_3', '')),
+            period_duration_1=str(data.get('Period_Duration_1', '')),
+            period_duration_2=str(data.get('Period_Duration_2', '')),
+            period_duration_3=str(data.get('Period_Duration_3', '')),
+            is_pcos=str(data.get('is_pcos', '')),
+            start_cycle_date=response.get('start_cycle_date', ''),
+            fertile_window_start=response.get('fertileWindow', {}).get('start', ''),
+            fertile_window_end=response.get('fertileWindow', {}).get('end', ''),
+            ovulation_day=response.get('ovulationDay', ''),
+            cycle_regularity=str(response.get('cycleRegularity', '')),
+            conception_probability=str(response.get('conceptionProbability', '')),
+            avg_cycle_length=str(insights.get('CycleLength', '')),
+            avg_period_duration=str(insights.get('PeriodDuration', '')),
+        )
+        db.session.add(f_flat)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+
     return jsonify(response)
 
 @app.route('/receive_data', methods=['POST'])
@@ -1136,5 +1590,409 @@ def image_result():
     return render_template('image_result.html')
 
 
+# --- Data history pages ---
+@app.route('/female_data')
+@login_required
+def female_data_page():
+    role = session.get('role', 'user')
+    if role == 'admin':
+        flats = FemaleEntryFlat.query.order_by(FemaleEntryFlat.created_at.desc()).all()
+    else:
+        flats = FemaleEntryFlat.query.filter_by(user_id=session.get('user_id')).order_by(FemaleEntryFlat.created_at.desc()).all()
+
+    rows = []
+    for f in flats:
+        rows.append({
+            'flat_id': f.id,
+            'id': f.entry_id or f.id,
+            'user_id': f.user_id,
+            'name': f.name,
+            'phone': f.phone,
+            'age': f.age,
+            'height': f.height,
+            'weight': f.weight,
+            'sleep_hours': f.sleep_hours,
+            'quiz_taken': f.quiz_taken,
+            'marital_status': f.marital_status,
+            'plan_pregnant': f.plan_pregnant,
+            'birth_control': f.birth_control,
+            'breakfast_daily': f.breakfast_daily,
+            'breakfast_time': f.breakfast_time,
+            'lunch_daily': f.lunch_daily,
+            'lunch_time': f.lunch_time,
+            'dinner_daily': f.dinner_daily,
+            'dinner_time': f.dinner_time,
+            'water_per_day': f.water_per_day,
+            'exercise': f.exercise,
+            'travel_to_work': f.travel_to_work,
+            'sleep_time': f.sleep_time,
+            'sleep_issue': f.sleep_issue,
+            'exercise_3_times': f.exercise_3_times,
+            'irregular_menstruation': f.irregular_menstruation,
+            'supplements': f.supplements,
+            'pcos_type': f.predicted_pcos_type,
+            'created': f.created_at.strftime('%Y-%m-%d %H:%M') if f.created_at else ''
+        })
+
+    return render_template('female_data.html', role=role, rows=rows)
+
+
+@app.route('/female_data/<int:flat_id>/delete', methods=['POST'])
+@login_required
+def female_data_delete(flat_id: int):
+    flat = FemaleEntryFlat.query.get_or_404(flat_id)
+    role = session.get('role', 'user')
+    current_user_id = session.get('user_id')
+    if role != 'admin' and flat.user_id != current_user_id:
+        flash('Not authorized to delete this entry.', 'danger')
+        return redirect(url_for('female_data_page'))
+
+    try:
+        # Delete child first to avoid FK constraints, then original
+        db.session.delete(flat)
+        if flat.entry_id:
+            original = FemaleEntry.query.get(flat.entry_id)
+            if original and (role == 'admin' or original.user_id == current_user_id):
+                db.session.delete(original)
+        db.session.commit()
+        flash('Entry deleted.', 'success')
+    except Exception:
+        db.session.rollback()
+        flash('Failed to delete entry.', 'danger')
+    return redirect(url_for('female_data_page'))
+
+
+@app.route('/male_data')
+@login_required
+def male_data_page():
+    role = session.get('role', 'user')
+    if role == 'admin':
+        flats = MaleEntryFlat.query.order_by(MaleEntryFlat.created_at.desc()).all()
+    else:
+        flats = MaleEntryFlat.query.filter_by(user_id=session.get('user_id')).order_by(MaleEntryFlat.created_at.desc()).all()
+
+    rows = []
+    for f in flats:
+        rows.append({
+            'flat_id': f.id,
+            'id': f.entry_id or f.id,
+            'user_id': f.user_id,
+            'name': f.name,
+            'phone': f.phone,
+            'age': f.age,
+            'height': f.height,
+            'weight': f.weight,
+            'water_per_day': f.water_per_day,
+            'lifestyle': f.lifestyle,
+            'sperm_test': f.sperm_test,
+            'diet': f.diet,
+            'breakfast_time': f.breakfast_time,
+            'dinner_time': f.dinner_time,
+            'num_meals': f.num_meals,
+            'alcohol': f.alcohol,
+            'sleep_hours': f.sleep_hours,
+            'sleep_difficulty': f.sleep_difficulty,
+            'goal_type': f.predicted_goal_type,
+            'created': f.created_at.strftime('%Y-%m-%d %H:%M') if f.created_at else ''
+        })
+
+    return render_template('male_data.html', role=role, rows=rows)
+
+@app.route('/male_data/<int:flat_id>/delete', methods=['POST'])
+@login_required
+def male_data_delete(flat_id: int):
+    flat = MaleEntryFlat.query.get_or_404(flat_id)
+    role = session.get('role', 'user')
+    current_user_id = session.get('user_id')
+    if role != 'admin' and flat.user_id != current_user_id:
+        flash('Not authorized to delete this entry.', 'danger')
+        return redirect(url_for('male_data_page'))
+
+    try:
+        # Delete child first, then original if owned
+        db.session.delete(flat)
+        if flat.entry_id:
+            original = MaleEntry.query.get(flat.entry_id)
+            if original and (role == 'admin' or original.user_id == current_user_id):
+                db.session.delete(original)
+        db.session.commit()
+        flash('Entry deleted.', 'success')
+    except Exception:
+        db.session.rollback()
+        flash('Failed to delete entry.', 'danger')
+    return redirect(url_for('male_data_page'))
+
+
+# Image history pages
+@app.route('/image_data')
+@login_required
+def image_data_page():
+    role = session.get('role', 'user')
+    if role == 'admin':
+        flats = ImageEntryFlat.query.order_by(ImageEntryFlat.created_at.desc()).all()
+    else:
+        flats = ImageEntryFlat.query.filter_by(user_id=session.get('user_id')).order_by(ImageEntryFlat.created_at.desc()).all()
+
+    rows = []
+    for f in flats:
+        # Attempt to include left/right truths by reading original entry JSON
+        left_truths_display = ''
+        right_truths_display = ''
+        # Initialize parsed fields
+        l_fa = l_fc = l_ov = l_oh = l_ol = l_ow = l_pfp = ''
+        r_fa = r_fc = r_ov = r_oh = r_ol = r_ow = r_pfp = ''
+        if f.entry_id:
+            original = ImageEntry.query.get(f.entry_id)
+            if original and original.input_json:
+                try:
+                    payload = json.loads(original.input_json)
+                    lt = payload.get('left_truths')
+                    rt = payload.get('right_truths')
+                    left_truths_display = json.dumps(lt, ensure_ascii=False)
+                    right_truths_display = json.dumps(rt, ensure_ascii=False)
+                    # Parse individual fields if objects
+                    if isinstance(lt, dict):
+                        l_fa = str(lt.get('Follicle Appearance(L)', ''))
+                        l_fc = str(lt.get('Follicle Count(L)', ''))
+                        l_ov = str(lt.get('Ovarian Volume(L)', ''))
+                        l_oh = str(lt.get('Ovary Height (L)', ''))
+                        l_ol = str(lt.get('Ovary Length (L)', ''))
+                        l_ow = str(lt.get('Ovary Width (L)', ''))
+                        l_pfp = str(lt.get('Peripheral Follicle Pattern(L)', ''))
+                    if isinstance(rt, dict):
+                        r_fa = str(rt.get('Follicle Appearance(R)', ''))
+                        r_fc = str(rt.get('Follicle Count(R)', ''))
+                        r_ov = str(rt.get('Ovarian Volume(R)', ''))
+                        r_oh = str(rt.get('Ovary Height (R)', ''))
+                        r_ol = str(rt.get('Ovary Length (R)', ''))
+                        r_ow = str(rt.get('Ovary Width (R)', ''))
+                        r_pfp = str(rt.get('Peripheral Follicle Pattern(R)', ''))
+                except Exception:
+                    left_truths_display = ''
+                    right_truths_display = ''
+
+        rows.append({
+            'flat_id': f.id,
+            'id': f.entry_id or f.id,
+            'user_id': f.user_id,
+            'name': f.name,
+            'phone': f.phone,
+            'menstrual_cycle_data': f.menstrual_cycle_data,
+            'clinical_signs': f.clinical_signs,
+            'biochemical_signs': f.biochemical_signs,
+            'pcos_assessment': f.pcos_assessment,
+            'morphology_assessment': f.morphology_assessment,
+            # Left parsed
+            'left_follicle_appearance': l_fa,
+            'left_follicle_count': l_fc,
+            'left_ovarian_volume': l_ov,
+            'left_ovary_height': l_oh,
+            'left_ovary_length': l_ol,
+            'left_ovary_width': l_ow,
+            'left_peripheral_follicle_pattern': l_pfp,
+            # Right parsed
+            'right_follicle_appearance': r_fa,
+            'right_follicle_count': r_fc,
+            'right_ovarian_volume': r_ov,
+            'right_ovary_height': r_oh,
+            'right_ovary_length': r_ol,
+            'right_ovary_width': r_ow,
+            'right_peripheral_follicle_pattern': r_pfp,
+            # Raw JSON fallback (not shown in table now but kept for potential use)
+            'left_truths': left_truths_display,
+            'right_truths': right_truths_display,
+            'created': f.created_at.strftime('%Y-%m-%d %H:%M') if f.created_at else ''
+        })
+
+    return render_template('image_data.html', role=role, rows=rows)
+
+
+@app.route('/image_data/<int:flat_id>/delete', methods=['POST'])
+@login_required
+def image_data_delete(flat_id: int):
+    flat = ImageEntryFlat.query.get_or_404(flat_id)
+    role = session.get('role', 'user')
+    current_user_id = session.get('user_id')
+    if role != 'admin' and flat.user_id != current_user_id:
+        flash('Not authorized to delete this entry.', 'danger')
+        return redirect(url_for('image_data_page'))
+
+    try:
+        db.session.delete(flat)
+        if flat.entry_id:
+            original = ImageEntry.query.get(flat.entry_id)
+            if original and (role == 'admin' or original.user_id == current_user_id):
+                db.session.delete(original)
+        db.session.commit()
+        flash('Entry deleted.', 'success')
+    except Exception:
+        db.session.rollback()
+        flash('Failed to delete entry.', 'danger')
+    return redirect(url_for('image_data_page'))
+
+
+# Fertility history pages
+@app.route('/fertility_data')
+@login_required
+def fertility_data_page():
+    role = session.get('role', 'user')
+    if role == 'admin':
+        flats = FertilityEntryFlat.query.order_by(FertilityEntryFlat.created_at.desc()).all()
+    else:
+        flats = FertilityEntryFlat.query.filter_by(user_id=session.get('user_id')).order_by(FertilityEntryFlat.created_at.desc()).all()
+
+    rows = []
+    for f in flats:
+        rows.append({
+            'flat_id': f.id,
+            'id': f.entry_id or f.id,
+            'user_id': f.user_id,
+            'name': f.name,
+            'phone': f.phone,
+            'lmp_cycle_1': f.lmp_cycle_1,
+            'lmp_cycle_2': f.lmp_cycle_2,
+            'lmp_cycle_3': f.lmp_cycle_3,
+            'cycle_length_1': f.cycle_length_1,
+            'cycle_length_2': f.cycle_length_2,
+            'cycle_length_3': f.cycle_length_3,
+            'period_duration_1': f.period_duration_1,
+            'period_duration_2': f.period_duration_2,
+            'period_duration_3': f.period_duration_3,
+            'is_pcos': f.is_pcos,
+            'start_cycle_date': f.start_cycle_date,
+            'fertile_window_start': f.fertile_window_start,
+            'fertile_window_end': f.fertile_window_end,
+            'ovulation_day': f.ovulation_day,
+            'cycle_regularity': f.cycle_regularity,
+            'conception_probability': f.conception_probability,
+            'avg_cycle_length': f.avg_cycle_length,
+            'avg_period_duration': f.avg_period_duration,
+            'created': f.created_at.strftime('%Y-%m-%d %H:%M') if f.created_at else ''
+        })
+
+    return render_template('fertility_data.html', role=role, rows=rows)
+
+
+@app.route('/fertility_data/<int:flat_id>/delete', methods=['POST'])
+@login_required
+def fertility_data_delete(flat_id: int):
+    flat = FertilityEntryFlat.query.get_or_404(flat_id)
+    role = session.get('role', 'user')
+    current_user_id = session.get('user_id')
+    if role != 'admin' and flat.user_id != current_user_id:
+        flash('Not authorized to delete this entry.', 'danger')
+        return redirect(url_for('fertility_data_page'))
+
+    try:
+        db.session.delete(flat)
+        if flat.entry_id:
+            original = FertilityEntry.query.get(flat.entry_id)
+            if original and (role == 'admin' or original.user_id == current_user_id):
+                db.session.delete(original)
+        db.session.commit()
+        flash('Entry deleted.', 'success')
+    except Exception:
+        db.session.rollback()
+        flash('Failed to delete entry.', 'danger')
+    return redirect(url_for('fertility_data_page'))
+
+# --- Admin: User Management ---
+@app.route('/admin/users', methods=['GET'])
+@admin_required
+def manage_users():
+    users = User.query.order_by(User.created_at.desc()).all()
+    role = session.get('role', 'user')
+    return render_template('admin_users.html', users=users, role=role)
+
+
+@app.route('/admin/users/create', methods=['POST'])
+@admin_required
+def admin_create_user():
+    username = request.form.get('username', '').strip()
+    email = request.form.get('email', '').strip().lower()
+    role = request.form.get('role', 'user').strip().lower()
+    password = request.form.get('password', '')
+
+    if not username or not email or not password:
+        flash('Username, email and password are required.', 'danger')
+        return redirect(url_for('manage_users'))
+
+    existing = User.query.filter((User.username == username) | (User.email == email)).first()
+    if existing:
+        flash('Username or email already exists.', 'danger')
+        return redirect(url_for('manage_users'))
+
+    new_user = User(username=username, email=email, role='admin' if role == 'admin' else 'user')
+    new_user.set_password(password)
+    db.session.add(new_user)
+    db.session.commit()
+    flash('User created.', 'success')
+    return redirect(url_for('manage_users'))
+
+
+@app.route('/admin/users/<int:user_id>/update', methods=['POST'])
+@admin_required
+def admin_update_user(user_id: int):
+    user = User.query.get_or_404(user_id)
+
+    new_username = request.form.get('username', '').strip()
+    new_email = request.form.get('email', '').strip().lower()
+    new_role = request.form.get('role', '').strip().lower()
+    new_password = request.form.get('password', '')
+
+    # Username uniqueness
+    if new_username and new_username != user.username:
+        if User.query.filter_by(username=new_username).first():
+            flash('Username already exists.', 'danger')
+            return redirect(url_for('manage_users'))
+        user.username = new_username
+
+    # Email uniqueness
+    if new_email and new_email != user.email:
+        if User.query.filter_by(email=new_email).first():
+            flash('Email already exists.', 'danger')
+            return redirect(url_for('manage_users'))
+        user.email = new_email
+
+    # Role update
+    if new_role in ['admin', 'user']:
+        user.role = new_role
+
+    # Password update
+    if new_password:
+        user.set_password(new_password)
+
+    db.session.commit()
+    flash('User updated.', 'success')
+    return redirect(url_for('manage_users'))
+
+
+@app.route('/admin/users/<int:user_id>/delete', methods=['POST'])
+@admin_required
+def admin_delete_user(user_id: int):
+    # Do not allow deleting yourself
+    if user_id == session.get('user_id'):
+        flash('You cannot delete your own account while logged in.', 'danger')
+        return redirect(url_for('manage_users'))
+
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User deleted.', 'success')
+    return redirect(url_for('manage_users'))
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True,use_reloader=False) 
+    # Ensure database tables exist and default admin is present
+    with app.app_context():
+        db.create_all()
+        admin = User.query.filter_by(username='admin').first()
+        if admin is None:
+            default_admin = User(
+                username='admin',
+                email='admin@example.com',
+                role='admin',
+            )
+            default_admin.set_password('fertilemate2025%%')
+            db.session.add(default_admin)
+            db.session.commit()
+    app.run(host='0.0.0.0', debug=True,use_reloader=False)

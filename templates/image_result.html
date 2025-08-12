@@ -337,6 +337,11 @@
 
     <div class="container">
         <h1 class="page-title">🔮 Image Prediction Results</h1>
+        <div id="summaryCard" class="morphology-card" style="display:none;margin-top:1rem;margin-bottom:2rem;">
+            <div style="font-size:1.2rem;color:#4a5568;">Patient</div>
+            <div id="patientName" style="font-size:1.6rem;font-weight:700;color:#2d3748;">Name</div>
+            <div id="patientPhone" style="font-size:1rem;color:#6b7280;margin-top:0.25rem;">Phone</div>
+        </div>
         
         <div class="result-section">
             <h2 class="section-title">📊 PCOS Assessment</h2>
@@ -411,6 +416,7 @@
          </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         // Get data from URL parameters or localStorage
         function getResultData() {
@@ -561,10 +567,21 @@
         }
         
                  // Initialize the page
-         document.addEventListener('DOMContentLoaded', function() {
+          document.addEventListener('DOMContentLoaded', function() {
              const data = getResultData();
              if (data) {
                  displayResults(data);
+                  // Show name/phone if available
+                  const summary = document.getElementById('summaryCard');
+                  const nameEl = document.getElementById('patientName');
+                  const phoneEl = document.getElementById('patientPhone');
+                  if (summary && nameEl && phoneEl) {
+                      if (data.name || data.phone) {
+                          summary.style.display = 'block';
+                          nameEl.textContent = data.name || 'Unknown';
+                          phoneEl.textContent = data.phone ? `📞 ${data.phone}` : '';
+                      }
+                  }
              } else {
                  // Show default message if no data
                  const finalMorphologyAssessment = document.getElementById('finalMorphologyAssessment');
@@ -573,6 +590,42 @@
                      finalMorphologyAssessment.className = 'assessment-status status-negative';
                  }
              }
+              // Add Download PDF button next to existing buttons
+              const actions = document.querySelector('.action-buttons');
+              if (actions) {
+                  const btn = document.createElement('button');
+                  btn.id = 'downloadPdfBtn';
+                  btn.className = 'btn btn-primary';
+                  btn.textContent = 'Download PDF';
+                  actions.insertBefore(btn, actions.firstChild);
+                  btn.addEventListener('click', function() {
+                      const source = document.querySelector('.container');
+                      if (!source) return;
+                      const clone = source.cloneNode(true);
+                      clone.querySelectorAll('.action-buttons, #downloadPdfBtn').forEach(el => el.remove());
+                      const tempWrapper = document.createElement('div');
+                      tempWrapper.style.position = 'fixed';
+                      tempWrapper.style.left = '-10000px';
+                      tempWrapper.style.top = '0';
+                      tempWrapper.style.width = source.offsetWidth + 'px';
+                      tempWrapper.appendChild(clone);
+                      document.body.appendChild(tempWrapper);
+                      const w = Math.ceil(clone.scrollWidth);
+                      const h = Math.ceil(clone.scrollHeight);
+                      const orientation = w > h ? 'landscape' : 'portrait';
+                      const options = {
+                          margin: 0,
+                          filename: `Image_Result_${new Date().toISOString().slice(0,10)}.pdf`,
+                          image: { type: 'jpeg', quality: 0.98 },
+                          html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: null },
+                          jsPDF: { unit: 'px', format: [w, h], orientation },
+                          pagebreak: { mode: 'avoid-all' }
+                      };
+                      html2pdf().set(options).from(clone).save().finally(() => {
+                          document.body.removeChild(tempWrapper);
+                      });
+                  });
+              }
          });
     </script>
 </body>

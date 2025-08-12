@@ -8,3 +8,4 @@ werkzeug
 openpyxl
 scikit-learn
 faiss-cpu
+flask_sqlalchemy

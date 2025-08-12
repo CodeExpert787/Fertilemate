@@ -238,9 +238,19 @@
                 <h3 class="section-title">Clinical Information</h3>
                 <div class="form-grid">
                     <div class="form-group">
+                        <label>Name</label>
+                        <input name="name" type="text" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input name="phone" type="text" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
                         <label>Menstrual Cycle Data</label>
                         <select name="Menstrual_Cycle_Data" required>
                             <option value="">Select cycle length</option>
+                            <option value="24 days">24 days</option>
                             <option value="29 days">29 days</option>
                             <option value="32 days">32 days</option>
                             <option value="35 days">35 days</option>
@@ -360,8 +370,9 @@
                 });
                 const out = await res.json();
                 
-                // Store the result data and redirect to the result page
-                localStorage.setItem('imagePredictionResult', JSON.stringify(out));
+                // Store the result data with name and phone, then redirect to the result page
+                const enriched = { ...out, name: data.name, phone: data.phone };
+                localStorage.setItem('imagePredictionResult', JSON.stringify(enriched));
                 window.location.href = '/image_result';
                 
             } catch (error) {

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Entries - Fertilemate</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { padding: 20px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #2d3748; line-height: 1.6; }
+
+    .navbar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); color: #2d3748; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37); border-bottom: 1px solid rgba(255, 255, 255, 0.18); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+    .navbar .logo { font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
+    .navbar nav a { color: #4a5568; text-decoration: none; margin-left: 2rem; font-size: 0.95rem; font-weight: 500; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s ease; }
+    .navbar nav a:hover { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; transform: translateY(-1px); }
+
+    .container { max-width: full; margin: 8rem auto 2rem; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 24px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37); border: 1px solid rgba(255, 255, 255, 0.18); padding: 2rem; }
+    .header { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .page-title { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .muted { color: #6b7280; font-size: 0.95rem; }
+
+    .table-container { margin-top: 1rem; background: rgba(255,255,255,0.9); border: 1px solid rgba(102,126,234,0.15); border-radius: 16px; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { background: linear-gradient(135deg, rgba(102,126,234,0.12) 0%, rgba(118,75,162,0.12) 100%); color: #1f2937; text-align: left; font-weight: 700; font-size: 0.9rem; letter-spacing: 0.01em; padding: 0.9rem 1rem; border-bottom: 1px solid rgba(102,126,234,0.2); position: sticky; top: 0; z-index: 1; white-space: nowrap; }
+    tbody td { padding: 0.85rem 1rem; border-bottom: 1px solid rgba(102,126,234,0.12); vertical-align: top; color: #374151; font-size: 0.95rem; white-space: nowrap; }
+    tbody tr:hover { background: rgba(102,126,234,0.06); }
+    tbody tr:last-child td { border-bottom: none; }
+
+    .btn { padding: 0.5rem 0.9rem; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: all 0.2s ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn.danger { background: #dc2626; color: #fff; box-shadow: 0 6px 18px rgba(220,38,38,0.25); }
+    .btn.danger:hover { background: #b91c1c; }
+    .actions-form { display: inline; }
+
+    .toolbar-link { display: inline-flex; align-items: center; gap: 0.5rem; color: #4f46e5; text-decoration: none; font-weight: 600; background: rgba(255,255,255,0.7); border: 1px solid rgba(102,126,234,0.2); padding: 0.5rem 0.85rem; border-radius: 999px; transition: all 0.2s ease; }
+    .toolbar-link:hover { background: rgba(255,255,255,0.95); transform: translateY(-1px); }
+
+    /* Toolbar and pagination */
+    .toolbar { display: grid; grid-template-columns: 1fr repeat(2, minmax(180px, 220px)); gap: 0.8rem; align-items: center; margin: 0.5rem 0; }
+    .toolbar input[type="text"], .toolbar select { padding: 0.7rem 0.9rem; border: 2px solid rgba(102,126,234,0.12); border-radius: 12px; background: rgba(255,255,255,0.9); font-size: 0.95rem; outline: none; transition: all 0.2s ease; }
+    .toolbar input[type="text"]:focus, .toolbar select:focus { border-color: rgba(102,126,234,0.45); box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .toolbar .count { justify-self: start; font-weight: 600; color: #4a5568; display: none; }
+
+    .pagination { display: flex; gap: 0.4rem; align-items: center; justify-content: center; margin: 0.8rem 0 0.5rem; flex-wrap: wrap; }
+    .page-btn { padding: 0.5rem 0.9rem; border-radius: 10px; border: 1px solid rgba(102,126,234,0.2); background: rgba(255,255,255,0.9); cursor: pointer; font-weight: 600; color: #4a5568; }
+    .page-btn:hover { background: rgba(102,126,234,0.08); }
+    .page-btn.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: transparent; }
+    .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    @media (max-width: 1024px) { .container { margin: 7rem 1rem 1.5rem; padding: 1.25rem; } .page-title { font-size: 1.6rem; } .table-container { border-radius: 12px; } table { display: block; overflow-x: auto; white-space: nowrap; } }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">Fertilemate</div>
+    <nav><a href="/">← Back to Dashboard</a></nav>
+  </div>
+
+  <div class="container">
+
+    <p class="muted">Viewing {{ 'all users\' entries' if role == 'admin' else 'your entries' }}. Total: {{ rows|length }}</p>
+
+    <div class="toolbar">
+      <input id="searchInput" type="text" placeholder="Search entries..." aria-label="Search">
+      <select id="sortSelect" aria-label="Sort">
+        <option value="created_desc">Newest</option>
+        <option value="created_asc">Oldest</option>
+        <option value="name_asc">Name A–Z</option>
+        <option value="name_desc">Name Z–A</option>
+        <option value="phone_asc">Phone A–Z</option>
+        <option value="phone_desc">Phone Z–A</option>
+      </select>
+      <select id="pageSizeSelect" aria-label="Rows per page">
+        <option value="10">10 per page</option>
+        <option value="20">20 per page</option>
+        <option value="50">50 per page</option>
+        <option value="100">100 per page</option>
+        <option value="all">Show all</option>
+      </select>
+      <div id="resultCount" class="count"></div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            {% if role == 'admin' %}<th>created by User ID</th>{% endif %}
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Menstrual Cycle Data</th>
+            <th>Clinical Signs</th>
+            <th>Biochemical Signs</th>
+            <th>PCOS Assessment</th>
+            <th>Morphology Assessment</th>
+            <th>Follicle Appearance(L)</th>
+            <th>Follicle Count(L)</th>
+            <th>Ovarian Volume(L)</th>
+            <th>Ovary Height (L)</th>
+            <th>Ovary Length (L)</th>
+            <th>Ovary Width (L)</th>
+            <th>Peripheral Follicle Pattern(L)</th>
+            <th>Follicle Appearance(R)</th>
+            <th>Follicle Count(R)</th>
+            <th>Ovarian Volume(R)</th>
+            <th>Ovary Height (R)</th>
+            <th>Ovary Length (R)</th>
+            <th>Ovary Width (R)</th>
+            <th>Peripheral Follicle Pattern(R)</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+          <tr data-name="{{ (r.name or '')|lower }}" data-phone="{{ (r.phone or '')|lower }}" data-created="{{ r.created }}">
+            {% if role == 'admin' %}<td>{{ r.user_id }}</td>{% endif %}
+            <td>{{ r.name }}</td>
+            <td>{{ r.phone }}</td>
+            <td>{{ r.menstrual_cycle_data }}</td>
+            <td>{{ r.clinical_signs }}</td>
+            <td>{{ r.biochemical_signs }}</td>
+            <td>{{ r.pcos_assessment }}</td>
+            <td>{{ r.morphology_assessment }}</td>
+            <td>{{ r.left_follicle_appearance }}</td>
+            <td>{{ r.left_follicle_count }}</td>
+            <td>{{ r.left_ovarian_volume }}</td>
+            <td>{{ r.left_ovary_height }}</td>
+            <td>{{ r.left_ovary_length }}</td>
+            <td>{{ r.left_ovary_width }}</td>
+            <td>{{ r.left_peripheral_follicle_pattern }}</td>
+            <td>{{ r.right_follicle_appearance }}</td>
+            <td>{{ r.right_follicle_count }}</td>
+            <td>{{ r.right_ovarian_volume }}</td>
+            <td>{{ r.right_ovary_height }}</td>
+            <td>{{ r.right_ovary_length }}</td>
+            <td>{{ r.right_ovary_width }}</td>
+            <td>{{ r.right_peripheral_follicle_pattern }}</td>
+            <td class="muted">{{ r.created }}</td>
+            <td>
+              <form class="actions-form" method="post" action="{{ url_for('image_data_delete', flat_id=r.flat_id) }}" onsubmit="return confirm('Delete entry #{{ r.id }}?');">
+                <button class="btn danger" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div id="pagination" class="pagination" aria-label="Pagination"></div>
+  </div>
+</body>
+<script>
+(function() {
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+  const pageSizeSelect = document.getElementById('pageSizeSelect');
+  const countEl = document.getElementById('resultCount');
+  const pagination = document.getElementById('pagination');
+  const tbody = document.querySelector('.table-container tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  let currentPage = 1;
+  let pageSize = 10;
+  const MAX_BUTTONS = 7;
+
+  function renderPagination(total, totalPages) {
+    if (!pagination) return;
+    pagination.innerHTML = '';
+    if (totalPages <= 1) { pagination.style.display = 'none'; return; }
+    pagination.style.display = '';
+    const makeBtn = (label, page, disabled=false, active=false) => {
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (active ? ' active' : '');
+      btn.textContent = label;
+      btn.disabled = disabled;
+      btn.addEventListener('click', () => { if (!disabled) { currentPage = page; apply(); } });
+      return btn;
+    };
+    pagination.appendChild(makeBtn('‹ Prev', Math.max(1, currentPage-1), currentPage===1));
+    let start = Math.max(1, currentPage - Math.floor(MAX_BUTTONS/2));
+    let end = start + MAX_BUTTONS - 1;
+    const totalPagesInt = totalPages;
+    if (end > totalPagesInt) { end = totalPagesInt; start = Math.max(1, end - MAX_BUTTONS + 1); }
+    if (start > 1) {
+      pagination.appendChild(makeBtn('1', 1, false, currentPage===1));
+      if (start > 2) { const ell = document.createElement('span'); ell.textContent='…'; ell.className='muted'; pagination.appendChild(ell); }
+    }
+    for (let p=start; p<=end; p++) pagination.appendChild(makeBtn(String(p), p, false, currentPage===p));
+    if (end < totalPagesInt) {
+      if (end < totalPagesInt - 1) { const ell2 = document.createElement('span'); ell2.textContent='…'; ell2.className='muted'; pagination.appendChild(ell2); }
+      pagination.appendChild(makeBtn(String(totalPagesInt), totalPagesInt, false, currentPage===totalPagesInt));
+    }
+    pagination.appendChild(makeBtn('Next ›', Math.min(totalPagesInt, currentPage+1), currentPage===totalPagesInt));
+  }
+
+  function apply() {
+    const term = (searchInput?.value || '').trim().toLowerCase();
+    // Filter
+    const filtered = rows.filter(row => {
+      const content = row.textContent.toLowerCase();
+      return !term || content.includes(term);
+    });
+    // Sort
+    const sortVal = sortSelect?.value || 'created_desc';
+    const [key, dir] = sortVal.split('_');
+    const asc = dir === 'asc';
+    const cmp = (a,b) => asc ? (a<b?-1:a>b?1:0) : (a>b?-1:a<b?1:0);
+    const getKey = (row) => {
+      switch(key){
+        case 'name': return row.dataset.name || '';
+        case 'phone': return row.dataset.phone || '';
+        case 'created': default: return row.dataset.created || '';
+      }
+    };
+    const sorted = filtered.slice().sort((ra,rb) => cmp(getKey(ra), getKey(rb)));
+    // Re-append
+    tbody.innerHTML = '';
+    sorted.forEach(r => tbody.appendChild(r));
+    // Pagination
+    const total = sorted.length;
+    const psVal = pageSizeSelect?.value || '10';
+    pageSize = (psVal === 'all') ? Number.MAX_SAFE_INTEGER : parseInt(psVal, 10) || 10;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+    rows.forEach(r => r.style.display='none');
+    const startIdx = (currentPage - 1) * pageSize;
+    const endIdx = Math.min(startIdx + pageSize, total);
+    for (let i=startIdx; i<endIdx; i++) sorted[i].style.display='';
+    renderPagination(total, totalPages);
+    // Count
+    if (countEl) { countEl.style.display=''; countEl.textContent = `${total} entr${total===1?'y':'ies'} — page ${currentPage} of ${totalPages}`; }
+  }
+  searchInput?.addEventListener('input', () => { currentPage=1; apply(); });
+  sortSelect?.addEventListener('change', () => { currentPage=1; apply(); });
+  pageSizeSelect?.addEventListener('change', () => { currentPage=1; apply(); });
+  apply();
+})();
+</script>
+</html>
+
+
