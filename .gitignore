@@ -46,7 +46,7 @@ uploads/*
 uploaded_images/*
 train_data/*
 sample_json/*
-
+instance/*
 # OS specific
 .DS_Store
 Thumbs.db 
