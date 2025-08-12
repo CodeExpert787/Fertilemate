@@ -316,10 +316,12 @@
                     <div class="card-icon">🖼️</div>
                     <div class="card-title">Image Prediction</div>
                 </div>
+                {% if role == 'admin' %}
                 <div onclick="showFertilityPrediction()" class="card" style="cursor: pointer;">
                     <div class="card-icon">🌱</div>
                     <div class="card-title">Fertility Prediction</div>
                 </div>
+                {% endif %}
             </div>
         </div>
 
@@ -352,7 +354,6 @@
         </div>
 
         <!-- Fertility Prediction Submenu -->
-        {% if role == 'admin' %}
         <div id="fertility-submenu" class="card-container" style="display: none;">
             <div class="card-row">
                 <a href="/fertility_predict_form" class="card">
@@ -365,7 +366,6 @@
                 </a>
             </div>
         </div>
-        {% endif %}
         <!-- Image Prediction Submenu -->
         <div id="image-submenu" class="card-container" style="display: none;">
             <div class="card-row">

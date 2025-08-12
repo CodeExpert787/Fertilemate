@@ -968,7 +968,7 @@ def image_upload_file1():
             print("File saved successfully")
             
             # Reload the model with the new data
-            global excel_df
+            #global excel_df
             excel_df = pd.read_excel(filepath)
             with open('uploads/image_excel_df.pkl', 'wb') as f:
                 pickle.dump(excel_df, f)
@@ -1007,7 +1007,6 @@ def image_predict():
     try:
         result_data = None
         # Check if model and scaler are loaded
-        excel_df = load_pickle('uploads/image_excel_df.pkl')
         image_model = load_pickle('uploads/image_model.pkl')
         image_features = load_pickle('uploads/image_feature_names.pkl')
         image_scaler = load_pickle('uploads/image_scaler.pkl')
@@ -1150,7 +1149,9 @@ def image_predict():
         # Get the PCOS type name
         pcos_type = PCOS_TYPES_FERTILITY.get(prediction, 'Unknown Type')
         print(f"prediction: {pcos_type}, type_probabilities:{type_probabilities }")
-
+        input_data['name'] = data.get('name')
+        input_data['phone'] = data.get('phone')
+        print(input_data)
         response = {
             'left': truths,
             'right': right_truths,
@@ -1210,6 +1211,7 @@ def image_predict():
 @app.route('/send', methods=['GET', 'POST'])
 def send_images():
     try:
+        excel_df = load_pickle('uploads/image_excel_df.pkl')
         # Check if excel_df is loaded
         if excel_df is None:
             return jsonify({'error': 'No training data loaded. Please upload an Excel file first.'}), 400
