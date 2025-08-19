@@ -825,11 +825,11 @@ def predict():
             'type_probabilities': type_probabilities
         }
         # Map predicted type to canonical meal plan key and attach plan if available
-        canonical_key = PCOS_TYPES.get(pcos_type)
-        if canonical_key:
-            meal_plan = get_female_meal_plan(canonical_key)
-            if meal_plan:
-                response_data['meal_plan'] = meal_plan
+        print(f"pcos_type: {pcos_type}")
+
+        meal_plan = get_female_meal_plan(pcos_type)
+        if meal_plan:
+            response_data['meal_plan'] = meal_plan
         # Persist entry
         try:
             entry = FemaleEntry(

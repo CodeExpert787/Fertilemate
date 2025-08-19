@@ -279,4 +279,4 @@ def get_female_meal_plan(goal: str):
     Returns:
         dict | None: The meal plan data for the goal (or None).
     """
-    return FEMALE_MEAL_PLANS.get(goal)
+    return FEMALE_MEAL_PLANS[goal]
