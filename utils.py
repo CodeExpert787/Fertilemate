@@ -62,9 +62,9 @@ def preprocess_data(df):
             le = LabelEncoder()
             df_processed[col] = le.fit_transform(df_processed[col].astype(str))
             column_types[col] = 'categorical'
-            print(f"\nMeaning of numbers in column '{col}':")
-            for value, encoded in zip(le.classes_, le.transform(le.classes_)):
-                print(f"{encoded} = {value}")
+            # print(f"\nMeaning of numbers in column '{col}':")
+            # for value, encoded in zip(le.classes_, le.transform(le.classes_)):
+            #     print(f"{encoded} = {value}")
         else:
             column_types[col] = 'numeric'
 
@@ -111,10 +111,10 @@ def load_and_train_model(excel_file):
     train_accuracy = model.score(X_train_scaled, y_train)
     test_accuracy = model.score(X_test_scaled, y_test)
     
-    print(f"\nTraining accuracy: {train_accuracy:.2f}")
-    print(f"Testing accuracy: {test_accuracy:.2f}")
+    # print(f"\nTraining accuracy: {train_accuracy:.2f}")
+    # print(f"Testing accuracy: {test_accuracy:.2f}")
     
-    return model, scaler, X.columns, column_types
+    return model, scaler, X.columns, column_types , train_accuracy, test_accuracy
 
 def predict_pcos_type(input_data, model, scaler):
     """
@@ -138,7 +138,7 @@ def predict_pcos_type(input_data, model, scaler):
     print("\nProbability distribution for prediction:")
     for type_value, probability in type_probabilities.items():
         prediction_marker = "✓" if type_value == predicted_type else " "
-        print(f"Type {type_value}: {probability:.2f}% {prediction_marker}")
+        # print(f"Type {type_value}: {probability:.2f}% {prediction_marker}")
     
     return predicted_type, type_probabilities
 

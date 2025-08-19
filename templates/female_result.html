@@ -248,11 +248,11 @@
         <div class="probabilities">
             {% set type_labels = [
                 'PCOS Adrenal',
-                'PCOS Keradangan/Inflammation',
-                'PCOS Keradangan/Infllammation',
-                'PCOS Pil Perancang/Post Birth Control',
-                'PCOS Pos Pil Perancang/Post Birth Control',
-                'PCOS Rintangan Insulin/Insulin Resistance'] %}
+                'PCOS Inflammation',
+                'PCOS Infllammation',
+                'PCOS Post Birth Control',
+                'PCOS Post Birth Control',
+                'PCOS Insulin Resistance'] %}
             {% for i in range(6) %}
             <div class="prob-bar">
                 <div class="prob-label">{{ type_labels[i] }}</div>
@@ -267,71 +267,74 @@
         <div class="section-title">Personalized Meal & Lifestyle Plan</div>
         {% set meal = result.meal_plan %}
         {% if meal %}
-            {% if meal.DietMediterranean %}
+            {% if meal.MediterraneanDiet %}
             <div class="meal-section">
-                <h3>Mediterranean Diet Tips</h3>
+                <h3>Mediterranean Diet</h3>
+                <h4>PCOS Plate</h4>
                 <ul>
-                    <li><b>Tips:</b> {{ meal.DietMediterranean.MasakanTips }}</li>
+                    <li>Protein: {{ meal.MediterraneanDiet.PCOSPlate.Protein }}</li>
+                    <li>Gentle Starch: {{ meal.MediterraneanDiet.PCOSPlate.GentleStarch }}</li>
+                    <li>Non-Starchy Veg: {{ meal.MediterraneanDiet.PCOSPlate.NonStarchyVeg }}</li>
+                    <li>Healthy Fat: {{ meal.MediterraneanDiet.PCOSPlate.HealthyFat }}</li>
                 </ul>
-                <h3>Recommended Menu</h3>
+                <h4>Suggested Menu</h4>
                 <ul>
-                    {% for item in meal.DietMediterranean.MenuCadangan %}
+                    {% for item in meal.MediterraneanDiet.SuggestedMenu %}
                     <li>{{ item }}</li>
                     {% endfor %}
                 </ul>
-                <h3>PCOS Plate</h3>
-                <ul>
-                    <li>Gentle Starch: {{ meal.DietMediterranean.PCOSPlate.GentleStarch }}</li>
-                    <li>Healthy Fat: {{ meal.DietMediterranean.PCOSPlate.HealthyFat }}</li>
-                    <li>Non-Starchy Veg: {{ meal.DietMediterranean.PCOSPlate.NonStarchyVeg }}</li>
-                    <li>Protein: {{ meal.DietMediterranean.PCOSPlate.Protein }}</li>
-                </ul>
-                <div class="remark">{{ meal.DietMediterranean.Remark }}</div>
+                <div class="remark">{{ meal.MediterraneanDiet.CookingTips }}</div>
+                <div class="remark">{{ meal.MediterraneanDiet.Remark }}</div>
             </div>
             {% endif %}
-            {% if meal.MasaMakan %}
+            {% if meal.MealTiming %}
             <div class="meal-section">
                 <h3>Meal Times</h3>
                 <ul>
-                    <li><b>Breakfast:</b> {{ meal.MasaMakan.Sarapan }}</li>
-                    <li><b>Lunch:</b> {{ meal.MasaMakan.TengahHari }}</li>
-                    <li><b>Dinner:</b> {{ meal.MasaMakan.MakanMalam }}</li>
+                    <li><b>Breakfast:</b> {{ meal.MealTiming.Breakfast }}</li>
+                    <li><b>Lunch:</b> {{ meal.MealTiming.Lunch }}</li>
+                    <li><b>Dinner:</b> {{ meal.MealTiming.Dinner }}</li>
                 </ul>
             </div>
             {% endif %}
-            {% if meal.PemantauanUkuranPinggang %}
+            {% if meal.WaistMeasurementTracking %}
             <div class="meal-section">
-                <h3>Waist Measurement Monitoring</h3>
+                <h3>Waist Measurement Tracking</h3>
                 <ul>
-                    <li>Before Start: {{ meal.PemantauanUkuranPinggang.SebelumMula }}</li>
-                    <li>Week 1: {{ meal.PemantauanUkuranPinggang.MingguPertama }}</li>
-                    <li>Week 2: {{ meal.PemantauanUkuranPinggang.MingguKedua }}</li>
-                    <li>Week 3: {{ meal.PemantauanUkuranPinggang.MingguKetiga }}</li>
-                    <li>Week 4: {{ meal.PemantauanUkuranPinggang.MingguKeempat }}</li>
+                    <li>Before Start: {{ meal.WaistMeasurementTracking.BeforeStarting }}</li>
+                    <li>Week 1: {{ meal.WaistMeasurementTracking.Week1 }}</li>
+                    <li>Week 2: {{ meal.WaistMeasurementTracking.Week2 }}</li>
+                    <li>Week 3: {{ meal.WaistMeasurementTracking.Week3 }}</li>
+                    <li>Week 4: {{ meal.WaistMeasurementTracking.Week4 }}</li>
                 </ul>
             </div>
             {% endif %}
-            {% if meal.PlanSenaman %}
+            {% if meal.ExercisePlan %}
             <div class="meal-section">
                 <h3>Exercise Plan</h3>
                 <ul>
-                    <li>{{ meal.PlanSenaman['Pilihan 1'] }}</li>
-                    <li>{{ meal.PlanSenaman['Pilihan 2'] }}</li>
-                    <li>{{ meal.PlanSenaman['Pilihan 3'] }}</li>
+                    <li>{{ meal.ExercisePlan['Option 1'] }}</li>
+                    <li>{{ meal.ExercisePlan['Option 2'] }}</li>
+                    <li>{{ meal.ExercisePlan['Option 3'] }}</li>
                 </ul>
             </div>
             {% endif %}
-            {% if meal.SarapanPagiBebasGula %}
+            {% if meal.SugarFreeBreakfast %}
             <div class="meal-section">
                 <h3>Sugar-Free Breakfast Guidelines</h3>
+                {% set sf = meal.SugarFreeBreakfast %}
+                {% set rules = sf.Guidelines if sf.Guidelines is defined else (sf.Rules if sf.Rules is defined else None) %}
                 <ul>
-                    <li><b>Avoid:</b> {{ meal.SarapanPagiBebasGula.Guidelines.Avoid|join(', ') }}</li>
-                    <li><b>Goal:</b> {{ meal.SarapanPagiBebasGula.Guidelines.Goal }}</li>
-                    <li><b>Timing:</b> {{ meal.SarapanPagiBebasGula.Guidelines.Timing }}</li>
+                    {% if rules and rules.Timing is defined %}<li><b>Timing:</b> {{ rules.Timing }}</li>{% endif %}
+                    {% if rules and rules.Avoid is defined %}
+                        <li><b>Avoid:</b> {% if rules.Avoid is string %}{{ rules.Avoid }}{% else %}{{ rules.Avoid|join(', ') }}{% endif %}</li>
+                    {% endif %}
+                    {% if rules and rules.Goal is defined %}<li><b>Goal:</b> {{ rules.Goal }}</li>{% endif %}
+                    {% if sf.Focus is defined %}<li><b>Focus:</b> {{ sf.Focus }}</li>{% endif %}
                 </ul>
                 <h3>Breakfast Options</h3>
                 <ul>
-                    {% for key, val in meal.SarapanPagiBebasGula.Pilihan.items() %}
+                    {% for key, val in sf.Options.items() %}
                         <li>
                         <b>{{ key }}:</b>
                         {% if val is string %}
@@ -347,7 +350,7 @@
                         </li>
                     {% endfor %}
                 </ul>
-                <div class="remark">{{ meal.SarapanPagiBebasGula.Remark }}</div>
+                <div class="remark">{{ sf.Remark }}</div>
             </div>
             {% endif %}
         {% endif %}

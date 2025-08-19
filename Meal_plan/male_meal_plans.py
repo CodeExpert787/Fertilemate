@@ -1,22 +1,22 @@
 # Male Meal Plans Data
 MALE_MEAL_PLANS = {
-  "Improve fertility": {
+  "Improve Fertility": {
     "Option 1": {
       "Breakfast": [
         {"food": "2 boiled eggs", "carbohydrate_g": 1, "protein_g": 12, "fat_g": 10, "calorie_kcal": 140},
         {"food": "1 cup cooked rolled oats", "carbohydrate_g": 27, "protein_g": 5, "fat_g": 3, "calorie_kcal": 150},
         {"food": "1 teaspoon chia seeds", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60},
-        {"food": "150g papaya (½)", "carbohydrate_g": 15, "protein_g": 1, "fat_g": 0, "calorie_kcal": 60}
+        {"food": "150g papaya (½ fruit)", "carbohydrate_g": 15, "protein_g": 1, "fat_g": 0, "calorie_kcal": 60}
       ],
       "Snack": [
         {"food": "10g almonds", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 6, "calorie_kcal": 70}
       ],
       "Lunch": [
         {"food": "¾ cup brown rice", "carbohydrate_g": 34, "protein_g": 3, "fat_g": 1, "calorie_kcal": 165},
-        {"food": "1 cup stir-fried spinach with garlic and 1 boiled egg", "carbohydrate_g": 6, "protein_g": 7, "fat_g": 6, "calorie_kcal": 120},
+        {"food": "1 cup stir-fried spinach with garlic + 1 boiled egg", "carbohydrate_g": 6, "protein_g": 7, "fat_g": 6, "calorie_kcal": 120},
         {"food": "½ cup cooked mung beans", "carbohydrate_g": 18, "protein_g": 7, "fat_g": 1, "calorie_kcal": 105}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 banana", "carbohydrate_g": 23, "protein_g": 1, "fat_g": 0, "calorie_kcal": 90}
       ],
       "Dinner": [
@@ -39,7 +39,7 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup stir-fried long beans with egg", "carbohydrate_g": 6, "protein_g": 6, "fat_g": 6, "calorie_kcal": 100},
         {"food": "½ cup lentils", "carbohydrate_g": 20, "protein_g": 8, "fat_g": 1, "calorie_kcal": 115}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 apple", "carbohydrate_g": 14, "protein_g": 0, "fat_g": 0, "calorie_kcal": 52}
       ],
       "Dinner": [
@@ -61,7 +61,7 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup sauteed cabbage with egg", "carbohydrate_g": 6, "protein_g": 6, "fat_g": 6, "calorie_kcal": 100},
         {"food": "½ cup mung beans", "carbohydrate_g": 18, "protein_g": 7, "fat_g": 1, "calorie_kcal": 105}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 boiled egg", "carbohydrate_g": 1, "protein_g": 6, "fat_g": 5, "calorie_kcal": 70}
       ],
       "Dinner": [
@@ -80,10 +80,10 @@ MALE_MEAL_PLANS = {
       ],
       "Lunch": [
         {"food": "1 cup cooked quinoa", "carbohydrate_g": 39, "protein_g": 8, "fat_g": 3, "calorie_kcal": 222},
-        {"food": "1 cup sauteed bayam with 1 egg", "carbohydrate_g": 6, "protein_g": 6, "fat_g": 6, "calorie_kcal": 100},
+        {"food": "1 cup sauteed spinach with 1 egg", "carbohydrate_g": 6, "protein_g": 6, "fat_g": 6, "calorie_kcal": 100},
         {"food": "½ cup cooked lentils", "carbohydrate_g": 20, "protein_g": 8, "fat_g": 1, "calorie_kcal": 115}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "10g almonds", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 6, "calorie_kcal": 70}
       ],
       "Dinner": [
@@ -93,7 +93,8 @@ MALE_MEAL_PLANS = {
       "Total": {"carbohydrate_g": 148, "protein_g": 49, "fat_g": 34, "calorie_kcal": 1294}
     }
   },
-  "Improve blood sugar regulation": {
+
+  "Improve Blood Sugar Regulation": {
     "Option 1": {
       "Breakfast": [
         {"food": "2 boiled eggs", "carbohydrate_g": 1, "protein_g": 12, "fat_g": 10, "calorie_kcal": 140},
@@ -104,30 +105,30 @@ MALE_MEAL_PLANS = {
       ],
       "Lunch": [
         {"food": "100g grilled chicken thigh", "carbohydrate_g": 0, "protein_g": 24, "fat_g": 10, "calorie_kcal": 190},
-        {"food": "1 cup sauteed kangkung", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60}
+        {"food": "1 cup sauteed kangkung (water spinach)", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 boiled egg", "carbohydrate_g": 1, "protein_g": 6, "fat_g": 5, "calorie_kcal": 70}
       ],
       "Dinner": [
-        {"food": "Stir fried mixed vegetables (1 cup: cabbage, choy sum, onion)", "carbohydrate_g": 6, "protein_g": 2, "fat_g": 6, "calorie_kcal": 90},
-        {"food": "100g grilled ikan kembung", "carbohydrate_g": 0, "protein_g": 22, "fat_g": 11, "calorie_kcal": 180}
+        {"food": "Stir-fried mixed vegetables (1 cup: cabbage, choy sum, onion)", "carbohydrate_g": 6, "protein_g": 2, "fat_g": 6, "calorie_kcal": 90},
+        {"food": "100g grilled ikan kembung (mackerel)", "carbohydrate_g": 0, "protein_g": 22, "fat_g": 11, "calorie_kcal": 180}
       ],
       "Total": {"carbohydrate_g": 22, "protein_g": 69.5, "fat_g": 67, "calorie_kcal": 955}
     },
     "Option 2": {
       "Breakfast": [
         {"food": "3 scrambled eggs", "carbohydrate_g": 1, "protein_g": 18, "fat_g": 15, "calorie_kcal": 210},
-        {"food": "1 tbsp chia seeds", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60}
+        {"food": "1 tablespoon chia seeds", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60}
       ],
       "Snack": [
-        {"food": "1 cucumber + 1 tsp peanut butter", "carbohydrate_g": 3, "protein_g": 2, "fat_g": 7, "calorie_kcal": 90}
+        {"food": "1 cucumber + 1 teaspoon peanut butter", "carbohydrate_g": 3, "protein_g": 2, "fat_g": 7, "calorie_kcal": 90}
       ],
       "Lunch": [
-        {"food": "Stir fry beef (100g lean beef + vegetables)", "carbohydrate_g": 4, "protein_g": 23, "fat_g": 12, "calorie_kcal": 220},
+        {"food": "Stir-fry beef (100g lean beef + vegetables)", "carbohydrate_g": 4, "protein_g": 23, "fat_g": 12, "calorie_kcal": 220},
         {"food": "Mixed salad (lettuce, tomato, cucumber, olive oil)", "carbohydrate_g": 4, "protein_g": 1, "fat_g": 6, "calorie_kcal": 70}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 boiled egg", "carbohydrate_g": 1, "protein_g": 6, "fat_g": 5, "calorie_kcal": 70}
       ],
       "Dinner": [
@@ -139,7 +140,7 @@ MALE_MEAL_PLANS = {
     "Option 3": {
       "Breakfast": [
         {"food": "2 boiled eggs", "carbohydrate_g": 1, "protein_g": 12, "fat_g": 10, "calorie_kcal": 140},
-        {"food": "1 tbsp pumpkin seeds", "carbohydrate_g": 2, "protein_g": 3, "fat_g": 4, "calorie_kcal": 55}
+        {"food": "1 tablespoon pumpkin seeds", "carbohydrate_g": 2, "protein_g": 3, "fat_g": 4, "calorie_kcal": 55}
       ],
       "Snack": [
         {"food": "½ avocado", "carbohydrate_g": 8, "protein_g": 2, "fat_g": 15, "calorie_kcal": 160}
@@ -148,7 +149,7 @@ MALE_MEAL_PLANS = {
         {"food": "100g grilled ikan selar", "carbohydrate_g": 0, "protein_g": 20, "fat_g": 8, "calorie_kcal": 150},
         {"food": "Sauteed mustard greens", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 3, "calorie_kcal": 50}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "10g cashews", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 8, "calorie_kcal": 95}
       ],
       "Dinner": [
@@ -160,26 +161,27 @@ MALE_MEAL_PLANS = {
     "Option 4": {
       "Breakfast": [
         {"food": "Omelette (2 eggs + onion)", "carbohydrate_g": 2, "protein_g": 13, "fat_g": 12, "calorie_kcal": 170},
-        {"food": "1 tsp flax-free seed mix (sunflower + pumpkin)", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 4, "calorie_kcal": 50}
+        {"food": "1 teaspoon flax-free seed mix (sunflower + pumpkin)", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 4, "calorie_kcal": 50}
       ],
       "Snack": [
         {"food": "100g guava", "carbohydrate_g": 10, "protein_g": 1, "fat_g": 0, "calorie_kcal": 45}
       ],
       "Lunch": [
         {"food": "100g pan-fried dory fish", "carbohydrate_g": 0, "protein_g": 22, "fat_g": 9, "calorie_kcal": 170},
-        {"food": "Stir-fry cabbage", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 3, "calorie_kcal": 60}
+        {"food": "Stir-fried cabbage", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 3, "calorie_kcal": 60}
       ],
-      "Afternoon tea": [
-        {"food": "1 hard boiled egg", "carbohydrate_g": 1, "protein_g": 6, "fat_g": 5, "calorie_kcal": 70}
+      "Afternoon Tea": [
+        {"food": "1 hard-boiled egg", "carbohydrate_g": 1, "protein_g": 6, "fat_g": 5, "calorie_kcal": 70}
       ],
       "Dinner": [
         {"food": "100g grilled chicken thigh", "carbohydrate_g": 0, "protein_g": 24, "fat_g": 10, "calorie_kcal": 190},
-        {"food": "Stir fried kangkung", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60}
+        {"food": "Stir-fried kangkung (water spinach)", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 4, "calorie_kcal": 60}
       ],
       "Total": {"carbohydrate_g": 24, "protein_g": 70, "fat_g": 47, "calorie_kcal": 845}
     }
   },
-  "Lose weight":{
+
+  "Lose Weight": {
     "Option 1": {
       "Breakfast": [
         {"food": "2 boiled eggs", "carbohydrate_g": 1, "protein_g": 12, "fat_g": 10, "calorie_kcal": 140},
@@ -193,11 +195,11 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup brown rice", "carbohydrate_g": 44, "protein_g": 4, "fat_g": 1, "calorie_kcal": 210},
         {"food": "1 cup sauteed spinach", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 2, "calorie_kcal": 40}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "10g almonds", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 6, "calorie_kcal": 70}
       ],
       "Dinner": [
-        {"food": "150g grilled ikan kembung", "carbohydrate_g": 0, "protein_g": 30, "fat_g": 12, "calorie_kcal": 210},
+        {"food": "150g grilled ikan kembung (mackerel)", "carbohydrate_g": 0, "protein_g": 30, "fat_g": 12, "calorie_kcal": 210},
         {"food": "1 cup steamed cauliflower", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 0, "calorie_kcal": 25}
       ],
       "Total": {"carbohydrate_g": 94, "protein_g": 89, "fat_g": 35, "calorie_kcal": 1053}
@@ -215,7 +217,7 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup millet", "carbohydrate_g": 39, "protein_g": 6, "fat_g": 2, "calorie_kcal": 207},
         {"food": "1 cup stir-fried bok choy", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 2, "calorie_kcal": 35}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "10g almonds", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 6, "calorie_kcal": 70}
       ],
       "Dinner": [
@@ -234,15 +236,15 @@ MALE_MEAL_PLANS = {
       ],
       "Lunch": [
         {"food": "150g grilled beef", "carbohydrate_g": 0, "protein_g": 28, "fat_g": 15, "calorie_kcal": 260},
-        {"food": "1 cup stir fried cabbage", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 2, "calorie_kcal": 50},
+        {"food": "1 cup stir-fried cabbage", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 2, "calorie_kcal": 50},
         {"food": "1 cup brown rice", "carbohydrate_g": 34, "protein_g": 3, "fat_g": 1, "calorie_kcal": 165}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 boiled egg", "carbohydrate_g": 1, "protein_g": 6, "fat_g": 5, "calorie_kcal": 70}
       ],
       "Dinner": [
         {"food": "150g ikan selar", "carbohydrate_g": 0, "protein_g": 30, "fat_g": 11, "calorie_kcal": 200},
-        {"food": "1 cup steamed sawi", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 0, "calorie_kcal": 20}
+        {"food": "1 cup steamed sawi (mustard greens)", "carbohydrate_g": 4, "protein_g": 2, "fat_g": 0, "calorie_kcal": 20}
       ],
       "Total": {"carbohydrate_g": 57, "protein_g": 87, "fat_g": 48, "calorie_kcal": 1004}
     },
@@ -259,7 +261,7 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup brown rice", "carbohydrate_g": 44, "protein_g": 4, "fat_g": 1, "calorie_kcal": 210},
         {"food": "1 cup sauteed spinach with garlic", "carbohydrate_g": 5, "protein_g": 2, "fat_g": 2, "calorie_kcal": 40}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "10g sunflower seeds", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 5, "calorie_kcal": 55}
       ],
       "Dinner": [
@@ -269,16 +271,17 @@ MALE_MEAL_PLANS = {
       "Total": {"carbohydrate_g": 104, "protein_g": 84, "fat_g": 30, "calorie_kcal": 1043}
     }
   },
-  "Build muscle":{
+
+  "Build Muscle": {
     "Option 1": {
       "Breakfast": [
-        {"food": "4 hard boiled eggs", "carbohydrate_g": 0, "protein_g": 28, "fat_g": 16, "calorie_kcal": 240},
+        {"food": "4 hard-boiled eggs", "carbohydrate_g": 0, "protein_g": 28, "fat_g": 16, "calorie_kcal": 240},
         {"food": "1 cup sauteed spinach", "carbohydrate_g": 4, "protein_g": 5, "fat_g": 0, "calorie_kcal": 40},
         {"food": "1 slice whole grain toast", "carbohydrate_g": 15, "protein_g": 3, "fat_g": 1, "calorie_kcal": 80},
         {"food": "1 medium banana", "carbohydrate_g": 27, "protein_g": 1, "fat_g": 0, "calorie_kcal": 105}
       ],
       "Snack": [
-        {"food": "1 cup low fat greek yogurt", "carbohydrate_g": 10, "protein_g": 20, "fat_g": 0, "calorie_kcal": 150},
+        {"food": "1 cup low-fat Greek yogurt", "carbohydrate_g": 10, "protein_g": 20, "fat_g": 0, "calorie_kcal": 150},
         {"food": "1 tablespoon natural peanut butter", "carbohydrate_g": 3, "protein_g": 4, "fat_g": 8, "calorie_kcal": 90}
       ],
       "Lunch": [
@@ -286,7 +289,7 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup brown rice", "carbohydrate_g": 45, "protein_g": 5, "fat_g": 2, "calorie_kcal": 215},
         {"food": "1 cup mixed vegetables", "carbohydrate_g": 10, "protein_g": 2, "fat_g": 0, "calorie_kcal": 50}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 medium apple", "carbohydrate_g": 25, "protein_g": 0, "fat_g": 0, "calorie_kcal": 95},
         {"food": "20g almonds", "carbohydrate_g": 4, "protein_g": 4, "fat_g": 10, "calorie_kcal": 116}
       ],
@@ -301,7 +304,7 @@ MALE_MEAL_PLANS = {
       "Breakfast": [
         {"food": "2 boiled eggs", "carbohydrate_g": 1, "protein_g": 12, "fat_g": 10, "calorie_kcal": 140},
         {"food": "1 cup upma (semolina with vegetables)", "carbohydrate_g": 30, "protein_g": 5, "fat_g": 5, "calorie_kcal": 200},
-        {"food": "1 cup masala chai (with low fat milk)", "carbohydrate_g": 15, "protein_g": 2, "fat_g": 3, "calorie_kcal": 100}
+        {"food": "1 cup masala chai (with low-fat milk)", "carbohydrate_g": 15, "protein_g": 2, "fat_g": 3, "calorie_kcal": 100}
       ],
       "Snack": [
         {"food": "1 cup low-fat lassi", "carbohydrate_g": 20, "protein_g": 8, "fat_g": 4, "calorie_kcal": 150}
@@ -309,9 +312,9 @@ MALE_MEAL_PLANS = {
       "Lunch": [
         {"food": "150g grilled tandoori chicken", "carbohydrate_g": 5, "protein_g": 50, "fat_g": 10, "calorie_kcal": 300},
         {"food": "1 cup basmati rice", "carbohydrate_g": 45, "protein_g": 4, "fat_g": 0, "calorie_kcal": 210},
-        {"food": "1 cup mixed vegetables curry", "carbohydrate_g": 15, "protein_g": 5, "fat_g": 7, "calorie_kcal": 150}
+        {"food": "1 cup mixed vegetable curry", "carbohydrate_g": 15, "protein_g": 5, "fat_g": 7, "calorie_kcal": 150}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 medium orange", "carbohydrate_g": 15, "protein_g": 1, "fat_g": 0, "calorie_kcal": 62},
         {"food": "15g cashews", "carbohydrate_g": 5, "protein_g": 3, "fat_g": 7, "calorie_kcal": 85}
       ],
@@ -337,7 +340,7 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup steamed jasmine rice", "carbohydrate_g": 45, "protein_g": 4, "fat_g": 1, "calorie_kcal": 205},
         {"food": "1 cup clear vegetable soup", "carbohydrate_g": 10, "protein_g": 2, "fat_g": 1, "calorie_kcal": 50}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 medium pear", "carbohydrate_g": 26, "protein_g": 1, "fat_g": 0, "calorie_kcal": 100},
         {"food": "15g walnuts", "carbohydrate_g": 2, "protein_g": 2, "fat_g": 9, "calorie_kcal": 98}
       ],
@@ -350,7 +353,7 @@ MALE_MEAL_PLANS = {
     },
     "Option 4": {
       "Breakfast": [
-        {"food": "3 eggs omelette with mushrooms and bell pepper", "carbohydrate_g": 5, "protein_g": 18, "fat_g": 18, "calorie_kcal": 250},
+        {"food": "3-egg omelette with mushrooms and bell pepper", "carbohydrate_g": 5, "protein_g": 18, "fat_g": 18, "calorie_kcal": 250},
         {"food": "2 slices whole grain toast", "carbohydrate_g": 30, "protein_g": 6, "fat_g": 2, "calorie_kcal": 160},
         {"food": "1 cup orange juice", "carbohydrate_g": 26, "protein_g": 2, "fat_g": 0, "calorie_kcal": 110}
       ],
@@ -363,18 +366,19 @@ MALE_MEAL_PLANS = {
         {"food": "1 cup mashed sweet potatoes", "carbohydrate_g": 41, "protein_g": 4, "fat_g": 0, "calorie_kcal": 180},
         {"food": "1 cup steamed green beans", "carbohydrate_g": 10, "protein_g": 2, "fat_g": 0, "calorie_kcal": 44}
       ],
-      "Afternoon tea": [
+      "Afternoon Tea": [
         {"food": "1 protein shake (with water)", "carbohydrate_g": 5, "protein_g": 30, "fat_g": 2, "calorie_kcal": 150}
       ],
       "Dinner": [
         {"food": "200g grilled lean beef steak", "carbohydrate_g": 0, "protein_g": 50, "fat_g": 22, "calorie_kcal": 400},
-        {"food": "1 cup roasted brussel sprouts", "carbohydrate_g": 14, "protein_g": 4, "fat_g": 0, "calorie_kcal": 70},
+        {"food": "1 cup roasted Brussels sprouts", "carbohydrate_g": 14, "protein_g": 4, "fat_g": 0, "calorie_kcal": 70},
         {"food": "1 cup quinoa", "carbohydrate_g": 39, "protein_g": 8, "fat_g": 3.5, "calorie_kcal": 222}
       ],
       "Total": {"carbohydrate_g": 233, "protein_g": 270, "fat_g": 62.5, "calorie_kcal": 2217}
     }
   }
 }
+
 
 # Helper functions to work with meal plans
 def get_meal_plan(goal):
@@ -388,7 +392,5 @@ def get_meal_plan(goal):
     Returns:
         dict: The meal plan data
     """
-    if goal in MALE_MEAL_PLANS:
-        return MALE_MEAL_PLANS[goal]
-    return None
+    return MALE_MEAL_PLANS.get(goal)
 

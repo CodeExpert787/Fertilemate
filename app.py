@@ -256,18 +256,32 @@ def admin_required(view_function):
 # Define PCOS types mapping based on actual data
 PCOS_TYPES = {
     0: 'PCOS Adrenal',
-    1: 'PCOS Keradangan/Inflammation',
-    2: 'PCOS Keradangan/Infllammation',
-    3: 'PCOS Pil Perancang/Post Birth Control',
-    4: 'PCOS Pos Pil Perancang/Post Birth Control',
-    5: 'PCOS Rintangan Insulin/Insulin Resistance'
+    1: 'PCOS Inflammation',
+    2: 'PCOS Infllammation',
+    3: 'PCOS Post Birth Control',
+    4: 'PCOS Post Birth Control',
+    5: 'PCOS Insulin Resistance'
 }
+
+
 MEAL_TYPES = {
-    0: 'Build muscle',
-    1: 'Improve blood sugar regulation',
-    2: 'Improve fertility',
-    3: 'Lose weight'
+    0: 'Build Muscle',
+    1: 'Improve Blood Sugar Regulation',
+    2: 'Improve Fertility',
+    3: 'Lose Weight'
 }
+# Canonicalize predicted male goal strings to MALE_MEAL_PLANS keys
+def canonicalize_male_goal(goal_str: str) -> str:
+    mapping = {
+        'build muscle': 'Build Muscle',
+        'improve blood sugar regulation': 'Improve Blood Sugar Regulation',
+        'improve fertility': 'Improve Fertility',
+        'lose weight': 'Lose Weight',
+    }
+    # Prefer exact key if already correct
+    if goal_str in mapping.values():
+        return goal_str
+    return mapping.get((goal_str or '').lower(), goal_str)
 PCOS_TYPES_FERTILITY = {
     0: 'Negative',
     1: 'Positive',
@@ -737,7 +751,7 @@ def upload_file():
             # Reset globals to None (optional, for clarity)
             model = scaler = feature_names = column_types = None
             print("Loading and training model...")
-            model, scaler, feature_names, column_types = load_and_train_model(filepath)
+            model, scaler, feature_names, column_types , train_accuracy, test_accuracy = load_and_train_model(filepath)
             
             # Save model and related objects
             if gender == 'male':
@@ -767,9 +781,9 @@ def upload_file():
             
             print("Model updated successfully")
             if gender == 'female':
-                return jsonify({'message': 'File uploaded and model updated successfully', 'file': " uploads/female_model.pkl"})
+                return jsonify({'message': 'File uploaded and model updated successfully', 'file': " uploads/female_model.pkl", 'Accuracy': train_accuracy})
             else:
-                return jsonify({'message': 'File uploaded and model updated successfully', 'file': " uploads/male_model.pkl"})
+                return jsonify({'message': 'File uploaded and model updated successfully', 'file': " uploads/male_model.pkl", 'Accuracy': train_accuracy})
         except Exception as e:
             print(f"Error occurred: {str(e)}")
             return jsonify({'error': f'Error processing file: {str(e)}'}), 500
@@ -810,10 +824,12 @@ def predict():
             'pcos_type': str(pcos_type),
             'type_probabilities': type_probabilities
         }
-        if pcos_type in ["PCOS Rintangan Insulin", "PCOS Adrenal", "PCOS Keradangan/ Inflamantion", "PCOS Pil Perancang/ Post Birth Control", "PCOS Keradangan/ Infllamantion", "PCOS Rintangan Insulin/Insulin Resistance"]:
-            # Get meal plan data for the predicted goal
-            meal_plan = get_female_meal_plan(pcos_type)
-            response_data['meal_plan'] = meal_plan
+        # Map predicted type to canonical meal plan key and attach plan if available
+        canonical_key = PCOS_TYPES.get(pcos_type)
+        if canonical_key:
+            meal_plan = get_female_meal_plan(canonical_key)
+            if meal_plan:
+                response_data['meal_plan'] = meal_plan
         # Persist entry
         try:
             entry = FemaleEntry(
@@ -899,9 +915,9 @@ def meal_predict():
         }
         
         # Include meal plan data based on the prediction type
-        if pcos_type in ["Improve fertility", "Improve blood sugar regulation", "Lose weight", "Build muscle"]:
-            # Get meal plan data for the predicted goal
-            meal_plan = get_meal_plan(pcos_type)
+        canonical_goal = canonicalize_male_goal(pcos_type)
+        meal_plan = get_meal_plan(canonical_goal)
+        if meal_plan:
             response_data['meal_plan'] = meal_plan
         
         # Persist entry
@@ -976,7 +992,7 @@ def image_upload_file1():
             # model = scaler = feature_names = column_types = None
             model = scaler = feature_names = column_types = None
             print("Loading and training model...")
-            model, scaler, feature_names, column_types = load_and_train_model(filepath)
+            model, scaler, feature_names, column_types, train_accuracy, test_accuracy = load_and_train_model(filepath)
             with open('uploads/image_model.pkl', 'wb') as f:
                 pickle.dump(model, f)
             with open('uploads/image_scaler.pkl', 'wb') as f:
@@ -993,7 +1009,7 @@ def image_upload_file1():
                 raise ValueError("Model, scaler, or feature_names not properly loaded.")
             
             print("Model updated successfully")
-            return jsonify({'message': 'File uploaded and model updated successfully', 'files': 'uploads/image_model.pkl'})
+            return jsonify({'message': 'File uploaded and model updated successfully', 'files': 'uploads/image_model.pkl', 'Accuracy': train_accuracy})
         except Exception as e:
             print(f"Error occurred: {str(e)}")
             return jsonify({'error': f'Error processing file: {str(e)}'}), 500

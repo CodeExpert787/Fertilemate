@@ -1,422 +1,282 @@
 FEMALE_MEAL_PLANS = {
-  "PCOS Rintangan Insulin": {
-    "SarapanPagiBebasGula": {
+  "PCOS Insulin Resistance": {
+    "SugarFreeBreakfast": {
       "Guidelines": {
-        "Timing": "Ambil 1 jam selepas bangun tidur",
-        "Avoid": ["Gula", "Madu", "Stevia"],
-        "Goal": "30-40g clean protein untuk stabilkan gula dalam darah"
+        "Timing": "Consume 1 hour after waking up",
+        "Avoid": ["Sugar", "Honey", "Stevia"],
+        "Goal": "30-40g clean protein to stabilize blood sugar"
       },
-      "Pilihan": {
-        "Pilihan 1": "4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)",
-        "Pilihan 2": "150g dada ayam (Bakar) - Boleh marinate dengan garam dan lada hitam atau sebarang rempah",
-        "Pilihan 3": "150g Ayam Brand Tuna Chunk in water (Perah satu biji limau dan makan)",
-        "Pilihan 4": "200g Tempe (Goreng dengan sedikit minyak/airfryer)",
-        "Pilihan 5": {
-          "Instructions": "Boleh buat waktu malam dan makan untuk sarapan",
+      "Options": {
+        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
+        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, black pepper, or spices",
+        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime and eat)",
+        "Option 4": "200g Tempeh (Lightly fried with a little oil/air fryer)",
+        "Option 5": {
+          "Instructions": "Can prepare the night before and have it for breakfast",
           "Ingredients": [
             "150ml almond milk/coconut milk",
             "¼ cup chia seeds",
-            "1 scoop protein (Tiada gula)",
-            "½ cup fresh atau frozen berries (e.g. raspberries, strawberries or blueberries)"
+            "1 scoop sugar-free protein powder",
+            "½ cup fresh or frozen berries (raspberries, strawberries, blueberries)"
           ]
         },
-        "Pilihan 6": {
+        "Option 6": {
           "Ingredients": [
             "½ cup frozen raspberries",
-            "1 scoop protein (Tiada gula)",
+            "1 scoop sugar-free protein powder",
             "150ml coconut/almond milk"
           ]
         }
       },
-      "Remark": "Selepas sarapan ambil satu biji Ayurlin Capsule"
+      "Remark": "After breakfast, take one Ayurlin Capsule"
     },
-    "DietMediterranean": {
+    "MediterraneanDiet": {
       "PCOSPlate": {
-        "Protein": "25% animal protein (saiz tapak tangan)",
-        "GentleStarch": "25% gentle starch (~½ cawan selepas masak)",
-        "NonStarchyVeg": "50% non-starchy veg",
+        "Protein": "25% animal protein (palm-size portion)",
+        "GentleStarch": "25% gentle starch (~½ cup cooked)",
+        "NonStarchyVeg": "50% non-starchy vegetables",
         "HealthyFat": "1 tbsp healthy fat"
       },
-      "MenuCadangan": [
-        "120g ayam/ikan/daging",
-        "120g nasi/pasta/kentang",
-        "240g sayur-sayuran tidak berkanji",
-        "20g Kacang (Almond/Walnut) / 10g Dark Chocolate 80% ke atas / 30g Chia Seed",
-        "1 biji buah epal/oren (jika perlu makanan manis)"
+      "SuggestedMenu": [
+        "120g chicken/fish/meat",
+        "120g rice/pasta/potato",
+        "240g non-starchy vegetables",
+        "20g nuts (Almond/Walnut) / 10g Dark Chocolate (80%+) / 30g Chia Seeds",
+        "1 apple/orange (if craving sweets)"
       ],
-      "Remark": "Selepas 1 jam makan malam sila ambil 1 biji Ayur Lin Capsule",
-      "MasakanTips": "Kurangkan minyak, tidak guna gula, tiada fast food dan ajinamoto untuk 4 minggu pertama"
+      "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
+      "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks"
     },
-    "MasaMakan": {
-      "Sarapan": "1 jam selepas bangun tidur",
-      "TengahHari": "12 tgh hari atau ~1 petang",
-      "MakanMalam": "7mlm - 8mlm"
+    "MealTiming": {
+      "Breakfast": "1 hour after waking up",
+      "Lunch": "12 pm – 1 pm",
+      "Dinner": "7 pm – 8 pm"
     },
-    "PemantauanUkuranPinggang": {
-      "SebelumMula": "________inchi",
-      "MingguPertama": "inchi",
-      "MingguKedua": "inchi",
-      "MingguKetiga": "inchi",
-      "MingguKeempat": "inchi"
+    "WaistMeasurementTracking": {
+      "BeforeStarting": "________ inches",
+      "Week1": "inches",
+      "Week2": "inches",
+      "Week3": "inches",
+      "Week4": "inches"
     },
-    "PlanSenaman": {
-      "Pilihan 1": "Brist walk 2-3 kali seminggu dengan lengkapkan 10,000 steps",
-      "Pilihan 2": "Aktiviti harian - banyakkan berjalan dan capai lebih 5000 steps sehari",
-      "Pilihan 3": "20 minit senaman HIIT di rumah 2-3 kali seminggu"
+    "ExercisePlan": {
+      "Option 1": "Brisk walk 2-3 times per week, complete 10,000 steps",
+      "Option 2": "Daily activity – walk more and reach >5000 steps per day",
+      "Option 3": "20 minutes of HIIT workout at home 2-3 times per week"
     }
   },
   "PCOS Adrenal": {
-    "SarapanPagiBebasGula": {
-      "Focus": "Tinggi protein, rendah karbohidrat",
+    "SugarFreeBreakfast": {
+      "Focus": "High protein, low carbohydrate",
       "Rules": {
-        "Timing": "Ambil 1 jam selepas bangun tidur",
-        "Avoid": ["Gula", "Madu", "Stevia", "Bahan bergula lain"]
+        "Timing": "Consume 1 hour after waking up",
+        "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"]
       },
-      "Pilihan": {
-        "Pilihan 1": "4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)",
-        "Pilihan 2": "150g dada ayam (Bakar) - Boleh marinate dengan garam, lada hitam atau rempah",
-        "Pilihan 3": "150g Ayam Brand Tuna Chunk in water (Perah satu biji limau)",
-        "Pilihan 4": "200g Tempe (Goreng dengan sedikit minyak/airfryer)",
-        "Pilihan 5": {
-          "Instructions": "Buat malam sebelumnya, makan waktu sarapan. Tiada masalah jika tiada berries, tapi JANGAN ganti dengan buah lain.",
+      "Options": {
+        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
+        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
+        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime)",
+        "Option 4": "200g Tempeh (Lightly fried/air fryer)",
+        "Option 5": {
+          "Instructions": "Prepare the night before, eat for breakfast. Berries are optional, but DO NOT replace with other fruits.",
           "Ingredients": [
-            "150ml almond milk/coconut milk",
+            "150ml almond/coconut milk",
             "¼ cup chia seeds",
-            "1 scoop protein (Tiada gula)",
+            "1 scoop sugar-free protein powder",
             "½ cup fresh/frozen berries (raspberries, strawberries, blueberries)"
           ]
         },
-        "Pilihan 6": {
+        "Option 6": {
           "Ingredients": [
             "½ cup frozen raspberries",
-            "1 scoop protein (Tiada gula)",
+            "1 scoop sugar-free protein powder",
             "150ml coconut/almond milk"
           ]
         }
       },
-      "Remark": "Ambil satu biji kapsul Ayur Lin selepas sarapan"
+      "Remark": "Take one Ayur Lin capsule after breakfast"
     },
-    "DietMediterranean": {
+    "MediterraneanDiet": {
       "PCOSPlate": {
-        "Protein": "25% animal protein (sebesar tapak tangan)",
-        "GentleStarch": "25% gentle starch (~½ cawan selepas masak)",
-        "NonStarchyVeg": "50% non-starchy veg (sebanyak mungkin)",
+        "Protein": "25% animal protein (palm-size)",
+        "GentleStarch": "25% gentle starch (~½ cup cooked)",
+        "NonStarchyVeg": "50% non-starchy vegetables (as much as possible)",
         "HealthyFat": "1 tbsp healthy fat"
       },
-      "MenuCadangan": [
-        "120g ayam/ikan/daging",
-        "120g nasi/pasta/kentang (boleh tukar ke brown rice/basmati/wholemeal bread)",
-        "240g sayur-sayuran tidak berkanji",
-        "20g kacang (Almond/Walnut) / 10g dark chocolate 80%+ / 30g chia seed",
-        "1 biji buah epal/oren (jika mahu makanan manis)"
+      "SuggestedMenu": [
+        "120g chicken/fish/meat",
+        "120g rice/pasta/potato (can replace with brown rice/basmati/wholemeal bread)",
+        "240g non-starchy vegetables",
+        "20g nuts (Almond/Walnut) / 10g dark chocolate (80%+) / 30g chia seeds",
+        "1 apple/orange (if craving sweets)"
       ],
-      "Remark": "Ambil satu biji Ayur Lin capsule selepas makan malam",
-      "MasakanTips": "Kurang minyak, tiada gula, tiada fast food dan ajinamoto untuk 4 minggu pertama"
+      "Remark": "Take one Ayur Lin capsule after dinner",
+      "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks"
     },
-    "MasaMakan": {
-      "Sarapan": "1 jam selepas bangun tidur",
-      "MakanTengahHari": "12 tengah hari atau ~1 petang",
-      "MakanMalam": "7 malam - 8 malam"
+    "MealTiming": {
+      "Breakfast": "1 hour after waking up",
+      "Lunch": "12 pm – 1 pm",
+      "Dinner": "7 pm – 8 pm"
     },
-    "PemantauanUkuranPinggang": {
-      "SebelumMula": "_________ inchi",
-      "MingguPertama": "inchi",
-      "MingguKedua": "inchi",
-      "MingguKetiga": "inchi",
-      "MingguKeempat": "inchi"
+    "WaistMeasurementTracking": {
+      "BeforeStarting": "________ inches",
+      "Week1": "inches",
+      "Week2": "inches",
+      "Week3": "inches",
+      "Week4": "inches"
     },
-    "PlanSenaman": {
-      "Pilihan 1": "Brist walk 2-3 kali seminggu dengan capai 10,000 steps",
-      "Pilihan 2": "Banyakkan berjalan setiap hari (capai >5000 steps)",
-      "Pilihan 3": "20 minit senaman HIIT di rumah 2-3 kali seminggu (rujuk ebook Protokol Bebas PCOS)"
+    "ExercisePlan": {
+      "Option 1": "Brisk walk 2-3 times per week, reach 10,000 steps",
+      "Option 2": "Walk more daily (reach >5000 steps)",
+      "Option 3": "20-minute HIIT workout at home 2-3 times per week (refer to PCOS Protocol ebook)"
     }
   },
-  "PCOS Keradangan/ Inflamantion":{
-
-    "SarapanPagiBebasGula": {
+  "PCOS Inflammation": {
+    "SugarFreeBreakfast": {
       "Guidelines": {
-        "Timing": "Ambil 1 jam selepas bangun tidur",
-        "Avoid": ["Gula", "Madu", "Stevia"],
-        "Goal": "30-40g clean protein untuk stabilkan gula dalam darah"
+        "Timing": "Consume 1 hour after waking up",
+        "Avoid": ["Sugar", "Honey", "Stevia"],
+        "Goal": "30-40g clean protein to stabilize blood sugar"
       },
-      "Pilihan": {
-        "Pilihan 1": "4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)",
-        "Pilihan 2": "150g dada ayam (Bakar) - Boleh marinate dengan garam dan lada hitam atau sebarang rempah",
-        "Pilihan 3": "150g Ayam Brand Tuna Chunk in water (Perah satu biji limau dan makan)",
-        "Pilihan 4": "200g Tempe (Goreng dengan sedikit minyak/airfryer)",
-        "Pilihan 5": {
-          "Instructions": "Boleh buat waktu malam dan makan untuk sarapan",
+      "Options": {
+        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
+        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
+        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime and eat)",
+        "Option 4": "200g Tempeh (Lightly fried with a little oil/air fryer)",
+        "Option 5": {
+          "Instructions": "Can prepare the night before and have it for breakfast",
           "Ingredients": [
             "150ml almond milk/coconut milk",
             "¼ cup chia seeds",
-            "1 scoop protein (Tiada gula)",
-            "½ cup fresh atau frozen berries (e.g. raspberries, strawberries or blueberries)"
+            "1 scoop sugar-free protein powder",
+            "½ cup fresh or frozen berries (raspberries, strawberries, blueberries)"
           ]
         },
-        "Pilihan 6": {
+        "Option 6": {
           "Ingredients": [
             "½ cup frozen raspberries",
-            "1 scoop protein (Tiada gula)",
+            "1 scoop sugar-free protein powder",
             "150ml coconut/almond milk"
           ]
         }
       },
-      "Remark": "Selepas sarapan ambil satu biji Ayurlin Capsule"
+      "Remark": "After breakfast, take one Ayurlin Capsule"
     },
-    "DietMediterranean": {
+    "MediterraneanDiet": {
       "PCOSPlate": {
-        "Protein": "25% animal protein (saiz tapak tangan)",
-        "GentleStarch": "25% gentle starch (~½ cawan selepas masak)",
-        "NonStarchyVeg": "50% non-starchy veg",
+        "Protein": "25% animal protein (palm-size portion)",
+        "GentleStarch": "25% gentle starch (~½ cup cooked)",
+        "NonStarchyVeg": "50% non-starchy vegetables",
         "HealthyFat": "1 tbsp healthy fat"
       },
-      "MenuCadangan": [
-        "120g ayam/ikan/daging",
-        "120g nasi/pasta/kentang",
-        "240g sayur-sayuran tidak berkanji",
-        "20g Kacang (Almond/Walnut) / 10g Dark Chocolate 80% ke atas / 30g Chia Seed",
-        "1 biji buah epal/oren (jika perlu makanan manis)"
+      "SuggestedMenu": [
+        "120g chicken/fish/meat",
+        "120g rice/pasta/potato",
+        "240g non-starchy vegetables",
+        "20g nuts (Almond/Walnut) / 10g Dark Chocolate (80%+) / 30g Chia Seeds",
+        "1 apple/orange (if craving sweets)"
       ],
-      "Remark": "Selepas 1 jam makan malam sila ambil 1 biji Ayur Lin Capsule",
-      "MasakanTips": "Kurangkan minyak, tidak guna gula, tiada fast food dan ajinamoto untuk 4 minggu pertama"
+      "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
+      "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks"
     },
-    "MasaMakan": {
-      "Sarapan": "1 jam selepas bangun tidur",
-      "TengahHari": "12 tgh hari atau ~1 petang",
-      "MakanMalam": "7mlm - 8mlm"
+    "MealTiming": {
+      "Breakfast": "1 hour after waking up",
+      "Lunch": "12 pm – 1 pm",
+      "Dinner": "7 pm – 8 pm"
     },
-    "PemantauanUkuranPinggang": {
-      "SebelumMula": "________inchi",
-      "MingguPertama": "inchi",
-      "MingguKedua": "inchi",
-      "MingguKetiga": "inchi",
-      "MingguKeempat": "inchi"
+    "WaistMeasurementTracking": {
+      "BeforeStarting": "________ inches",
+      "Week1": "inches",
+      "Week2": "inches",
+      "Week3": "inches",
+      "Week4": "inches"
     },
-    "PlanSenaman": {
-      "Pilihan 1": "Brist walk 2-3 kali seminggu dengan lengkapkan 10,000 steps",
-      "Pilihan 2": "Aktiviti harian - banyakkan berjalan dan capai lebih 5000 steps sehari",
-      "Pilihan 3": "20 minit senaman HIIT di rumah 2-3 kali seminggu"
+    "ExercisePlan": {
+      "Option 1": "Brisk walk 2-3 times per week, complete 10,000 steps",
+      "Option 2": "Daily activity – walk more and reach >5000 steps per day",
+      "Option 3": "20 minutes of HIIT workout at home 2-3 times per week"
     }
-  
   },
-  "PCOS Pil Perancang/ Post Birth Control":{
-
-    "SarapanPagiBebasGula": {
-      "Focus": "Tinggi protein, rendah karbohidrat",
+  "PCOS Post Birth Control": {
+    "SugarFreeBreakfast": {
+      "Focus": "High protein, low carbohydrate",
       "Rules": {
-        "Timing": "Ambil 1 jam selepas bangun tidur",
-        "Avoid": ["Gula", "Madu", "Stevia", "Bahan bergula lain"]
+        "Timing": "Consume 1 hour after waking up",
+        "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"]
       },
-      "Pilihan": {
-        "Pilihan 1": "4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)",
-        "Pilihan 2": "150g dada ayam (Bakar) - Boleh marinate dengan garam, lada hitam atau rempah",
-        "Pilihan 3": "150g Ayam Brand Tuna Chunk in water (Perah satu biji limau)",
-        "Pilihan 4": "200g Tempe (Goreng dengan sedikit minyak/airfryer)",
-        "Pilihan 5": {
-          "Instructions": "Buat malam sebelumnya, makan waktu sarapan. Tiada masalah jika tiada berries, tapi JANGAN ganti dengan buah lain.",
+      "Options": {
+        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
+        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
+        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime)",
+        "Option 4": "200g Tempeh (Lightly fried/air fryer)",
+        "Option 5": {
+          "Instructions": "Prepare the night before, eat for breakfast. Berries are optional, but DO NOT replace with other fruits.",
           "Ingredients": [
-            "150ml almond milk/coconut milk",
+            "150ml almond/coconut milk",
             "¼ cup chia seeds",
-            "1 scoop protein (Tiada gula)",
+            "1 scoop sugar-free protein powder",
             "½ cup fresh/frozen berries (raspberries, strawberries, blueberries)"
           ]
         },
-        "Pilihan 6": {
+        "Option 6": {
           "Ingredients": [
             "½ cup frozen raspberries",
-            "1 scoop protein (Tiada gula)",
+            "1 scoop sugar-free protein powder",
             "150ml coconut/almond milk"
           ]
         }
       },
-      "Remark": "Ambil satu biji kapsul Ayur Lin selepas sarapan"
+      "Remark": "Take one Ayur Lin capsule after breakfast"
     },
-    "DietMediterranean": {
+    "MediterraneanDiet": {
       "PCOSPlate": {
-        "Protein": "25% animal protein (sebesar tapak tangan)",
-        "GentleStarch": "25% gentle starch (~½ cawan selepas masak)",
-        "NonStarchyVeg": "50% non-starchy veg (sebanyak mungkin)",
+        "Protein": "25% animal protein (palm-size)",
+        "GentleStarch": "25% gentle starch (~½ cup cooked)",
+        "NonStarchyVeg": "50% non-starchy vegetables (as much as possible)",
         "HealthyFat": "1 tbsp healthy fat"
       },
-      "MenuCadangan": [
-        "120g ayam/ikan/daging",
-        "120g nasi/pasta/kentang (boleh tukar ke brown rice/basmati/wholemeal bread)",
-        "240g sayur-sayuran tidak berkanji",
-        "20g kacang (Almond/Walnut) / 10g dark chocolate 80%+ / 30g chia seed",
-        "1 biji buah epal/oren (jika mahu makanan manis)"
+      "SuggestedMenu": [
+        "120g chicken/fish/meat",
+        "120g rice/pasta/potato (can replace with brown rice/basmati/wholemeal bread)",
+        "240g non-starchy vegetables",
+        "20g nuts (Almond/Walnut) / 10g dark chocolate (80%+) / 30g chia seeds",
+        "1 apple/orange (if craving sweets)"
       ],
-      "Remark": "Ambil satu biji Ayur Lin capsule selepas makan malam",
-      "MasakanTips": "Kurang minyak, tiada gula, tiada fast food dan ajinamoto untuk 4 minggu pertama"
+      "Remark": "Take one Ayur Lin capsule after dinner",
+      "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks"
     },
-    "MasaMakan": {
-      "Sarapan": "1 jam selepas bangun tidur",
-      "MakanTengahHari": "12 tengah hari atau ~1 petang",
-      "MakanMalam": "7 malam - 8 malam"
+    "MealTiming": {
+      "Breakfast": "1 hour after waking up",
+      "Lunch": "12 pm – 1 pm",
+      "Dinner": "7 pm – 8 pm"
     },
-    "PemantauanUkuranPinggang": {
-      "SebelumMula": "_________ inchi",
-      "MingguPertama": "inchi",
-      "MingguKedua": "inchi",
-      "MingguKetiga": "inchi",
-      "MingguKeempat": "inchi"
+    "WaistMeasurementTracking": {
+      "BeforeStarting": "________ inches",
+      "Week1": "inches",
+      "Week2": "inches",
+      "Week3": "inches",
+      "Week4": "inches"
     },
-    "PlanSenaman": {
-      "Pilihan 1": "Brist walk 2-3 kali seminggu dengan capai 10,000 steps",
-      "Pilihan 2": "Banyakkan berjalan setiap hari (capai >5000 steps)",
-      "Pilihan 3": "20 minit senaman HIIT di rumah 2-3 kali seminggu (rujuk ebook Protokol Bebas PCOS)"
+    "ExercisePlan": {
+      "Option 1": "Brisk walk 2-3 times per week, reach 10,000 steps",
+      "Option 2": "Walk more daily (reach >5000 steps)",
+      "Option 3": "20-minute HIIT workout at home 2-3 times per week (refer to PCOS Protocol ebook)"
     }
-  
-  },
-  "PCOS Keradangan/ Infllamantion":{
-
-    "SarapanPagiBebasGula": {
-      "Focus": "Tinggi protein, rendah karbohidrat",
-      "Rules": {
-        "Timing": "Ambil 1 jam selepas bangun tidur",
-        "Avoid": ["Gula", "Madu", "Stevia", "Bahan bergula lain"]
-      },
-      "Pilihan": {
-        "Pilihan 1": "4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)",
-        "Pilihan 2": "150g dada ayam (Bakar) - Boleh marinate dengan garam, lada hitam atau rempah",
-        "Pilihan 3": "150g Ayam Brand Tuna Chunk in water (Perah satu biji limau)",
-        "Pilihan 4": "200g Tempe (Goreng dengan sedikit minyak/airfryer)",
-        "Pilihan 5": {
-          "Instructions": "Buat malam sebelumnya, makan waktu sarapan. Tiada masalah jika tiada berries, tapi JANGAN ganti dengan buah lain.",
-          "Ingredients": [
-            "150ml almond milk/coconut milk",
-            "¼ cup chia seeds",
-            "1 scoop protein (Tiada gula)",
-            "½ cup fresh/frozen berries (raspberries, strawberries, blueberries)"
-          ]
-        },
-        "Pilihan 6": {
-          "Ingredients": [
-            "½ cup frozen raspberries",
-            "1 scoop protein (Tiada gula)",
-            "150ml coconut/almond milk"
-          ]
-        }
-      },
-      "Remark": "Ambil satu biji kapsul Ayur Lin selepas sarapan"
-    },
-    "DietMediterranean": {
-      "PCOSPlate": {
-        "Protein": "25% animal protein (sebesar tapak tangan)",
-        "GentleStarch": "25% gentle starch (~½ cawan selepas masak)",
-        "NonStarchyVeg": "50% non-starchy veg (sebanyak mungkin)",
-        "HealthyFat": "1 tbsp healthy fat"
-      },
-      "MenuCadangan": [
-        "120g ayam/ikan/daging",
-        "120g nasi/pasta/kentang (boleh tukar ke brown rice/basmati/wholemeal bread)",
-        "240g sayur-sayuran tidak berkanji",
-        "20g kacang (Almond/Walnut) / 10g dark chocolate 80%+ / 30g chia seed",
-        "1 biji buah epal/oren (jika mahu makanan manis)"
-      ],
-      "Remark": "Ambil satu biji Ayur Lin capsule selepas makan malam",
-      "MasakanTips": "Kurang minyak, tiada gula, tiada fast food dan ajinamoto untuk 4 minggu pertama"
-    },
-    "MasaMakan": {
-      "Sarapan": "1 jam selepas bangun tidur",
-      "MakanTengahHari": "12 tengah hari atau ~1 petang",
-      "MakanMalam": "7 malam - 8 malam"
-    },
-    "PemantauanUkuranPinggang": {
-      "SebelumMula": "_________ inchi",
-      "MingguPertama": "inchi",
-      "MingguKedua": "inchi",
-      "MingguKetiga": "inchi",
-      "MingguKeempat": "inchi"
-    },
-    "PlanSenaman": {
-      "Pilihan 1": "Brist walk 2-3 kali seminggu dengan capai 10,000 steps",
-      "Pilihan 2": "Banyakkan berjalan setiap hari (capai >5000 steps)",
-      "Pilihan 3": "20 minit senaman HIIT di rumah 2-3 kali seminggu (rujuk ebook Protokol Bebas PCOS)"
-    }
-  
-  },
-  "PCOS Rintangan Insulin/Insulin Resistance":{
-
-    "SarapanPagiBebasGula": {
-      "Guidelines": {
-        "Timing": "Ambil 1 jam selepas bangun tidur",
-        "Avoid": ["Gula", "Madu", "Stevia"],
-        "Goal": "30-40g clean protein untuk stabilkan gula dalam darah"
-      },
-      "Pilihan": {
-        "Pilihan 1": "4 biji telur putih + 1 kuning telur (Rebus/Separuh masak/scramble)",
-        "Pilihan 2": "150g dada ayam (Bakar) - Boleh marinate dengan garam dan lada hitam atau sebarang rempah",
-        "Pilihan 3": "150g Ayam Brand Tuna Chunk in water (Perah satu biji limau dan makan)",
-        "Pilihan 4": "200g Tempe (Goreng dengan sedikit minyak/airfryer)",
-        "Pilihan 5": {
-          "Instructions": "Boleh buat waktu malam dan makan untuk sarapan",
-          "Ingredients": [
-            "150ml almond milk/coconut milk",
-            "¼ cup chia seeds",
-            "1 scoop protein (Tiada gula)",
-            "½ cup fresh atau frozen berries (e.g. raspberries, strawberries or blueberries)"
-          ]
-        },
-        "Pilihan 6": {
-          "Ingredients": [
-            "½ cup frozen raspberries",
-            "1 scoop protein (Tiada gula)",
-            "150ml coconut/almond milk"
-          ]
-        }
-      },
-      "Remark": "Selepas sarapan ambil satu biji Ayurlin Capsule"
-    },
-    "DietMediterranean": {
-      "PCOSPlate": {
-        "Protein": "25% animal protein (saiz tapak tangan)",
-        "GentleStarch": "25% gentle starch (~½ cawan selepas masak)",
-        "NonStarchyVeg": "50% non-starchy veg",
-        "HealthyFat": "1 tbsp healthy fat"
-      },
-      "MenuCadangan": [
-        "120g ayam/ikan/daging",
-        "120g nasi/pasta/kentang",
-        "240g sayur-sayuran tidak berkanji",
-        "20g Kacang (Almond/Walnut) / 10g Dark Chocolate 80% ke atas / 30g Chia Seed",
-        "1 biji buah epal/oren (jika perlu makanan manis)"
-      ],
-      "Remark": "Selepas 1 jam makan malam sila ambil 1 biji Ayur Lin Capsule",
-      "MasakanTips": "Kurangkan minyak, tidak guna gula, tiada fast food dan ajinamoto untuk 4 minggu pertama"
-    },
-    "MasaMakan": {
-      "Sarapan": "1 jam selepas bangun tidur",
-      "TengahHari": "12 tgh hari atau ~1 petang",
-      "MakanMalam": "7mlm - 8mlm"
-    },
-    "PemantauanUkuranPinggang": {
-      "SebelumMula": "________inchi",
-      "MingguPertama": "inchi",
-      "MingguKedua": "inchi",
-      "MingguKetiga": "inchi",
-      "MingguKeempat": "inchi"
-    },
-    "PlanSenaman": {
-      "Pilihan 1": "Brist walk 2-3 kali seminggu dengan lengkapkan 10,000 steps",
-      "Pilihan 2": "Aktiviti harian - banyakkan berjalan dan capai lebih 5000 steps sehari",
-      "Pilihan 3": "20 minit senaman HIIT di rumah 2-3 kali seminggu"
-    }
-  
   }
 }
-
 # Helper functions to work with meal plans
-def get_female_meal_plan(goal):
+def get_female_meal_plan(goal: str):
     """
-    Get a specific meal plan by goal and option
-    
+    Get a specific meal plan object by goal.
+
     Args:
-        goal (str): The goal (e.g., "Improve fertility", "Lose weight", etc.)
-        option (str): The option number (e.g., "Option 1", "Option 2", etc.)
-    
+        goal (str): One of
+            - "PCOS Insulin Resistance"
+            - "PCOS Adrenal"
+            - "PCOS Inflammation"
+            - "PCOS Post Birth Control"
+
     Returns:
-        dict: The meal plan data
+        dict | None: The meal plan data for the goal (or None).
     """
-    if goal in FEMALE_MEAL_PLANS:
-        return FEMALE_MEAL_PLANS[goal]
-    return None
+    return FEMALE_MEAL_PLANS.get(goal)
