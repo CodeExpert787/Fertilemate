@@ -1,269 +1,314 @@
-FEMALE_MEAL_PLANS = {
-  "PCOS Insulin Resistance": {
-    "SugarFreeBreakfast": {
-      "Guidelines": {
-        "Timing": "Consume 1 hour after waking up",
-        "Avoid": ["Sugar", "Honey", "Stevia"],
-        "Goal": "30-40g clean protein to stabilize blood sugar"
-      },
-      "Options": {
-        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
-        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, black pepper, or spices",
-        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime and eat)",
-        "Option 4": "200g Tempeh (Lightly fried with a little oil/air fryer)",
-        "Option 5": {
-          "Instructions": "Can prepare the night before and have it for breakfast",
-          "Ingredients": [
-            "150ml almond milk/coconut milk",
-            "¼ cup chia seeds",
-            "1 scoop sugar-free protein powder",
-            "½ cup fresh or frozen berries (raspberries, strawberries, blueberries)"
-          ]
-        },
-        "Option 6": {
-          "Ingredients": [
-            "½ cup frozen raspberries",
-            "1 scoop sugar-free protein powder",
-            "150ml coconut/almond milk"
-          ]
-        }
-      },
-      "Remark": "After breakfast, take one Ayurlin Capsule"
+# --- Shared calorie guides (estimates) ---
+# Note: values are typical averages for cooked foods; brands/recipes & added oils will vary.
+
+BASE_BREAKFAST_OPTIONS_WITH_CALORIES = {
+    "Option 1": {
+        "text": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
+        "calories_kcal": 123,
     },
-    "MediterraneanDiet": {
-      "PCOSPlate": {
-        "Protein": "25% animal protein (palm-size portion)",
-        "GentleStarch": "25% gentle starch (~½ cup cooked)",
-        "NonStarchyVeg": "50% non-starchy vegetables",
-        "HealthyFat": "1 tbsp healthy fat"
-      },
-      "SuggestedMenu": [
-        "120g chicken/fish/meat",
-        "120g rice/pasta/potato",
-        "240g non-starchy vegetables",
-        "20g nuts (Almond/Walnut) / 10g Dark Chocolate (80%+) / 30g Chia Seeds",
-        "1 apple/orange (if craving sweets)"
-      ],
-      "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
-      "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks"
+    "Option 2": {
+        "text": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
+        "calories_kcal": 248,
     },
-    "MealTiming": {
-      "Breakfast": "1 hour after waking up",
-      "Lunch": "12 pm – 1 pm",
-      "Dinner": "7 pm – 8 pm"
+    "Option 3": {
+        "text": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime)",
+        "calories_kcal": 174,
     },
-    "WaistMeasurementTracking": {
-      "BeforeStarting": "________ inches",
-      "Week1": "inches",
-      "Week2": "inches",
-      "Week3": "inches",
-      "Week4": "inches"
+    "Option 4": {
+        "text": "200g Tempeh (Lightly fried/air fryer)",
+        "calories_kcal": 386,
     },
-    "ExercisePlan": {
-      "Option 1": "Brisk walk 2-3 times per week, complete 10,000 steps",
-      "Option 2": "Daily activity – walk more and reach >5000 steps per day",
-      "Option 3": "20 minutes of HIIT workout at home 2-3 times per week"
-    }
-  },
-  "PCOS Adrenal": {
-    "SugarFreeBreakfast": {
-      "Focus": "High protein, low carbohydrate",
-      "Rules": {
-        "Timing": "Consume 1 hour after waking up",
-        "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"]
-      },
-      "Options": {
-        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
-        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
-        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime)",
-        "Option 4": "200g Tempeh (Lightly fried/air fryer)",
-        "Option 5": {
-          "Instructions": "Prepare the night before, eat for breakfast. Berries are optional, but DO NOT replace with other fruits.",
-          "Ingredients": [
+    "Option 5": {
+        "instructions": "Prepare the night before; eat for breakfast",
+        "ingredients": [
             "150ml almond/coconut milk",
             "¼ cup chia seeds",
             "1 scoop sugar-free protein powder",
-            "½ cup fresh/frozen berries (raspberries, strawberries, blueberries)"
-          ]
-        },
-        "Option 6": {
-          "Ingredients": [
+            "½ cup fresh/frozen berries (raspberries, strawberries, blueberries)",
+        ],
+        "calories_kcal": 413,
+    },
+    "Option 6": {
+        "ingredients": [
             "½ cup frozen raspberries",
             "1 scoop sugar-free protein powder",
-            "150ml coconut/almond milk"
-          ]
-        }
-      },
-      "Remark": "Take one Ayur Lin capsule after breakfast"
+            "150ml coconut/almond milk",
+        ],
+        "calories_kcal": 180,
     },
-    "MediterraneanDiet": {
-      "PCOSPlate": {
-        "Protein": "25% animal protein (palm-size)",
-        "GentleStarch": "25% gentle starch (~½ cup cooked)",
-        "NonStarchyVeg": "50% non-starchy vegetables (as much as possible)",
-        "HealthyFat": "1 tbsp healthy fat"
-      },
-      "SuggestedMenu": [
-        "120g chicken/fish/meat",
-        "120g rice/pasta/potato (can replace with brown rice/basmati/wholemeal bread)",
-        "240g non-starchy vegetables",
-        "20g nuts (Almond/Walnut) / 10g dark chocolate (80%+) / 30g chia seeds",
-        "1 apple/orange (if craving sweets)"
-      ],
-      "Remark": "Take one Ayur Lin capsule after dinner",
-      "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks"
-    },
-    "MealTiming": {
-      "Breakfast": "1 hour after waking up",
-      "Lunch": "12 pm – 1 pm",
-      "Dinner": "7 pm – 8 pm"
-    },
-    "WaistMeasurementTracking": {
-      "BeforeStarting": "________ inches",
-      "Week1": "inches",
-      "Week2": "inches",
-      "Week3": "inches",
-      "Week4": "inches"
-    },
-    "ExercisePlan": {
-      "Option 1": "Brisk walk 2-3 times per week, reach 10,000 steps",
-      "Option 2": "Walk more daily (reach >5000 steps)",
-      "Option 3": "20-minute HIIT workout at home 2-3 times per week (refer to PCOS Protocol ebook)"
-    }
-  },
-  "PCOS Inflammation": {
-    "SugarFreeBreakfast": {
-      "Guidelines": {
-        "Timing": "Consume 1 hour after waking up",
-        "Avoid": ["Sugar", "Honey", "Stevia"],
-        "Goal": "30-40g clean protein to stabilize blood sugar"
-      },
-      "Options": {
-        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
-        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
-        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime and eat)",
-        "Option 4": "200g Tempeh (Lightly fried with a little oil/air fryer)",
-        "Option 5": {
-          "Instructions": "Can prepare the night before and have it for breakfast",
-          "Ingredients": [
-            "150ml almond milk/coconut milk",
-            "¼ cup chia seeds",
-            "1 scoop sugar-free protein powder",
-            "½ cup fresh or frozen berries (raspberries, strawberries, blueberries)"
-          ]
-        },
-        "Option 6": {
-          "Ingredients": [
-            "½ cup frozen raspberries",
-            "1 scoop sugar-free protein powder",
-            "150ml coconut/almond milk"
-          ]
-        }
-      },
-      "Remark": "After breakfast, take one Ayurlin Capsule"
-    },
-    "MediterraneanDiet": {
-      "PCOSPlate": {
-        "Protein": "25% animal protein (palm-size portion)",
-        "GentleStarch": "25% gentle starch (~½ cup cooked)",
-        "NonStarchyVeg": "50% non-starchy vegetables",
-        "HealthyFat": "1 tbsp healthy fat"
-      },
-      "SuggestedMenu": [
-        "120g chicken/fish/meat",
-        "120g rice/pasta/potato",
-        "240g non-starchy vegetables",
-        "20g nuts (Almond/Walnut) / 10g Dark Chocolate (80%+) / 30g Chia Seeds",
-        "1 apple/orange (if craving sweets)"
-      ],
-      "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
-      "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks"
-    },
-    "MealTiming": {
-      "Breakfast": "1 hour after waking up",
-      "Lunch": "12 pm – 1 pm",
-      "Dinner": "7 pm – 8 pm"
-    },
-    "WaistMeasurementTracking": {
-      "BeforeStarting": "________ inches",
-      "Week1": "inches",
-      "Week2": "inches",
-      "Week3": "inches",
-      "Week4": "inches"
-    },
-    "ExercisePlan": {
-      "Option 1": "Brisk walk 2-3 times per week, complete 10,000 steps",
-      "Option 2": "Daily activity – walk more and reach >5000 steps per day",
-      "Option 3": "20 minutes of HIIT workout at home 2-3 times per week"
-    }
-  },
-  "PCOS Post Birth Control": {
-    "SugarFreeBreakfast": {
-      "Focus": "High protein, low carbohydrate",
-      "Rules": {
-        "Timing": "Consume 1 hour after waking up",
-        "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"]
-      },
-      "Options": {
-        "Option 1": "4 egg whites + 1 yolk (Boiled/Soft boiled/Scrambled)",
-        "Option 2": "150g chicken breast (Grilled) - Can marinate with salt, pepper, or spices",
-        "Option 3": "150g Ayam Brand Tuna Chunk in water (Squeeze 1 lime)",
-        "Option 4": "200g Tempeh (Lightly fried/air fryer)",
-        "Option 5": {
-          "Instructions": "Prepare the night before, eat for breakfast. Berries are optional, but DO NOT replace with other fruits.",
-          "Ingredients": [
-            "150ml almond/coconut milk",
-            "¼ cup chia seeds",
-            "1 scoop sugar-free protein powder",
-            "½ cup fresh/frozen berries (raspberries, strawberries, blueberries)"
-          ]
-        },
-        "Option 6": {
-          "Ingredients": [
-            "½ cup frozen raspberries",
-            "1 scoop sugar-free protein powder",
-            "150ml coconut/almond milk"
-          ]
-        }
-      },
-      "Remark": "Take one Ayur Lin capsule after breakfast"
-    },
-    "MediterraneanDiet": {
-      "PCOSPlate": {
-        "Protein": "25% animal protein (palm-size)",
-        "GentleStarch": "25% gentle starch (~½ cup cooked)",
-        "NonStarchyVeg": "50% non-starchy vegetables (as much as possible)",
-        "HealthyFat": "1 tbsp healthy fat"
-      },
-      "SuggestedMenu": [
-        "120g chicken/fish/meat",
-        "120g rice/pasta/potato (can replace with brown rice/basmati/wholemeal bread)",
-        "240g non-starchy vegetables",
-        "20g nuts (Almond/Walnut) / 10g dark chocolate (80%+) / 30g chia seeds",
-        "1 apple/orange (if craving sweets)"
-      ],
-      "Remark": "Take one Ayur Lin capsule after dinner",
-      "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks"
-    },
-    "MealTiming": {
-      "Breakfast": "1 hour after waking up",
-      "Lunch": "12 pm – 1 pm",
-      "Dinner": "7 pm – 8 pm"
-    },
-    "WaistMeasurementTracking": {
-      "BeforeStarting": "________ inches",
-      "Week1": "inches",
-      "Week2": "inches",
-      "Week3": "inches",
-      "Week4": "inches"
-    },
-    "ExercisePlan": {
-      "Option 1": "Brisk walk 2-3 times per week, reach 10,000 steps",
-      "Option 2": "Walk more daily (reach >5000 steps)",
-      "Option 3": "20-minute HIIT workout at home 2-3 times per week (refer to PCOS Protocol ebook)"
-    }
-  }
 }
+
+MEDITERRANEAN_CALORIE_GUIDE = {
+    # 120 g cooked protein choices
+    "ProteinPer120g_kcal": {
+        "ChickenBreast": 198,
+        "LeanFish": 144,
+        "LeanBeef": 300,
+    },
+    # 120 g cooked gentle starch
+    "CarbPer120g_kcal": {
+        "WhiteRice": 156,
+        "Pasta": 157,
+        "BoiledPotato": 104,
+    },
+    # 240 g non-starchy veg (typical mixed veg)
+    "NonStarchyVegPer240g_kcal": 60,
+    # Add-ons (choose one)
+    "AddOn_kcal": {
+        "Nuts": {"Almond_20g": 116, "Walnut_20g": 131},
+        "DarkChocolate_10g": 60,
+        "ChiaSeeds_30g": 146,
+    },
+    # Optional fruit (choose one)
+    "Fruit_kcal": {"Apple_1medium": 95, "Orange_1medium": 62},
+    # Healthy fat (if used as 1 tbsp)
+    "HealthyFat_kcal": {"OliveOil_1tbsp": 119},
+}
+
+
+def _get_addon_kcal(add_on: str | None) -> int:
+    """
+    add_on can be:
+      - "Nuts.Almond_20g"
+      - "Nuts.Walnut_20g"
+      - "DarkChocolate_10g"
+      - "ChiaSeeds_30g"
+      - None
+    """
+    if not add_on:
+        return 0
+    guide = MEDITERRANEAN_CALORIE_GUIDE["AddOn_kcal"]
+    if "." in add_on:
+        group, key = add_on.split(".", 1)
+        return int(guide.get(group, {}).get(key, 0))
+    return int(guide.get(add_on, 0))
+
+
+def calc_mediterranean_meal_kcal(
+    *,
+    protein: str = "ChickenBreast",
+    carb: str = "WhiteRice",
+    add_on: str | None = "Nuts.Almond_20g",
+    include_fruit: bool = False,
+    fruit: str = "Apple_1medium",
+    include_oil: bool = False,
+) -> dict:
+    """
+    Returns a breakdown and total kcal for one 'PCOS Plate' (120g protein + 120g carb + 240g veg + add-on [+ fruit] [+ 1 tbsp oil]).
+    """
+    P = int(MEDITERRANEAN_CALORIE_GUIDE["ProteinPer120g_kcal"].get(protein, 0))
+    C = int(MEDITERRANEAN_CALORIE_GUIDE["CarbPer120g_kcal"].get(carb, 0))
+    V = int(MEDITERRANEAN_CALORIE_GUIDE["NonStarchyVegPer240g_kcal"])
+    A = _get_addon_kcal(add_on)
+    F = int(MEDITERRANEAN_CALORIE_GUIDE["Fruit_kcal"].get(fruit, 0)) if include_fruit else 0
+    O = int(MEDITERRANEAN_CALORIE_GUIDE["HealthyFat_kcal"]["OliveOil_1tbsp"]) if include_oil else 0
+
+    total = P + C + V + A + F + O
+    return {
+        "protein": {"choice": protein, "kcal": P},
+        "carb": {"choice": carb, "kcal": C},
+        "veg_240g": {"kcal": V},
+        "add_on": {"choice": add_on, "kcal": A},
+        "fruit": {"included": include_fruit, "choice": fruit if include_fruit else None, "kcal": F},
+        "oil_1tbsp": {"included": include_oil, "kcal": O},
+        "total_kcal": total,
+    }
+
+
+def get_breakfast_kcal(option_key: str) -> dict:
+    """
+    option_key: e.g., "Option 2"
+    """
+    opt = BASE_BREAKFAST_OPTIONS_WITH_CALORIES.get(option_key)
+    if not opt:
+        raise KeyError(f"Unknown breakfast option '{option_key}'. Valid keys: {list(BASE_BREAKFAST_OPTIONS_WITH_CALORIES)}")
+    return {"option": option_key, "kcal": int(opt["calories_kcal"])}
+
+
+def calc_day_kcal(
+    *,
+    breakfast_option: str,
+    lunch_kwargs: dict,
+    dinner_kwargs: dict,
+) -> dict:
+    """
+    Compute a day's calories: breakfast + lunch + dinner (each lunch/dinner is a 'PCOS Plate' combo).
+    """
+    b = get_breakfast_kcal(breakfast_option)
+    l = calc_mediterranean_meal_kcal(**lunch_kwargs)
+    d = calc_mediterranean_meal_kcal(**dinner_kwargs)
+    total = b["kcal"] + l["total_kcal"] + d["total_kcal"]
+    return {"breakfast": b, "lunch": l, "dinner": d, "day_total_kcal": total}
+
+
+FEMALE_MEAL_PLANS = {
+    "PCOS Insulin Resistance": {
+        "SugarFreeBreakfast": {
+            "Guidelines": {
+                "Timing": "Consume 1 hour after waking up",
+                "Avoid": ["Sugar", "Honey", "Stevia"],
+                "Goal": "30-40g clean protein to stabilize blood sugar",
+            },
+            "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
+            "Remark": "After breakfast, take one Ayurlin Capsule",
+        },
+        "MediterraneanDiet": {
+            "PCOSPlate": {
+                "Protein": "25% animal protein (palm-size portion)",
+                "GentleStarch": "25% gentle starch (~½ cup cooked)",
+                "NonStarchyVeg": "50% non-starchy vegetables",
+                "HealthyFat": "1 tbsp healthy fat",
+            },
+            "SuggestedMenu": [
+                "120g chicken/fish/meat",
+                "120g rice/pasta/potato",
+                "240g non-starchy vegetables",
+                "20g nuts (Almond/Walnut) / 10g Dark Chocolate (80%+) / 30g Chia Seeds",
+                "1 apple/orange (if craving sweets)",
+            ],
+            "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
+            "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
+            "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks",
+        },
+    },
+    "PCOS Adrenal": {
+        "SugarFreeBreakfast": {
+            "Focus": "High protein, low carbohydrate",
+            "Rules": {
+                "Timing": "Consume 1 hour after waking up",
+                "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"],
+            },
+            "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
+            "Remark": "Take one Ayur Lin capsule after breakfast",
+        },
+        "MediterraneanDiet": {
+            "PCOSPlate": {
+                "Protein": "25% animal protein (palm-size)",
+                "GentleStarch": "25% gentle starch (~½ cup cooked)",
+                "NonStarchyVeg": "50% non-starchy vegetables (as much as possible)",
+                "HealthyFat": "1 tbsp healthy fat",
+            },
+            "SuggestedMenu": [
+                "120g chicken/fish/meat",
+                "120g rice/pasta/potato (can replace with brown rice/basmati/wholemeal bread)",
+                "240g non-starchy vegetables",
+                "20g nuts (Almond/Walnut) / 10g dark chocolate (80%+) / 30g chia seeds",
+                "1 apple/orange (if craving sweets)",
+            ],
+            "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
+            "Remark": "Take one Ayur Lin capsule after dinner",
+            "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks",
+        },
+    },
+    "PCOS Inflammation": {
+        "SugarFreeBreakfast": {
+            "Guidelines": {
+                "Timing": "Consume 1 hour after waking up",
+                "Avoid": ["Sugar", "Honey", "Stevia"],
+                "Goal": "30-40g clean protein to stabilize blood sugar",
+            },
+            "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
+            "Remark": "After breakfast, take one Ayurlin Capsule",
+        },
+        "MediterraneanDiet": {
+            "PCOSPlate": {
+                "Protein": "25% animal protein (palm-size portion)",
+                "GentleStarch": "25% gentle starch (~½ cup cooked)",
+                "NonStarchyVeg": "50% non-starchy vegetables",
+                "HealthyFat": "1 tbsp healthy fat",
+            },
+            "SuggestedMenu": [
+                "120g chicken/fish/meat",
+                "120g rice/pasta/potato",
+                "240g non-starchy vegetables",
+                "20g nuts (Almond/Walnut) / 10g Dark Chocolate (80%+) / 30g Chia Seeds",
+                "1 apple/orange (if craving sweets)",
+            ],
+            "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
+            "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
+            "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks",
+        },
+    },
+    "PCOS Post Birth Control": {
+        "SugarFreeBreakfast": {
+            "Focus": "High protein, low carbohydrate",
+            "Rules": {
+                "Timing": "Consume 1 hour after waking up",
+                "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"],
+            },
+            "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
+            "Remark": "Take one Ayur Lin capsule after breakfast",
+        },
+        "MediterraneanDiet": {
+            "PCOSPlate": {
+                "Protein": "25% animal protein (palm-size)",
+                "GentleStarch": "25% gentle starch (~½ cup cooked)",
+                "NonStarchyVeg": "50% non-starchy vegetables (as much as possible)",
+                "HealthyFat": "1 tbsp healthy fat",
+            },
+            "SuggestedMenu": [
+                "120g chicken/fish/meat",
+                "120g rice/pasta/potato (can replace with brown rice/basmati/wholemeal bread)",
+                "240g non-starchy vegetables",
+                "20g nuts (Almond/Walnut) / 10g dark chocolate (80%+) / 30g chia seeds",
+                "1 apple/orange (if craving sweets)",
+            ],
+            "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
+            "Remark": "Take one Ayur Lin capsule after dinner",
+            "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks",
+        },
+    },
+}
+
+
+# -------------------------
+# Example usage:
+# -------------------------
+if __name__ == "__main__":
+    # Breakfast: Option 2 (150g grilled chicken)
+    b = get_breakfast_kcal("Option 2")
+
+    # Lunch: Chicken + Rice + Veg + Almonds + Apple (no oil)
+    lunch = calc_mediterranean_meal_kcal(
+        protein="ChickenBreast",
+        carb="WhiteRice",
+        add_on="Nuts.Almond_20g",
+        include_fruit=True,
+        include_oil=False,
+    )
+
+    # Dinner: LeanFish + Pasta + Veg + Dark Chocolate (no fruit, with oil)
+    dinner = calc_mediterranean_meal_kcal(
+        protein="LeanFish",
+        carb="Pasta",
+        add_on="DarkChocolate_10g",
+        include_fruit=False,
+        include_oil=True,
+    )
+
+    day = calc_day_kcal(
+        breakfast_option="Option 2",
+        lunch_kwargs=dict(
+            protein="ChickenBreast",
+            carb="WhiteRice",
+            add_on="Nuts.Almond_20g",
+            include_fruit=True,
+            include_oil=False,
+        ),
+        dinner_kwargs=dict(
+            protein="LeanFish",
+            carb="Pasta",
+            add_on="DarkChocolate_10g",
+            include_fruit=False,
+            include_oil=True,
+        ),
+    )
+
+    print("Breakfast:", b)
+    print("Lunch:", lunch)
+    print("Dinner:", dinner)
+    print("Day total kcal:", day["day_total_kcal"])
+
 # Helper functions to work with meal plans
 def get_female_meal_plan(goal: str):
     """

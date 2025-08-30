@@ -1,977 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fertility Prediction Results - Fertilemate</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #2d3748;
-            line-height: 1.6;
-            padding: 2rem 1rem;
-        }
-        
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            color: #2d3748;
-            padding: 1.2rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            margin-bottom: 2rem;
-        }
-        
-        .navbar .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-        
-        .navbar nav a {
-            color: #4a5568;
-            text-decoration: none;
-            margin-left: 2rem;
-            font-size: 0.95rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar nav a:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateY(-1px);
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 8rem auto 2rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 3rem;
-        }
-        
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .result-section {
-            margin-bottom: 2rem;
-            padding: 2rem;
-            background: rgba(102, 126, 234, 0.05);
-            border-radius: 16px;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-        }
-        
-        .section-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
-        }
-        
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .result-item {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            text-align: center;
-        }
-        
-        .result-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #666;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .result-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2d3748;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .result-description {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.5rem;
-        }
-        
-        .input-summary {
-            background: rgba(255, 255, 255, 0.6);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-top: 1rem;
-        }
-        
-        .input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        
-        .input-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-        }
-        
-        .input-label {
-            font-weight: 500;
-            color: #4a5568;
-        }
-        
-        .input-value {
-            font-weight: 600;
-            color: #2d3748;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-        
-        .btn {
-            padding: 0.8rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            border: none;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.8);
-            color: #4a5568;
-            border: 2px solid rgba(102, 126, 234, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-1px);
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: #666;
-            font-size: 1.1rem;
-        }
-        
-        .error {
-            text-align: center;
-            padding: 3rem;
-            color: #e53e3e;
-            font-size: 1.1rem;
-        }
-        
-        /* Calendar Styles */
-        .calendar-section {
-            margin-bottom: 2rem;
-        }
-        
-        .calendar-container {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-top: 1rem;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-        }
-        
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(102, 126, 234, 0.1);
-        }
-        
-        .cycle-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(102, 126, 234, 0.05);
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            margin-bottom: 1rem;
-        }
-        
-        .cycle-info-row {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .cycle-stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .cycle-stat-label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.3rem;
-        }
-        
-        .cycle-stat-value {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2d3748;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .cycle-stat-unit {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #666;
-            margin-top: 0.2rem;
-        }
-        
-        .calendar-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2d3748;
-        }
-        
-        .calendar-nav {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .nav-btn {
-            background: rgba(102, 126, 234, 0.1);
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 500;
-            color: #667eea;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-btn:hover {
-            background: rgba(102, 126, 234, 0.2);
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        
-        .calendar-day-header {
-            background: rgba(102, 126, 234, 0.8);
-            color: white;
-            padding: 1rem 0.5rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .calendar-day {
-            background: white;
-            min-height: 80px;
-            padding: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .calendar-day:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
-        
-        .calendar-day.other-month {
-            background: rgba(0, 0, 0, 0.02);
-            color: #ccc;
-        }
-        
-        .calendar-day.today {
-            background: rgba(102, 126, 234, 0.1);
-            border: 2px solid #667eea;
-        }
-        
-        .day-number {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-        
-        .fertility-indicator {
-            width: 100%;
-            text-align: center;
-            font-size: 0.7rem;
-            font-weight: 500;
-            padding: 0.2rem;
-            border-radius: 4px;
-            margin-top: auto;
-        }
-        
-        .fertility-low {
-            background: rgba(156, 163, 175, 0.3);
-            color: #6b7280;
-        }
-        
-        .fertility-medium {
-            background: rgba(251, 191, 36, 0.3);
-            color: #d97706;
-        }
-        
-        .fertility-high {
-            background: rgba(34, 197, 94, 0.3);
-            color: #16a34a;
-        }
-        
-        .fertility-peak {
-            background: rgba(239, 68, 68, 0.3);
-            color: #dc2626;
-            font-weight: 600;
-        }
-        
-        .fertility-very-low {
-            background: rgba(229, 231, 235, 0.5);
-            color: #9ca3af;
-        }
-        
-        .ovulation-day {
-            position: relative;
-        }
-        
-        .ovulation-day::after {
-            content: "🥚";
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            font-size: 0.8rem;
-        }
-        
-        .period-day {
-            background: rgba(239, 68, 68, 0.1);
-            border-left: 3px solid #dc2626;
-        }
-        
-        .cycle-start-day {
-            position: relative;
-            background: rgba(59, 130, 246, 0.1);
-            border: 2px solid #3b82f6;
-        }
-        
-        .cycle-start-day::before {
-            content: "🔄";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            font-size: 0.8rem;
-        }
-        
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(102, 126, 234, 0.1);
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-        }
-        
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-        
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 1.5rem;
-            }
-            .container {
-                margin: 6rem 1rem 2rem;
-                padding: 2rem 1.5rem;
-            }
-            .page-title {
-                font-size: 2rem;
-            }
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            .btn {
-                width: 200px;
-            }
-            .calendar-container {
-                padding: 1rem;
-            }
-            .calendar-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            .calendar-day {
-                min-height: 60px;
-                padding: 0.3rem;
-            }
-            .fertility-indicator {
-                font-size: 0.6rem;
-                padding: 0.1rem;
-            }
-            .legend {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            .cycle-info-row {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fertility Prediction Results - Fertilemate</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #2d3748;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      color: #2d3748;
+      padding: 1.2rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      margin-bottom: 2rem;
+    }
+
+    .navbar .logo {
+      font-size: 1.8rem; font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .navbar nav a {
+      color: #4a5568; text-decoration: none; margin-left: 2rem;
+      font-size: 0.95rem; font-weight: 500; padding: 0.5rem 1rem;
+      border-radius: 8px; transition: all 0.3s ease;
+    }
+    .navbar nav a:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; transform: translateY(-1px);
+    }
+
+    .container {
+      max-width: 900px; margin: 8rem auto 2rem;
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px);
+      border-radius: 24px; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18); padding: 3rem;
+    }
+
+    .page-title {
+      font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .result-section { margin-bottom: 2rem; padding: 2rem; background: rgba(102, 126, 234, 0.05);
+      border-radius: 16px; border: 1px solid rgba(102, 126, 234, 0.1); }
+
+    .section-title { font-size: 1.4rem; font-weight: 600; color: #2d3748; margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem; border-bottom: 2px solid rgba(102, 126, 234, 0.2); }
+
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+
+    .result-item {
+      background: rgba(255, 255, 255, 0.8); padding: 1.5rem; border-radius: 12px;
+      border: 1px solid rgba(102, 126, 234, 0.1); text-align: center;
+    }
+
+    .result-label { font-size: 0.9rem; font-weight: 500; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;}
+    .result-value { font-size: 1.8rem; font-weight: 700; color: #2d3748;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .result-description { font-size: 0.85rem; color: #666; margin-top: 0.5rem; }
+
+    .input-summary { background: rgba(255, 255, 255, 0.6); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; }
+    .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .input-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid rgba(102, 126, 234, 0.1); }
+    .input-label { font-weight: 500; color: #4a5568; }
+    .input-value { font-weight: 600; color: #2d3748; }
+
+    .action-buttons { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
+    .btn { padding: 0.8rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; text-align: center; border: none; text-transform: uppercase; letter-spacing: 0.5px; }
+    .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.8); color: #4a5568; border: 2px solid rgba(102, 126, 234, 0.2); }
+    .btn-secondary:hover { background: rgba(102, 126, 234, 0.1); transform: translateY(-1px); }
+
+    .loading { text-align: center; padding: 3rem; color: #666; font-size: 1.1rem; }
+    .error { text-align: center; padding: 3rem; color: #e53e3e; font-size: 1.1rem; }
+
+    /* --- Calendar Styles --- */
+    .calendar-section { margin-bottom: 2rem; }
+    .calendar-container { background: rgba(255, 255, 255, 0.8); border-radius: 16px; padding: 2rem; margin-top: 1rem; border: 1px solid rgba(102, 126, 234, 0.1); }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid rgba(102, 126, 234, 0.1); }
+
+    .cycle-info { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; background: rgba(102, 126, 234, 0.05); padding: 1rem; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.1); margin-bottom: 1rem; }
+    .cycle-info-row { display: flex; gap: 2rem; align-items: center; }
+    .cycle-stat { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .cycle-stat-label { font-size: 0.8rem; font-weight: 500; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+    .cycle-stat-value { font-size: 1.4rem; font-weight: 700; color: #2d3748;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .cycle-stat-unit { font-size: 0.9rem; font-weight: 500; color: #666; margin-top: 0.2rem; }
+
+    .calendar-title { font-size: 1.5rem; font-weight: 600; color: #2d3748; }
+    .calendar-nav { display: flex; gap: 1rem; }
+    .nav-btn { background: rgba(102, 126, 234, 0.1); border: none; border-radius: 8px; padding: 0.5rem 1rem; cursor: pointer; font-weight: 500; color: #667eea; transition: all 0.3s ease; }
+    .nav-btn:hover { background: rgba(102, 126, 234, 0.2); }
+
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: rgba(102, 126, 234, 0.1); border-radius: 12px; overflow: hidden; }
+    .calendar-day-header { background: rgba(102, 126, 234, 0.8); color: white; padding: 1rem 0.5rem; text-align: center; font-weight: 600; font-size: 0.9rem; }
+
+    .calendar-day {
+      background: white; min-height: 80px; padding: 0.5rem; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start; position: relative; transition: all 0.3s ease; cursor: pointer;
+    }
+    .calendar-day:hover { background: rgba(102, 126, 234, 0.05); }
+    .calendar-day.other-month { background: rgba(0, 0, 0, 0.02); color: #ccc; }
+    .calendar-day.today { background: rgba(102, 126, 234, 0.1); border: 2px solid #667eea; }
+    .day-number { font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem; }
+
+    .fertility-indicator { width: 100%; text-align: center; font-size: 0.7rem; font-weight: 500; padding: 0.2rem; border-radius: 4px; margin-top: auto; }
+    .fertility-low { background: rgba(156, 163, 175, 0.3); color: #6b7280; }
+    .fertility-medium { background: rgba(251, 191, 36, 0.3); color: #d97706; }
+    .fertility-high { background: rgba(34, 197, 94, 0.3); color: #16a34a; }
+    .fertility-peak { background: rgba(239, 68, 68, 0.3); color: #dc2626; font-weight: 600; }
+    .fertility-very-low { background: rgba(229, 231, 235, 0.5); color: #9ca3af; }
+
+    /* --- Calendar color coding (NO period highlight) --- */
+    .fertility-window { background: rgba(16, 185, 129, 0.18); }
+    .fertility-window-start { border-left: 3px solid #16a34a; }
+    .fertility-window-end   { border-right: 3px solid #16a34a; }
+
+    .ovulation-day { position: relative; background: rgba(234, 179, 8, 0.18); border: 2px solid #eab308; }
+    .ovulation-day::after { content: "🥚"; position: absolute; top: 2px; right: 2px; font-size: 0.8rem; }
+
+    .cycle-start-day { position: relative; background: rgba(59, 130, 246, 0.10); border: 2px solid #3b82f6; }
+    .cycle-start-day::before { content: "🔄"; position: absolute; top: 2px; left: 2px; font-size: 0.8rem; }
+
+    /* Whole-cycle highlight (start → start + CycleLength - 1) */
+    .cycle-range {
+      background: rgba(99, 102, 241, 0.10); /* indigo tint */
+      box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.25);
+    }
+    .cycle-range-start { border-left: 3px solid #6366f1; }
+    .cycle-range-end   { border-right: 3px solid #6366f1; }
+
+    /* Ensure fertile window fully overrides any cycle tint if both would apply */
+    .cycle-range.fertility-window       { background: rgba(16,185,129,0.18); box-shadow: none; }
+    .cycle-range.fertility-window-start { border-left: 3px solid #16a34a; box-shadow: none; }
+    .cycle-range.fertility-window-end   { border-right: 3px solid #16a34a; box-shadow: none; }
+
+    @media (max-width: 768px) {
+      .navbar { padding: 1rem 1.5rem; }
+      .container { margin: 6rem 1rem 2rem; padding: 2rem 1.5rem; }
+      .page-title { font-size: 2rem; }
+      .action-buttons { flex-direction: column; align-items: center; }
+      .btn { width: 200px; }
+      .calendar-container { padding: 1rem; }
+      .calendar-header { flex-direction: column; gap: 1rem; text-align: center; }
+      .calendar-day { min-height: 60px; padding: 0.3rem; }
+      .fertility-indicator { font-size: 0.6rem; padding: 0.1rem; }
+      .legend { flex-direction: column; align-items: center; gap: 0.5rem; }
+      .cycle-info-row { flex-direction: column; gap: 1rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">Fertilemate</div>
-        <nav>
-            <a href="/">Dashboard</a>
-        </nav>
-    </div>
+  <div class="navbar">
+    <div class="logo">Fertilemate</div>
+    <nav><a href="/">Dashboard</a></nav>
+  </div>
 
-    <div class="container">
-        <h1 class="page-title">🌱 Fertility Prediction Results</h1>
-        
-        <div id="results-content">
-            <div class="loading">
-                <div>🔄 Loading your fertility prediction results...</div>
+  <div class="container">
+    <h1 class="page-title">🌱 Fertility Prediction Results</h1>
+    <div id="results-content">
+      <div class="loading">
+        <div>🔄 Loading your fertility prediction results...</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const resultsContent = document.getElementById('results-content');
+
+      try {
+        const predictionResult = sessionStorage.getItem('fertilityPredictionResult');
+        const inputData = sessionStorage.getItem('fertilityInputData');
+
+        if (!predictionResult || !inputData) {
+          resultsContent.innerHTML = `
+            <div class="error">
+              <div>❌ No prediction data found</div>
+              <div style="margin-top: 1rem; font-size: 0.9rem;">Please go back and run a new prediction.</div>
             </div>
+          `;
+          return;
+        }
+
+        const result = JSON.parse(predictionResult);
+        const input = JSON.parse(inputData);
+
+        resultsContent.innerHTML = `
+          <div class="result-section calendar-section">
+            <h3 class="section-title">📅 Fertility Calendar</h3>
+            ${buildCalendar(result)}
+          </div>
+
+          <div class="action-buttons">
+            <button id="downloadPdfBtn" class="btn btn-primary">Download PDF</button>
+            <a href="/" class="btn btn-secondary">Dashboard</a>
+          </div>
+        `;
+
+        initializeCalendarNavigation(result);
+
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        if (downloadBtn) {
+          downloadBtn.addEventListener('click', function () {
+            downloadResultsAsPDF(result);
+          });
+        }
+      } catch (error) {
+        console.error('Error loading results:', error);
+        resultsContent.innerHTML = `
+          <div class="error">
+            <div>❌ Error loading results</div>
+            <div style="margin-top: 1rem; font-size: 0.9rem;">There was an error displaying your results. Please try again.</div>
+            <div class="action-buttons">
+              <a href="/fertility_predict" class="btn btn-primary">New Prediction</a>
+            </div>
+          </div>
+        `;
+      }
+    });
+
+    function buildResultItems(result) {
+      let items = '';
+      for (const [key, value] of Object.entries(result)) {
+        if (key !== 'success') {
+          items += `
+            <div class="result-item">
+              <div class="result-label">${formatLabel(key)}</div>
+              <div class="result-value">${formatValue(value)}</div>
+            </div>
+          `;
+        }
+      }
+      return items;
+    }
+
+    function buildInputSummary(input) {
+      let items = '';
+      for (const [key, value] of Object.entries(input)) {
+        items += `
+          <div class="input-item">
+            <span class="input-label">${formatLabel(key)}</span>
+            <span class="input-value">${formatInputValue(key, value)}</span>
+          </div>
+        `;
+      }
+      return items;
+    }
+
+    function formatLabel(key) {
+      return key.replace(/_/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase())
+        .replace(/Lmp/g, 'LMP')
+        .replace(/Pcos/g, 'PCOS');
+    }
+
+    function formatValue(value) {
+      if (typeof value === 'number') return value.toFixed(2);
+      return value;
+    }
+
+    function formatInputValue(key, value) {
+      if (key.includes('date') || key.includes('LMP')) return new Date(value).toLocaleDateString();
+      if (key === 'is_pcos') return value === 'True' ? 'Yes' : 'No';
+      return value;
+    }
+
+    // Calendar functionality
+    let currentCalendarDate = new Date();
+    let fertilityData = {};
+
+    function buildCalendar(result) {
+      fertilityData = result;
+
+      if (result.ovulationDay) {
+        currentCalendarDate = new Date(result.ovulationDay);
+      } else if (result.fertileWindow && result.fertileWindow.start) {
+        currentCalendarDate = new Date(result.fertileWindow.start);
+      } else if (result.start_cycle_date) {
+        currentCalendarDate = new Date(result.start_cycle_date);
+      }
+
+      return `
+        <div class="calendar-container">
+          ${generateCycleInfo(result)}
+          <div class="calendar-header">
+            <div class="calendar-title" id="calendarTitle">
+              ${getMonthYearString(currentCalendarDate)}
+            </div>
+            <div class="calendar-nav">
+              <button class="nav-btn" onclick="navigateCalendar(-1)">‹ Previous</button>
+              <button class="nav-btn" onclick="navigateCalendar(1)">Next ›</button>
+            </div>
+          </div>
+          <div id="calendarGrid">
+            ${generateCalendarGrid(currentCalendarDate, result)}
+          </div>
+          ${generateLegend()}
         </div>
-    </div>
+      `;
+    }
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const resultsContent = document.getElementById('results-content');
-            
-            try {
-                // Get data from sessionStorage
-                const predictionResult = sessionStorage.getItem('fertilityPredictionResult');
-                const inputData = sessionStorage.getItem('fertilityInputData');
-                
-                if (!predictionResult || !inputData) {
-                    resultsContent.innerHTML = `
-                        <div class="error">
-                            <div>❌ No prediction data found</div>
-                            <div style="margin-top: 1rem; font-size: 0.9rem;">Please go back and run a new prediction.</div>
-                            
-                        </div>
-                    `;
-                    return;
-                }
-                
-                const result = JSON.parse(predictionResult);
-                const input = JSON.parse(inputData);
-                
-                // Build the results display
-                resultsContent.innerHTML = `
-                    <div class="result-section calendar-section">
-                        <h3 class="section-title">📅 Fertility Calendar</h3>
-                        ${buildCalendar(result)}
-                    </div>
-                
-                    
-                    <div class="action-buttons">
-                        <button id="downloadPdfBtn" class="btn btn-primary">Download PDF</button>
-                        <a href="/" class="btn btn-secondary">Dashboard</a>
-                    </div>
-                `;
-                
-                // Initialize calendar navigation
-                initializeCalendarNavigation(result);
-                
-                // Wire up Download PDF
-                const downloadBtn = document.getElementById('downloadPdfBtn');
-                if (downloadBtn) {
-                    downloadBtn.addEventListener('click', function() {
-                        downloadResultsAsPDF(result);
-                    });
-                }
-                
-            } catch (error) {
-                console.error('Error loading results:', error);
-                resultsContent.innerHTML = `
-                    <div class="error">
-                        <div>❌ Error loading results</div>
-                        <div style="margin-top: 1rem; font-size: 0.9rem;">There was an error displaying your results. Please try again.</div>
-                        <div class="action-buttons">
-                            <a href="/fertility_predict" class="btn btn-primary">New Prediction</a>
-                        </div>
-                    </div>
-                `;
-            }
-        });
-        
-        function buildResultItems(result) {
-            let items = '';
-            
-            // Display all result properties
-            for (const [key, value] of Object.entries(result)) {
-                if (key !== 'success') {  // Skip success flag
-                    items += `
-                        <div class="result-item">
-                            <div class="result-label">${formatLabel(key)}</div>
-                            <div class="result-value">${formatValue(value)}</div>
-                        </div>
-                    `;
-                }
-            }
-            
-            return items;
-        }
-        
-        function buildInputSummary(input) {
-            let items = '';
-            
-            // Group and display input data
-            for (const [key, value] of Object.entries(input)) {
-                items += `
-                    <div class="input-item">
-                        <span class="input-label">${formatLabel(key)}</span>
-                        <span class="input-value">${formatInputValue(key, value)}</span>
-                    </div>
-                `;
-            }
-            
-            return items;
-        }
-        
-        function formatLabel(key) {
-            return key.replace(/_/g, ' ')
-                     .replace(/\b\w/g, l => l.toUpperCase())
-                     .replace(/Lmp/g, 'LMP')
-                     .replace(/Pcos/g, 'PCOS');
-        }
-        
-        function formatValue(value) {
-            if (typeof value === 'number') {
-                return value.toFixed(2);
-            }
-            return value;
-        }
-        
-        function formatInputValue(key, value) {
-            if (key.includes('date') || key.includes('LMP')) {
-                return new Date(value).toLocaleDateString();
-            }
-            if (key === 'is_pcos') {
-                return value === 'True' ? 'Yes' : 'No';
-            }
-            return value;
-        }
-        
-        // Calendar functionality
-        let currentCalendarDate = new Date();
-        let fertilityData = {};
-        
-        function buildCalendar(result) {
-            // Store fertility data for calendar navigation
-            fertilityData = result;
-            
-            // Set initial calendar date based on fertile window or ovulation day
-            if (result.ovulationDay) {
-                currentCalendarDate = new Date(result.ovulationDay);
-            } else if (result.fertileWindow && result.fertileWindow.start) {
-                currentCalendarDate = new Date(result.fertileWindow.start);
-            }
-            
-            return `
-                <div class="calendar-container">
-                    ${generateCycleInfo(result)}
-                    <div class="calendar-header">
-                        <div class="calendar-title" id="calendarTitle">
-                            ${getMonthYearString(currentCalendarDate)}
-                        </div>
-                        <div class="calendar-nav">
-                            <button class="nav-btn" onclick="navigateCalendar(-1)">‹ Previous</button>
-                            <button class="nav-btn" onclick="navigateCalendar(1)">Next ›</button>
-                        </div>
-                    </div>
-                    <div id="calendarGrid">
-                        ${generateCalendarGrid(currentCalendarDate, result)}
-                    </div>
-                    ${generateLegend()}
-                </div>
-            `;
-        }
-        
-        function generateCalendarGrid(date, result) {
-            const year = date.getFullYear();
-            const month = date.getMonth();
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const firstDayOfWeek = firstDay.getDay();
-            const daysInMonth = lastDay.getDate();
-            
-            let grid = `
-                <div class="calendar-grid">
-                    <div class="calendar-day-header">Sun</div>
-                    <div class="calendar-day-header">Mon</div>
-                    <div class="calendar-day-header">Tue</div>
-                    <div class="calendar-day-header">Wed</div>
-                    <div class="calendar-day-header">Thu</div>
-                    <div class="calendar-day-header">Fri</div>
-                    <div class="calendar-day-header">Sat</div>
-            `;
-            
-            // Previous month's days
-            const prevMonth = new Date(year, month - 1, 0);
-            const prevMonthDays = prevMonth.getDate();
-            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-                const dayNum = prevMonthDays - i;
-                grid += `<div class="calendar-day other-month">
-                    <div class="day-number">${dayNum}</div>
-                </div>`;
-            }
-            
-            // Current month's days
-            for (let day = 1; day <= daysInMonth; day++) {
-                const currentDate = new Date(year, month, day);
-                const dateString = formatDateForComparison(currentDate);
-                const isToday = isDateToday(currentDate);
-                const fertilityInfo = getFertilityInfo(currentDate, result);
-                
-                let dayClasses = 'calendar-day';
-                if (isToday) dayClasses += ' today';
-                if (fertilityInfo.isOvulation) dayClasses += ' ovulation-day';
-                if (fertilityInfo.isPeriod) dayClasses += ' period-day';
-                if (fertilityInfo.isCycleStart) dayClasses += ' cycle-start-day';
-                
-                grid += `<div class="${dayClasses}">
-                    <div class="day-number">${day}</div>
-                    ${fertilityInfo.indicator}
-                </div>`;
-            }
-            
-            // Next month's days to fill the grid
-            const totalCells = Math.ceil((firstDayOfWeek + daysInMonth) / 7) * 7;
-            const remainingCells = totalCells - (firstDayOfWeek + daysInMonth);
-            for (let day = 1; day <= remainingCells; day++) {
-                grid += `<div class="calendar-day other-month">
-                    <div class="day-number">${day}</div>
-                </div>`;
-            }
-            
-            grid += '</div>';
-            return grid;
-        }
-        
-        function getFertilityInfo(date, result) {
-            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
-            const monthDay = dateStr.replace(',', '');
-            
-            let info = {
-                indicator: '',
-                isOvulation: false,
-                isPeriod: false,
-                isCycleStart: false
-            };
-            
-            // Check if it's ovulation day
-            if (result.ovulationDay) {
-                const ovulationDate = new Date(result.ovulationDay);
-                if (isSameDate(date, ovulationDate)) {
-                    info.isOvulation = true;
-                }
-            }
-            
-            // Check conception probability
-            if (result.conceptionProbability) {
-                const conception = result.conceptionProbability.find(item => {
-                    return item.date === monthDay;
-                });
-                
-                if (conception) {
-                    const probability = conception.probability.toLowerCase();
-                    let className = '';
-                    let text = '';
-                    
-                    if (probability.includes('very low')) {
-                        className = 'fertility-very-low';
-                        text = 'Very Low';
-                    } else if (probability.includes('low')) {
-                        className = 'fertility-low';
-                        text = probability.includes('~4%') ? '4%' : '10%';
-                    } else if (probability.includes('medium')) {
-                        className = 'fertility-medium';
-                        text = '15%';
-                    } else if (probability.includes('peak')) {
-                        className = 'fertility-peak';
-                        text = 'Peak 33%';
-                    } else if (probability.includes('high')) {
-                        className = 'fertility-high';
-                        text = probability.includes('~30%') ? '30%' : '27%';
-                    }
-                    
-                    if (className) {
-                        info.indicator = `<div class="fertility-indicator ${className}">${text}</div>`;
-                    }
-                }
-            }
-            
-            // --- Updated logic for period/cycle spanning months ---
-            if (result.start_cycle_date && result.insights && result.insights.PeriodDuration) {
-                const cycleStart = new Date(result.start_cycle_date);
-                const periodDuration = parseInt(result.insights.PeriodDuration);
-                const periodEnd = new Date(cycleStart);
-                periodEnd.setDate(periodEnd.getDate() + periodDuration - 1);
-                // If the current date is within the period range, mark as period
-                if (date >= cycleStart && date <= periodEnd) {
-                    info.isPeriod = true;
-                }
-                // If the current date is the cycle start, mark as cycle start
-                if (isSameDate(date, cycleStart)) {
-                    info.isCycleStart = true;
-                }
-            }
-            
-            return info;
-        }
-        
-        function generateCycleInfo(result) {
-            const cycleLength = result.insights && result.insights.CycleLength ? result.insights.CycleLength : 'N/A';
-            const periodDuration = result.insights && result.insights.PeriodDuration ? result.insights.PeriodDuration : 'N/A';
-            const cycleRegularity = result.cycleRegularity || 'Unknown';
-            
-            // Calculate next expected period date if cycle start and length are available
-            let nextPeriodDate = 'N/A';
-            if (result.start_cycle_date && cycleLength !== 'N/A') {
-                const cycleStart = new Date(result.start_cycle_date);
-                const nextPeriod = new Date(cycleStart);
-                nextPeriod.setDate(nextPeriod.getDate() + parseInt(cycleLength) + parseInt(periodDuration));
-                nextPeriodDate = nextPeriod.toLocaleDateString('en-US', { 
-                    weekday: 'short', 
-                    month: 'short', 
-                    day: 'numeric' 
-                });
-            }
-            
-            return `
-                <div class="cycle-info">
-                    <div class="cycle-info-row">
-                        <div class="cycle-stat">
-                            <div class="cycle-stat-label">Cycle Length</div>
-                            <div class="cycle-stat-value">${cycleLength}</div>
-                            <div class="cycle-stat-unit">${cycleLength !== 'N/A' ? 'days' : ''}</div>
-                        </div>
-                        <div class="cycle-stat">
-                            <div class="cycle-stat-label">Period Duration</div>
-                            <div class="cycle-stat-value">${periodDuration}</div>
-                            <div class="cycle-stat-unit">${periodDuration !== 'N/A' ? 'days' : ''}</div>
-                        </div>
-                        <div class="cycle-stat">
-                            <div class="cycle-stat-label">Cycle Regularity</div>
-                            <div class="cycle-stat-value">${cycleRegularity}</div>
-                        </div>
-                        <div class="cycle-stat">
-                            <div class="cycle-stat-label">Next Period</div>
-                            <div class="cycle-stat-value" style="font-size: 1rem;">${nextPeriodDate}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function generateLegend() {
-            return `
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color fertility-very-low"></div>
-                        <span>Very Low Fertility</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color fertility-low"></div>
-                        <span>Low Fertility</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color fertility-medium"></div>
-                        <span>Medium Fertility</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color fertility-high"></div>
-                        <span>High Fertility</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color fertility-peak"></div>
-                        <span>Peak Fertility</span>
-                    </div>
-                    <div class="legend-item">
-                        <span>🥚 Ovulation Day</span>
-                    </div>
-                    <div class="legend-item">
-                        <span>🔄 Cycle Start Date</span>
-                    </div>
-                </div>
-            `;
-        }
-        
-        function initializeCalendarNavigation(result) {
-            // Calendar navigation is handled by onclick functions
-        }
-        
-        function navigateCalendar(direction) {
-            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
-            
-            // Update calendar title
-            document.getElementById('calendarTitle').textContent = getMonthYearString(currentCalendarDate);
-            
-            // Update calendar grid
-            document.getElementById('calendarGrid').innerHTML = generateCalendarGrid(currentCalendarDate, fertilityData);
-        }
-        
-        function downloadResultsAsPDF(result) {
-            const source = document.getElementById('results-content');
-            if (!source) return;
-            const filename = `Fertility_Results_${new Date().toISOString().slice(0,10)}.pdf`;
+    function generateCalendarGrid(date, result) {
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const firstDayOfWeek = firstDay.getDay();
+      const daysInMonth = lastDay.getDate();
 
-            // Clone content and remove action buttons so they don't appear in the PDF
-            const clone = source.cloneNode(true);
-            clone.querySelectorAll('.action-buttons, #downloadPdfBtn').forEach(el => el.remove());
+      let grid = `
+        <div class="calendar-grid">
+          <div class="calendar-day-header">Sun</div>
+          <div class="calendar-day-header">Mon</div>
+          <div class="calendar-day-header">Tue</div>
+          <div class="calendar-day-header">Wed</div>
+          <div class="calendar-day-header">Thu</div>
+          <div class="calendar-day-header">Fri</div>
+          <div class="calendar-day-header">Sat</div>
+      `;
 
-            // Render offscreen to measure exact size without affecting UI
-            const tempWrapper = document.createElement('div');
-            tempWrapper.style.position = 'fixed';
-            tempWrapper.style.left = '-10000px';
-            tempWrapper.style.top = '0';
-            tempWrapper.style.width = source.offsetWidth + 'px';
-            tempWrapper.appendChild(clone);
-            document.body.appendChild(tempWrapper);
+      // Previous month's trailing days
+      const prevMonth = new Date(year, month - 1, 0);
+      const prevMonthLastDay = new Date(year, month, 0); // e.g., for May → Apr 30
+      const prevMonthDays = prevMonthLastDay.getDate();
+      for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+        const dayNum = prevMonthDays - i; // e.g., 27, 28, 29, 30 before May 1 (Thu)
+        grid += `<div class="calendar-day other-month">
+            <div class="day-number">${dayNum}</div>
+        </div>`;
+      }
 
-            const elementWidth = Math.ceil(clone.scrollWidth);
-            const elementHeight = Math.ceil(clone.scrollHeight);
-            const orientation = elementWidth > elementHeight ? 'landscape' : 'portrait';
+      // Current month's days
+      for (let day = 1; day <= daysInMonth; day++) {
+        const currentDate = new Date(year, month, day);
+        const isToday = isDateToday(currentDate);
+        const fertilityInfo = getFertilityInfo(currentDate, result);
 
-            const options = {
-                margin: 0,
-                filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: null },
-                jsPDF: { unit: 'px', format: [elementWidth, elementHeight], orientation },
-                pagebreak: { mode: 'avoid-all' }
-            };
+        let dayClasses = 'calendar-day';
+        if (isToday) dayClasses += ' today';
 
-            html2pdf().set(options).from(clone).save().finally(() => {
-                document.body.removeChild(tempWrapper);
-            });
+        // Skip cycle tint on fertile-window days
+        if (!fertilityInfo.inFertileWindow) {
+          if (fertilityInfo.inCycleRange)      dayClasses += ' cycle-range';
+          if (fertilityInfo.isCycleRangeStart && !fertilityInfo.isFertileStart)
+            dayClasses += ' cycle-range-start';
+          if (fertilityInfo.isCycleRangeEnd && !fertilityInfo.isFertileEnd)
+            dayClasses += ' cycle-range-end';
         }
-        
-        function getMonthYearString(date) {
-            return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        // Highlights
+        if (fertilityInfo.inFertileWindow) dayClasses += ' fertility-window';
+        if (fertilityInfo.isFertileStart)  dayClasses += ' fertility-window-start';
+        if (fertilityInfo.isFertileEnd)    dayClasses += ' fertility-window-end';
+        if (fertilityInfo.isOvulation)     dayClasses += ' ovulation-day';
+        if (fertilityInfo.isCycleStart)    dayClasses += ' cycle-start-day';
+
+        grid += `
+          <div class="${dayClasses}">
+            <div class="day-number">${day}</div>
+            ${fertilityInfo.indicator}
+          </div>
+        `;
+      }
+
+      // Next month's leading days to fill grid
+      const totalCells = Math.ceil((firstDayOfWeek + daysInMonth) / 7) * 7;
+      const remainingCells = totalCells - (firstDayOfWeek + daysInMonth);
+      for (let day = 1; day <= remainingCells; day++) {
+        grid += `<div class="calendar-day other-month"><div class="day-number">${day}</div></div>`;
+      }
+
+      grid += '</div>';
+      return grid;
+    }
+
+    // Color logic: fertile window, ovulation, cycle start, and whole cycle range (NO period)
+    function getFertilityInfo(date, result) {
+      let info = {
+        indicator: '',
+        isOvulation: false,
+        isCycleStart: false,
+        inFertileWindow: false,
+        isFertileStart: false,
+        isFertileEnd: false,
+
+        inCycleRange: false,
+        isCycleRangeStart: false,
+        isCycleRangeEnd: false,
+      };
+
+      const norm = d => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12);
+
+      // Ovulation day
+      if (result.ovulationDay) {
+        const ovulationDate = norm(new Date(result.ovulationDay));
+        if (isSameDate(norm(date), ovulationDate)) info.isOvulation = true;
+      }
+
+      // Fertile window
+      if (result.fertileWindow && result.fertileWindow.start && result.fertileWindow.end) {
+        const fwStart = norm(new Date(result.fertileWindow.start));
+        const fwEnd   = norm(new Date(result.fertileWindow.end));
+        const d = norm(date);
+
+        if (d >= fwStart && d <= fwEnd) info.inFertileWindow = true;
+        if (isSameDate(d, fwStart)) info.isFertileStart = true;
+        if (isSameDate(d, fwEnd))   info.isFertileEnd = true;
+      }
+
+      // Cycle start (single-day marker)
+      if (result.start_cycle_date) {
+        const cycleStart = norm(new Date(result.start_cycle_date));
+        if (isSameDate(norm(date), cycleStart)) info.isCycleStart = true;
+      }
+
+      // Whole cycle range (start → +CycleLength - 1)
+      const cycleLengthRaw =
+        (result.insights && (result.insights.CycleLength || result.insights.cycleLength)) ||
+        result.cycleLength || result.CycleLength;
+
+      if (result.start_cycle_date && cycleLengthRaw) {
+        const cycleLen = parseInt(cycleLengthRaw, 10);
+        if (!Number.isNaN(cycleLen) && cycleLen > 0) {
+          const s = norm(new Date(result.start_cycle_date));
+          const e = norm(new Date(s));
+          e.setDate(e.getDate() + cycleLen - 1);
+
+          const d = norm(date);
+
+          if (d >= s && d <= e) {
+            info.inCycleRange = true;
+            if (isSameDate(d, s)) info.isCycleRangeStart = true;
+            if (isSameDate(d, e)) info.isCycleRangeEnd = true;
+          }
         }
-        
-        function formatDateForComparison(date) {
-            return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+      }
+
+      // Optional indicator badge
+      if (result.conceptionProbability) {
+        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).replace(',', '');
+        const conception = result.conceptionProbability.find(item => item.date === dateStr);
+        if (conception) {
+          const p = conception.probability.toLowerCase();
+          let className = '', text = '';
+          if (p.includes('very low')) { className = 'fertility-very-low'; text = 'Very Low'; }
+          else if (p.includes('low')) { className = 'fertility-low'; text = p.includes('~4%') ? '4%' : '10%'; }
+          else if (p.includes('medium')) { className = 'fertility-medium'; text = '15%'; }
+          else if (p.includes('peak')) { className = 'fertility-peak'; text = 'Peak 33%'; }
+          else if (p.includes('high')) { className = 'fertility-high'; text = p.includes('~30%') ? '30%' : '27%'; }
+
+          if (className) {
+            info.indicator = `<div class="fertility-indicator ${className}">${text}</div>`;
+          }
         }
-        
-        function isDateToday(date) {
-            const today = new Date();
-            return isSameDate(date, today);
-        }
-        
-        function isSameDate(date1, date2) {
-            return date1.getFullYear() === date2.getFullYear() &&
-                   date1.getMonth() === date2.getMonth() &&
-                   date1.getDate() === date2.getDate();
-        }
-    </script>
+      }
+
+      return info;
+    }
+
+    function generateCycleInfo(result) {
+      const cycleLength = result.insights && (result.insights.CycleLength || result.insights.cycleLength)
+        ? (result.insights.CycleLength || result.insights.cycleLength)
+        : (result.cycleLength || 'N/A');
+
+      const periodDuration = result.insights && result.insights.PeriodDuration ? result.insights.PeriodDuration : 'N/A';
+      const cycleRegularity = result.cycleRegularity || 'Unknown';
+
+      // Keep next period calc if you still want it; otherwise remove this block.
+      let nextPeriodDate = 'N/A';
+      if (result.start_cycle_date && cycleLength !== 'N/A') {
+        const cycleStart = new Date(result.start_cycle_date);
+        const nextPeriod = new Date(cycleStart);
+        nextPeriod.setDate(nextPeriod.getDate() + parseInt(cycleLength, 10) + parseInt(periodDuration || 0, 10));
+        nextPeriodDate = nextPeriod.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      }
+
+      return `
+        <div class="cycle-info">
+          <div class="cycle-info-row">
+            <div class="cycle-stat">
+              <div class="cycle-stat-label">Cycle Length</div>
+              <div class="cycle-stat-value">${cycleLength}</div>
+              <div class="cycle-stat-unit">${cycleLength !== 'N/A' ? 'days' : ''}</div>
+            </div>
+            <div class="cycle-stat">
+              <div class="cycle-stat-label">Period Duration</div>
+              <div class="cycle-stat-value">${periodDuration}</div>
+              <div class="cycle-stat-unit">${periodDuration !== 'N/A' ? 'days' : ''}</div>
+            </div>
+            <div class="cycle-stat">
+              <div class="cycle-stat-label">Cycle Regularity</div>
+              <div class="cycle-stat-value">${cycleRegularity}</div>
+            </div>
+            <div class="cycle-stat">
+              <div class="cycle-stat-label">Next Period</div>
+              <div class="cycle-stat-value" style="font-size: 1rem;">${nextPeriodDate}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function generateLegend() {
+      return `
+        <div class="legend" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(102,126,234,0.1);">
+          <div class="legend-item" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div class="legend-color" style="width:16px;height:16px;border-radius:4px;background:rgba(16,185,129,0.18);border-left:3px solid #16a34a;border-right:3px solid transparent;"></div>
+            <span>Fertile Window</span>
+          </div>
+          <div class="legend-item" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div class="legend-color" style="width:16px;height:16px;border-radius:4px;background:transparent;border-left:3px solid #16a34a;"></div>
+            <span>Fertile Window Start</span>
+          </div>
+          <div class="legend-item" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div class="legend-color" style="width:16px;height:16px;border-radius:4px;background:transparent;border-right:3px solid #16a34a;"></div>
+            <span>Fertile Window End</span>
+          </div>
+          <div class="legend-item" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div class="legend-color" style="width:16px;height:16px;border-radius:4px;background:rgba(234,179,8,0.18);border:2px solid #eab308;"></div>
+            <span>Ovulation Day</span>
+          </div>
+          <div class="legend-item" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div class="legend-color" style="width:16px;height:16px;border-radius:4px;background:rgba(59,130,246,0.10);border:2px solid #3b82f6;"></div>
+            <span>Cycle Start</span>
+          </div>
+          <div class="legend-item" style="display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+            <div class="legend-color" style="width:16px;height:16px;border-radius:4px;background:rgba(99,102,241,0.10);box-shadow: inset 0 0 0 1px rgba(99,102,241,0.25);"></div>
+            <span>Whole Cycle Range</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function initializeCalendarNavigation(_result) {}
+
+    function navigateCalendar(direction) {
+      currentCalendarDate.setMonth(currentCalendarDate.getMonth() + direction);
+      document.getElementById('calendarTitle').textContent = getMonthYearString(currentCalendarDate);
+      document.getElementById('calendarGrid').innerHTML = generateCalendarGrid(currentCalendarDate, fertilityData);
+    }
+
+    function downloadResultsAsPDF() {
+      const source = document.getElementById('results-content');
+      if (!source) return;
+      const filename = `Fertility_Results_${new Date().toISOString().slice(0,10)}.pdf`;
+
+      const clone = source.cloneNode(true);
+      clone.querySelectorAll('.action-buttons, #downloadPdfBtn').forEach(el => el.remove());
+
+      const tempWrapper = document.createElement('div');
+      tempWrapper.style.position = 'fixed';
+      tempWrapper.style.left = '-10000px';
+      tempWrapper.style.top = '0';
+      tempWrapper.style.width = source.offsetWidth + 'px';
+      tempWrapper.appendChild(clone);
+      document.body.appendChild(tempWrapper);
+
+      const elementWidth = Math.ceil(clone.scrollWidth);
+      const elementHeight = Math.ceil(clone.scrollHeight);
+      const orientation = elementWidth > elementHeight ? 'landscape' : 'portrait';
+
+      const options = {
+        margin: 0,
+        filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: null },
+        jsPDF: { unit: 'px', format: [elementWidth, elementHeight], orientation },
+        pagebreak: { mode: 'avoid-all' }
+      };
+
+      html2pdf().set(options).from(clone).save().finally(() => {
+        document.body.removeChild(tempWrapper);
+      });
+    }
+
+    function getMonthYearString(date) {
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+
+    function isDateToday(date) {
+      const today = new Date();
+      return isSameDate(date, today);
+    }
+
+    function isSameDate(date1, date2) {
+      return date1.getFullYear() === date2.getFullYear()
+        && date1.getMonth() === date2.getMonth()
+        && date1.getDate() === date2.getDate();
+    }
+  </script>
 </body>
 </html>

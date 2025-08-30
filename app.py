@@ -828,6 +828,7 @@ def predict():
         print(f"pcos_type: {pcos_type}")
 
         meal_plan = get_female_meal_plan(pcos_type)
+        print("Meal", meal_plan)
         if meal_plan:
             response_data['meal_plan'] = meal_plan
         # Persist entry

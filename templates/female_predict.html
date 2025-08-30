@@ -420,12 +420,29 @@
             }
             
             try {
+                const PCOS_TYPES = {
+                    0: "PCOS Adrenal",
+                    1: "PCOS Inflammation",
+                    2: "PCOS Metabolic",
+                    3: "PCOS Post Birth Control (Type A)",
+                    4: "PCOS Post Birth Control (Type B)",
+                    5: "PCOS Insulin Resistance"
+                };
                 const res = await fetch('/female_predict', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
                 });
                 const out = await res.json();
+                const probs = out.type_probabilities;
+                let message = "Type Probabilities:" + `${out.pcos_type}` + "\n\n";
+                for (const key in probs) {
+                    if (PCOS_TYPES[key]) {
+                    message += `${PCOS_TYPES[key]}: ${probs[key]}%\n`;
+                    }
+                }
+
+                alert(message);
                 // Send the result to the new result page using POST and then redirect
                 const form = document.createElement('form');
                 form.method = 'POST';

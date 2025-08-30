@@ -1,401 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Female Prediction Result - Fertilemate</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #2d3748;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            color: #2d3748;
-            padding: 1.2rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-        }
-        .navbar .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 8rem auto 2rem;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 3rem 2rem;
-        }
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .summary-card {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);
-            border-radius: 18px;
-            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.10);
-            padding: 2rem 2rem 2rem 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-        .summary-avatar {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-right: 1rem;
-        }
-        .summary-info {
-            flex: 1;
-        }
-        .summary-info h2 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-        .summary-info .info-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            font-size: 1.05rem;
-        }
-        .summary-info .info-list span {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: #f7fafc;
-            border-radius: 8px;
-            padding: 0.3rem 0.8rem;
-        }
-        .pcos-type {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #764ba2;
-            margin-top: 0.7rem;
-            background: #ede9fe;
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        .section-title {
-            font-size: 1.3rem;
-            color: #667eea;
-            margin-bottom: 1rem;
-            margin-top: 2.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        .probabilities {
-            margin-bottom: 2rem;
-        }
-        .prob-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.7rem;
-        }
-        .prob-label {
-            width: 220px;
-            font-size: 1rem;
-            color: #4a5568;
-        }
-        .prob-outer {
-            flex: 1;
-            background: #e9d8fd;
-            border-radius: 8px;
-            height: 18px;
-            margin: 0 0.7rem;
-            overflow: hidden;
-        }
-        .prob-inner {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            border-radius: 8px;
-            transition: width 0.7s;
-        }
-        .prob-value {
-            min-width: 40px;
-            text-align: right;
-            font-weight: 600;
-            color: #764ba2;
-        }
-        .meal-section {
-            background: #f7fafc;
-            border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.07);
-            padding: 1.5rem 1.5rem 1.2rem 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        .meal-section h3 {
-            margin-top: 0;
-            color: #667eea;
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-        .meal-section ul, .meal-section ol {
-            margin: 0.5rem 0 0 1.2rem;
-        }
-        .meal-section li {
-            margin-bottom: 0.3rem;
-        }
-        .meal-section .remark {
-            margin-top: 0.7rem;
-            color: #764ba2;
-            font-size: 0.98rem;
-            font-style: italic;
-        }
-        .back-btn {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.7rem 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .back-btn:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-        }
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 1.5rem;
-            }
-            .container {
-                margin: 6rem 1rem 2rem;
-                padding: 2rem 1rem;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            .summary-card {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.2rem 1rem;
-            }
-            .summary-avatar {
-                margin-right: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Female Prediction Result - Fertilemate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;color:#2d3748;margin:0;padding:0}
+    .navbar{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);color:#2d3748;padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 32px rgba(31,38,135,.37);border-bottom:1px solid rgba(255,255,255,.18);position:fixed;top:0;left:0;right:0;z-index:1000}
+    .navbar .logo{font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px}
+    .container{max-width:900px;margin:8rem auto 2rem;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-radius:24px;box-shadow:0 8px 32px rgba(31,38,135,.37);border:1px solid rgba(255,255,255,.18);padding:3rem 2rem}
+    h1{font-size:2.2rem;font-weight:700;text-align:center;margin-bottom:2.5rem;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .summary-card{display:flex;align-items:center;gap:2rem;background:linear-gradient(135deg,#e0e7ff 0%,#f3e8ff 100%);border-radius:18px;box-shadow:0 4px 16px rgba(102,126,234,.10);padding:2rem 2rem 2rem 1.5rem;margin-bottom:2.5rem}
+    .summary-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.5rem;font-weight:700;margin-right:1rem}
+    .summary-info{flex:1}
+    .summary-info h2{margin:0 0 .5rem 0;font-size:1.4rem;font-weight:700}
+    .summary-info .info-list{display:flex;flex-wrap:wrap;gap:1.5rem;font-size:1.05rem}
+    .summary-info .info-list span{display:flex;align-items:center;gap:.4rem;background:#f7fafc;border-radius:8px;padding:.3rem .8rem}
+    .pcos-type{font-size:1.1rem;font-weight:600;color:#764ba2;margin-top:.7rem;background:#ede9fe;padding:.4rem 1rem;border-radius:8px;display:inline-block}
+    .section-title{font-size:1.3rem;color:#667eea;margin-bottom:1rem;margin-top:2.5rem;font-weight:700;letter-spacing:.5px}
+    .probabilities{margin-bottom:2rem}
+    .prob-bar{display:flex;align-items:center;margin-bottom:.7rem}
+    .prob-label{width:220px;font-size:1rem;color:#4a5568}
+    .prob-value{min-width:40px;text-align:right;font-weight:600;color:#764ba2}
+    .meal-section{background:#f7fafc;border-radius:16px;box-shadow:0 2px 8px rgba(102,126,234,.07);padding:1.5rem 1.5rem 1.2rem 1.5rem;margin-bottom:1.5rem}
+    .meal-section h3{margin-top:0;color:#667eea;font-size:1.1rem;font-weight:700}
+    .meal-section ul,.meal-section ol{margin:.5rem 0 0 1.2rem}
+    .meal-section li{margin-bottom:.3rem}
+    .meal-section .remark{margin-top:.7rem;color:#764ba2;font-size:.98rem;font-style:italic}
+    .back-btn{display:inline-block;margin-top:2rem;padding:.7rem 2rem;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:600;text-decoration:none;transition:all .3s ease}
+    .back-btn:hover{background:linear-gradient(135deg,#764ba2 0%,#667eea 100%)}
+
+    /* NEW: kcal bits */
+    .inline-kcal{color:#4f46e5;font-weight:700;margin-left:.35rem}
+    .kcal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem}
+    .kcal-card{background:#fff;border:1px solid rgba(102,126,234,.18);border-radius:12px;padding:.8rem .9rem}
+    .kcal-card h4{margin:.1rem 0 .4rem 0;font-size:.98rem;color:#4f46e5}
+    .kcal-row{display:flex;justify-content:space-between;gap:.5rem;padding:.25rem 0;border-bottom:1px dashed rgba(0,0,0,.06)}
+    .kcal-row:last-child{border-bottom:none}
+    .muted{color:#6b7280;font-size:.95rem}
+    .estimator{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-top:.5rem}
+    .estimator label{font-size:.9rem;color:#374151;font-weight:600}
+    .estimator select,.estimator input[type="checkbox"]{width:100%;padding:.45rem .55rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
+    .estimator .total{margin-top:.8rem;font-weight:800;color:#4f46e5}
+
+    @media (max-width:768px){
+      .navbar{padding:1rem 1.5rem}
+      .container{margin:6rem 1rem 2rem;padding:2rem 1rem}
+      h1{font-size:1.5rem}
+      .summary-card{flex-direction:column;gap:1rem;padding:1.2rem 1rem}
+      .summary-avatar{margin-right:0}
+    }
+  </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">Fertilemate</div>
-        <nav>
-            <a href="/">← Back to Dashboard</a>
-        </nav>
-    </div>
-    <div class="container">
-        <h1>👩 Female PCOS Prediction Result</h1>
-        {% if result %}
-        <!-- Summary Card -->
-        <div class="summary-card">
-            <div class="summary-avatar">👩</div>
-            <div class="summary-info">
-                <h2>{{ result.name }}</h2>
-                <div class="info-list">
-                    <span title="Age">🎂 {{ result.age }} yrs</span>
-                    <span title="Height">📏 {{ result.height }} cm</span>
-                    <span title="Weight">⚖️ {{ result.weight }} kg</span>
+  <div class="navbar">
+    <div class="logo">Fertilemate</div>
+    <nav><a href="/">← Back to Dashboard</a></nav>
+  </div>
+
+  <div class="container">
+    <h1>👩 Female PCOS Prediction Result</h1>
+
+    {% if result %}
+      <!-- Summary Card -->
+      <div class="summary-card">
+        <div class="summary-avatar">👩</div>
+        <div class="summary-info">
+          <h2>{{ result.name }}</h2>
+          <div class="info-list">
+            <span title="Age">🎂 {{ result.age }} yrs</span>
+            <span title="Height">📏 {{ result.height }} cm</span>
+            <span title="Weight">⚖️ {{ result.weight }} kg</span>
+          </div>
+          <div class="pcos-type">PCOS Type: {{ result.pcos_type }}</div>
+        </div>
+      </div>
+
+      <!-- Probabilities -->
+      <div class="section-title">PCOS Type Probabilities</div>
+      <div class="probabilities">
+        {% set type_labels = [
+          'PCOS Adrenal','PCOS Inflammation','PCOS Infllammation',
+          'PCOS Post Birth Control','PCOS Post Birth Control','PCOS Insulin Resistance'
+        ] %}
+        {% for i in range(6) %}
+          <div class="prob-bar">
+            <div class="prob-label">{{ type_labels[i] }}</div>
+            <div class="prob-value">{{ result.type_probabilities[i|string]|round(1) }}%</div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Meal Plan -->
+      <div class="section-title">Personalized Meal & Lifestyle Plan</div>
+      {% set meal = result.meal_plan %}
+      {% if meal %}
+
+        {% if meal.MediterraneanDiet %}
+          <div class="meal-section">
+            <h3>Mediterranean Diet</h3>
+            <h4>PCOS Plate</h4>
+            <ul>
+              <li>Protein: {{ meal.MediterraneanDiet.PCOSPlate.Protein }}</li>
+              <li>Gentle Starch: {{ meal.MediterraneanDiet.PCOSPlate.GentleStarch }}</li>
+              <li>Non-Starchy Veg: {{ meal.MediterraneanDiet.PCOSPlate.NonStarchyVeg }}</li>
+              <li>Healthy Fat: {{ meal.MediterraneanDiet.PCOSPlate.HealthyFat }}</li>
+            </ul>
+            <h4>Suggested Menu</h4>
+            <ul>
+              {% for item in meal.MediterraneanDiet.SuggestedMenu %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+            <div class="remark">{{ meal.MediterraneanDiet.CookingTips }}</div>
+            <div class="remark">{{ meal.MediterraneanDiet.Remark }}</div>
+          </div>
+
+          {% if meal.MediterraneanDiet.CaloriesGuide %}
+          <!-- Calories Guide + Quick Estimator -->
+          <div class="meal-section">
+            <h3>Calories Guide (per “PCOS Plate” portions)</h3>
+
+            <div class="kcal-grid">
+              <div class="kcal-card">
+                <h4>Protein (per 120g cooked)</h4>
+                {% for label, kcal in meal.MediterraneanDiet.CaloriesGuide.ProteinPer120g_kcal.items() %}
+                  <div class="kcal-row"><span class="muted">{{ label }}</span><span><b>{{ kcal }}</b> kcal</span></div>
+                {% endfor %}
+              </div>
+
+              <div class="kcal-card">
+                <h4>Gentle Starch (per 120g cooked)</h4>
+                {% for label, kcal in meal.MediterraneanDiet.CaloriesGuide.CarbPer120g_kcal.items() %}
+                  <div class="kcal-row"><span class="muted">{{ label }}</span><span><b>{{ kcal }}</b> kcal</span></div>
+                {% endfor %}
+              </div>
+
+              <div class="kcal-card">
+                <h4>Non-Starchy Veg</h4>
+                <div class="kcal-row"><span class="muted">Mixed veg (per 240g)</span><span><b>{{ meal.MediterraneanDiet.CaloriesGuide.NonStarchyVegPer240g_kcal }}</b> kcal</span></div>
+              </div>
+
+              <div class="kcal-card">
+                <h4>Add-ons</h4>
+                {% for k, v in meal.MediterraneanDiet.CaloriesGuide.AddOn_kcal.items() %}
+                  {% if v is mapping %}
+                    {% for k2, kcal in v.items() %}
+                      <div class="kcal-row"><span class="muted">{{ k }} – {{ k2 }}</span><span><b>{{ kcal }}</b> kcal</span></div>
+                    {% endfor %}
+                  {% else %}
+                    <div class="kcal-row"><span class="muted">{{ k }}</span><span><b>{{ v }}</b> kcal</span></div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              <div class="kcal-card">
+                <h4>Fruit (optional)</h4>
+                {% for label, kcal in meal.MediterraneanDiet.CaloriesGuide.Fruit_kcal.items() %}
+                  <div class="kcal-row"><span class="muted">{{ label }}</span><span><b>{{ kcal }}</b> kcal</span></div>
+                {% endfor %}
+              </div>
+
+              <div class="kcal-card">
+                <h4>Healthy Fat</h4>
+                {% for label, kcal in meal.MediterraneanDiet.CaloriesGuide.HealthyFat_kcal.items() %}
+                  <div class="kcal-row"><span class="muted">{{ label }}</span><span><b>{{ kcal }}</b> kcal</span></div>
+                {% endfor %}
+              </div>
+            </div>
+
+            <!-- Estimator UI -->
+            <!-- <div style="margin-top:1rem">
+              <h3 style="margin-bottom:.4rem">Quick Meal Calorie Estimator</h3>
+              <div class="estimator">
+                <div><label for="selProtein">Protein (120g)</label><select id="selProtein"></select></div>
+                <div><label for="selCarb">Gentle Starch (120g)</label><select id="selCarb"></select></div>
+                <div><label for="selAddon">Add-on</label><select id="selAddon"></select></div>
+                <div><label for="selFruit">Fruit</label><select id="selFruit"></select></div>
+                <div style="display:flex;align-items:center;gap:.5rem;margin-top:.4rem">
+                  <input type="checkbox" id="chkFruit"/><label for="chkFruit" style="margin:0">Include fruit</label>
                 </div>
-                <div class="pcos-type">PCOS Type: {{ result.pcos_type }}</div>
-            </div>
-        </div>
-        <!-- Probabilities Section -->
-        <div class="section-title">PCOS Type Probabilities</div>
-        <div class="probabilities">
-            {% set type_labels = [
-                'PCOS Adrenal',
-                'PCOS Inflammation',
-                'PCOS Infllammation',
-                'PCOS Post Birth Control',
-                'PCOS Post Birth Control',
-                'PCOS Insulin Resistance'] %}
-            {% for i in range(6) %}
-            <div class="prob-bar">
-                <div class="prob-label">{{ type_labels[i] }}</div>
-                <!-- <div class="prob-outer">
-                    <div class="prob-inner" style="width: {{ result.type_probabilities[i|string]|float(0) }}%"></div>
-                </div> -->
-                <div class="prob-value">{{ result.type_probabilities[i|string]|round(1) }}%</div>
-            </div>
-            {% endfor %}
-        </div>
-        <!-- Meal Plan Section -->
-        <div class="section-title">Personalized Meal & Lifestyle Plan</div>
-        {% set meal = result.meal_plan %}
-        {% if meal %}
-            {% if meal.MediterraneanDiet %}
-            <div class="meal-section">
-                <h3>Mediterranean Diet</h3>
-                <h4>PCOS Plate</h4>
-                <ul>
-                    <li>Protein: {{ meal.MediterraneanDiet.PCOSPlate.Protein }}</li>
-                    <li>Gentle Starch: {{ meal.MediterraneanDiet.PCOSPlate.GentleStarch }}</li>
-                    <li>Non-Starchy Veg: {{ meal.MediterraneanDiet.PCOSPlate.NonStarchyVeg }}</li>
-                    <li>Healthy Fat: {{ meal.MediterraneanDiet.PCOSPlate.HealthyFat }}</li>
-                </ul>
-                <h4>Suggested Menu</h4>
-                <ul>
-                    {% for item in meal.MediterraneanDiet.SuggestedMenu %}
-                    <li>{{ item }}</li>
-                    {% endfor %}
-                </ul>
-                <div class="remark">{{ meal.MediterraneanDiet.CookingTips }}</div>
-                <div class="remark">{{ meal.MediterraneanDiet.Remark }}</div>
-            </div>
-            {% endif %}
-            {% if meal.MealTiming %}
-            <div class="meal-section">
-                <h3>Meal Times</h3>
-                <ul>
-                    <li><b>Breakfast:</b> {{ meal.MealTiming.Breakfast }}</li>
-                    <li><b>Lunch:</b> {{ meal.MealTiming.Lunch }}</li>
-                    <li><b>Dinner:</b> {{ meal.MealTiming.Dinner }}</li>
-                </ul>
-            </div>
-            {% endif %}
-            {% if meal.WaistMeasurementTracking %}
-            <div class="meal-section">
-                <h3>Waist Measurement Tracking</h3>
-                <ul>
-                    <li>Before Start: {{ meal.WaistMeasurementTracking.BeforeStarting }}</li>
-                    <li>Week 1: {{ meal.WaistMeasurementTracking.Week1 }}</li>
-                    <li>Week 2: {{ meal.WaistMeasurementTracking.Week2 }}</li>
-                    <li>Week 3: {{ meal.WaistMeasurementTracking.Week3 }}</li>
-                    <li>Week 4: {{ meal.WaistMeasurementTracking.Week4 }}</li>
-                </ul>
-            </div>
-            {% endif %}
-            {% if meal.ExercisePlan %}
-            <div class="meal-section">
-                <h3>Exercise Plan</h3>
-                <ul>
-                    <li>{{ meal.ExercisePlan['Option 1'] }}</li>
-                    <li>{{ meal.ExercisePlan['Option 2'] }}</li>
-                    <li>{{ meal.ExercisePlan['Option 3'] }}</li>
-                </ul>
-            </div>
-            {% endif %}
-            {% if meal.SugarFreeBreakfast %}
-            <div class="meal-section">
-                <h3>Sugar-Free Breakfast Guidelines</h3>
-                {% set sf = meal.SugarFreeBreakfast %}
-                {% set rules = sf.Guidelines if sf.Guidelines is defined else (sf.Rules if sf.Rules is defined else None) %}
-                <ul>
-                    {% if rules and rules.Timing is defined %}<li><b>Timing:</b> {{ rules.Timing }}</li>{% endif %}
-                    {% if rules and rules.Avoid is defined %}
-                        <li><b>Avoid:</b> {% if rules.Avoid is string %}{{ rules.Avoid }}{% else %}{{ rules.Avoid|join(', ') }}{% endif %}</li>
+                <div style="display:flex;align-items:center;gap:.5rem;margin-top:.2rem">
+                  <input type="checkbox" id="chkOil"/><label for="chkOil" style="margin:0">Include 1 tbsp olive oil</label>
+                </div>
+                <div class="total">Total: <span id="mealTotalKcal">0</span> kcal</div>
+              </div>
+              <div class="muted" style="margin-top:.4rem">Veggies (240g) are automatically included.</div>
+            </div> -->
+          </div>
+          {% endif %}
+        {% endif %}
+
+        {% if meal.MealTiming %}
+          <div class="meal-section">
+            <h3>Meal Times</h3>
+            <ul>
+              <li><b>Breakfast:</b> {{ meal.MealTiming.Breakfast }}</li>
+              <li><b>Lunch:</b> {{ meal.MealTiming.Lunch }}</li>
+              <li><b>Dinner:</b> {{ meal.MealTiming.Dinner }}</li>
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if meal.WaistMeasurementTracking %}
+          <div class="meal-section">
+            <h3>Waist Measurement Tracking</h3>
+            <ul>
+              <li>Before Start: {{ meal.WaistMeasurementTracking.BeforeStarting }}</li>
+              <li>Week 1: {{ meal.WaistMeasurementTracking.Week1 }}</li>
+              <li>Week 2: {{ meal.WaistMeasurementTracking.Week2 }}</li>
+              <li>Week 3: {{ meal.WaistMeasurementTracking.Week3 }}</li>
+              <li>Week 4: {{ meal.WaistMeasurementTracking.Week4 }}</li>
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if meal.ExercisePlan %}
+          <div class="meal-section">
+            <h3>Exercise Plan</h3>
+            <ul>
+              <li>{{ meal.ExercisePlan['Option 1'] }}</li>
+              <li>{{ meal.ExercisePlan['Option 2'] }}</li>
+              <li>{{ meal.ExercisePlan['Option 3'] }}</li>
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if meal.SugarFreeBreakfast %}
+          <div class="meal-section">
+            <h3>Sugar-Free Breakfast Guidelines</h3>
+            {% set sf = meal.SugarFreeBreakfast %}
+            {% set rules = sf.Guidelines if sf.Guidelines is defined else (sf.Rules if sf.Rules is defined else None) %}
+            <ul>
+              {% if rules and rules.Timing is defined %}<li><b>Timing:</b> {{ rules.Timing }}</li>{% endif %}
+              {% if rules and rules.Avoid is defined %}
+                <li><b>Avoid:</b> {% if rules.Avoid is string %}{{ rules.Avoid }}{% else %}{{ rules.Avoid|join(', ') }}{% endif %}</li>
+              {% endif %}
+              {% if rules and rules.Goal is defined %}<li><b>Goal:</b> {{ rules.Goal }}</li>{% endif %}
+              {% if sf.Focus is defined %}<li><b>Focus:</b> {{ sf.Focus }}</li>{% endif %}
+            </ul>
+
+            <h3>Breakfast Options</h3>
+            <ul>
+              {% for key, val in sf.Options.items() %}
+                <li>
+                  <b>{{ key }}:</b>
+                  {% if val is string %}
+                    {{ val }}
+                  {% else %}
+                    {# show text if present #}
+                    {% if val.text is defined %}{{ val.text }}{% endif %}
+                    {# show ingredients (support both keys) #}
+                    {% set ings = val.Ingredients if val.Ingredients is defined else (val.ingredients if val.ingredients is defined else None) %}
+                    {% if ings %}
+                      <ul>{% for ing in ings %}<li>{{ ing }}</li>{% endfor %}</ul>
                     {% endif %}
-                    {% if rules and rules.Goal is defined %}<li><b>Goal:</b> {{ rules.Goal }}</li>{% endif %}
-                    {% if sf.Focus is defined %}<li><b>Focus:</b> {{ sf.Focus }}</li>{% endif %}
-                </ul>
-                <h3>Breakfast Options</h3>
-                <ul>
-                    {% for key, val in sf.Options.items() %}
-                        <li>
-                        <b>{{ key }}:</b>
-                        {% if val is string %}
-                            {{ val }}
-                        {% elif val.Ingredients is defined %}
-                            <ul>
-                                {% for ing in val.Ingredients %}
-                                <li>{{ ing }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% if val.Instructions is defined %}<div><i>{{ val.Instructions }}</i></div>{% endif %}
-                        {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div class="remark">{{ sf.Remark }}</div>
-            </div>
-            {% endif %}
+                    {# show instructions (support both keys) #}
+                    {% set instr = val.Instructions if val.Instructions is defined else (val.instructions if val.instructions is defined else None) %}
+                    {% if instr %}<div><i>{{ instr }}</i></div>{% endif %}
+                    {# show calories if present #}
+                    {% if val.calories_kcal is defined %}
+                      <span class="inline-kcal">(~{{ val.calories_kcal }} kcal)</span>
+                    {% endif %}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+            <div class="remark">{{ sf.Remark }}</div>
+          </div>
         {% endif %}
-        {% else %}
-        <div style="color: #e53e3e; text-align: center;">No result data found.</div>
-        {% endif %}
-        <a href="/female_predict_form" class="back-btn">← Try Again</a>
-        <div class="action-buttons" style="display:flex;gap:1rem;justify-content:center;margin-top:2rem;">
-            <button id="downloadPdfBtn" class="back-btn" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">Download PDF</button>
-        </div>
+
+      {% endif %}
+    {% else %}
+      <div style="color:#e53e3e;text-align:center;">No result data found.</div>
+    {% endif %}
+
+    <a href="/female_predict_form" class="back-btn">← Try Again</a>
+    <div class="action-buttons" style="display:flex;gap:1rem;justify-content:center;margin-top:2rem;">
+      <button id="downloadPdfBtn" class="back-btn" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">Download PDF</button>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-        function downloadResultsAsPDF() {
-            const source = document.querySelector('.container');
-            if (!source) return;
-            const clone = source.cloneNode(true);
-            // remove action buttons and back link from clone
-            clone.querySelectorAll('.action-buttons, .back-btn').forEach(el => el.remove());
+  </div>
 
-            const tempWrapper = document.createElement('div');
-            tempWrapper.style.position = 'fixed';
-            tempWrapper.style.left = '-10000px';
-            tempWrapper.style.top = '0';
-            tempWrapper.style.width = source.offsetWidth + 'px';
-            tempWrapper.appendChild(clone);
-            document.body.appendChild(tempWrapper);
-
-            const w = Math.ceil(clone.scrollWidth);
-            const h = Math.ceil(clone.scrollHeight);
-            const orientation = w > h ? 'landscape' : 'portrait';
-            const options = {
-                margin: 0,
-                filename: `Female_Result_${new Date().toISOString().slice(0,10)}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: null },
-                jsPDF: { unit: 'px', format: [w, h], orientation },
-                pagebreak: { mode: 'avoid-all' }
-            };
-            html2pdf().set(options).from(clone).save().finally(() => {
-                document.body.removeChild(tempWrapper);
-            });
-        }
-        const downloadBtn = document.getElementById('downloadPdfBtn');
-        if (downloadBtn) downloadBtn.addEventListener('click', downloadResultsAsPDF);
+  <!-- Safely inject CaloriesGuide as JSON (avoids inline tojson-in-JS issues) -->
+  {% if meal and meal.MediterraneanDiet and meal.MediterraneanDiet.CaloriesGuide %}
+    <script id="cal-guide-json" type="application/json">
+      {{ meal.MediterraneanDiet.CaloriesGuide | tojson | safe }}
     </script>
+  {% endif %}
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function downloadResultsAsPDF(){
+      const source=document.querySelector('.container'); if(!source) return;
+      const clone=source.cloneNode(true);
+      clone.querySelectorAll('.action-buttons,.back-btn').forEach(el=>el.remove());
+      const tmp=document.createElement('div');
+      tmp.style.position='fixed'; tmp.style.left='-10000px'; tmp.style.top='0';
+      tmp.style.width=source.offsetWidth+'px'; tmp.appendChild(clone); document.body.appendChild(tmp);
+      const w=Math.ceil(clone.scrollWidth), h=Math.ceil(clone.scrollHeight);
+      const options={margin:0,filename:`Female_Result_${new Date().toISOString().slice(0,10)}.pdf`,
+        image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,scrollY:0,backgroundColor:null},
+        jsPDF:{unit:'px',format:[w,h],orientation:(w>h?'landscape':'portrait')},pagebreak:{mode:'avoid-all'}};
+      html2pdf().set(options).from(clone).save().finally(()=>document.body.removeChild(tmp));
+    }
+    document.getElementById('downloadPdfBtn')?.addEventListener('click',downloadResultsAsPDF);
+
+    // ---- Quick Meal Calorie Estimator ----
+    (function(){
+      const dataEl=document.getElementById('cal-guide-json');
+      if(!dataEl) return;
+      const CAL_GUIDE=JSON.parse(dataEl.textContent||'{}');
+
+      const selProtein=document.getElementById('selProtein');
+      const selCarb=document.getElementById('selCarb');
+      const selAddon=document.getElementById('selAddon');
+      const selFruit=document.getElementById('selFruit');
+      const chkFruit=document.getElementById('chkFruit');
+      const chkOil=document.getElementById('chkOil');
+      const outTotal=document.getElementById('mealTotalKcal');
+
+      // Flatten AddOn nuts subgroup
+      const addOnFlat={};
+      for(const [k,v] of Object.entries(CAL_GUIDE.AddOn_kcal||{})){
+        if(v && typeof v==='object'){
+          for(const [k2,kcal] of Object.entries(v)) addOnFlat[`Nuts.${k2}`]=kcal;
+        }else{ addOnFlat[k]=v; }
+      }
+
+      function fillSelect(el, obj, defVal){
+        if(!el||!obj) return;
+        el.innerHTML='';
+        for(const key of Object.keys(obj)){
+          const opt=document.createElement('option');
+          opt.value=key; opt.textContent=key.replace(/_/g,' ');
+          el.appendChild(opt);
+        }
+        if(defVal && (defVal in obj)) el.value=defVal;
+      }
+
+      fillSelect(selProtein, CAL_GUIDE.ProteinPer120g_kcal, 'ChickenBreast');
+      fillSelect(selCarb,    CAL_GUIDE.CarbPer120g_kcal,    'WhiteRice');
+      fillSelect(selAddon,   addOnFlat,                     'Nuts.Almond_20g');
+      fillSelect(selFruit,   CAL_GUIDE.Fruit_kcal,          'Apple_1medium');
+
+      function calcTotal(){
+        const P=CAL_GUIDE.ProteinPer120g_kcal?.[selProtein.value]||0;
+        const C=CAL_GUIDE.CarbPer120g_kcal?.[selCarb.value]||0;
+        const V=CAL_GUIDE.NonStarchyVegPer240g_kcal||0;
+        const A=addOnFlat?.[selAddon.value]||0;
+        const F=chkFruit.checked ? (CAL_GUIDE.Fruit_kcal?.[selFruit.value]||0) : 0;
+        const O=chkOil.checked ? (CAL_GUIDE.HealthyFat_kcal?.OliveOil_1tbsp||0) : 0;
+        outTotal.textContent=P+C+V+A+F+O;
+      }
+
+      ['change','input'].forEach(ev=>{
+        selProtein?.addEventListener(ev,calcTotal);
+        selCarb?.addEventListener(ev,calcTotal);
+        selAddon?.addEventListener(ev,calcTotal);
+        selFruit?.addEventListener(ev,calcTotal);
+        chkFruit?.addEventListener(ev,calcTotal);
+        chkOil?.addEventListener(ev,calcTotal);
+      });
+      calcTotal();
+    })();
+  </script>
 </body>
 </html>
