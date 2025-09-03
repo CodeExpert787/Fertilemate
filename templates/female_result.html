@@ -114,7 +114,6 @@
               {% for item in meal.MediterraneanDiet.SuggestedMenu %}<li>{{ item }}</li>{% endfor %}
             </ul>
             <div class="remark">{{ meal.MediterraneanDiet.CookingTips }}</div>
-            <div class="remark">{{ meal.MediterraneanDiet.Remark }}</div>
           </div>
 
           {% if meal.MediterraneanDiet.CaloriesGuide %}
@@ -267,7 +266,6 @@
                 </li>
               {% endfor %}
             </ul>
-            <div class="remark">{{ sf.Remark }}</div>
           </div>
         {% endif %}
 

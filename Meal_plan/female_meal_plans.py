@@ -150,7 +150,6 @@ FEMALE_MEAL_PLANS = {
                 "Goal": "30-40g clean protein to stabilize blood sugar",
             },
             "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
-            "Remark": "After breakfast, take one Ayurlin Capsule",
         },
         "MediterraneanDiet": {
             "PCOSPlate": {
@@ -167,7 +166,6 @@ FEMALE_MEAL_PLANS = {
                 "1 apple/orange (if craving sweets)",
             ],
             "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
-            "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
             "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks",
         },
     },
@@ -179,7 +177,6 @@ FEMALE_MEAL_PLANS = {
                 "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"],
             },
             "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
-            "Remark": "Take one Ayur Lin capsule after breakfast",
         },
         "MediterraneanDiet": {
             "PCOSPlate": {
@@ -196,7 +193,6 @@ FEMALE_MEAL_PLANS = {
                 "1 apple/orange (if craving sweets)",
             ],
             "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
-            "Remark": "Take one Ayur Lin capsule after dinner",
             "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks",
         },
     },
@@ -208,7 +204,6 @@ FEMALE_MEAL_PLANS = {
                 "Goal": "30-40g clean protein to stabilize blood sugar",
             },
             "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
-            "Remark": "After breakfast, take one Ayurlin Capsule",
         },
         "MediterraneanDiet": {
             "PCOSPlate": {
@@ -225,7 +220,6 @@ FEMALE_MEAL_PLANS = {
                 "1 apple/orange (if craving sweets)",
             ],
             "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
-            "Remark": "Take 1 Ayur Lin Capsule 1 hour after dinner",
             "CookingTips": "Reduce oil, avoid sugar, no fast food or MSG for the first 4 weeks",
         },
     },
@@ -237,7 +231,6 @@ FEMALE_MEAL_PLANS = {
                 "Avoid": ["Sugar", "Honey", "Stevia", "Other sweeteners"],
             },
             "Options": BASE_BREAKFAST_OPTIONS_WITH_CALORIES,
-            "Remark": "Take one Ayur Lin capsule after breakfast",
         },
         "MediterraneanDiet": {
             "PCOSPlate": {
@@ -254,7 +247,6 @@ FEMALE_MEAL_PLANS = {
                 "1 apple/orange (if craving sweets)",
             ],
             "CaloriesGuide": MEDITERRANEAN_CALORIE_GUIDE,
-            "Remark": "Take one Ayur Lin capsule after dinner",
             "CookingTips": "Less oil, no sugar, no fast food or MSG for the first 4 weeks",
         },
     },
